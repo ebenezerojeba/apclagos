@@ -19,7 +19,7 @@ export const siteConfig = {
   /** Set NEXT_PUBLIC_SITE_URL in the environment; this is the fallback. */
   url:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "https://www.apclagos.org",
+    "https://apclagos.vercel.app",
   locale: "en_NG",
   language: "en-NG",
   /** Used for date formatting across the site. */
