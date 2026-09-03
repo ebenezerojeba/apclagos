@@ -186,8 +186,8 @@ export function Hero({ stats }: { stats: StatItem[] }) {
     <section
       ref={sectionRef}
       className={cn(
-        "panel-ink relative isolate flex min-h-[36rem] flex-col overflow-hidden",
-        "sm:min-h-[40rem] lg:min-h-[min(88svh,50rem)]",
+        "panel-ink relative isolate flex min-h-[32rem] flex-col overflow-hidden",
+        "sm:min-h-[38rem] lg:min-h-[min(88svh,50rem)]",
       )}
       style={
         { "--hero-interval": `${heroSettings.intervalMs}ms` } as React.CSSProperties
@@ -296,10 +296,34 @@ export function Hero({ stats }: { stats: StatItem[] }) {
 
       {/* Layer 3 — the gradients that carry the type */}
       <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
-        {/* Reading gradient: heaviest where the headline sits. */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/70 to-ink-950/25 sm:via-ink-950/55 sm:to-transparent" />
-        {/* Vertical seat, so the stats and controls stay legible. */}
-        <div className="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/20 to-ink-950/90" />
+        {/*
+          Two reading gradients, because the type is laid out differently at
+          each size. On wide screens it sits left, so the ground darkens to the
+          left and the photograph keeps the right of the frame. On phones the
+          type stacks down the middle, so a horizontal gradient would swallow
+          the whole picture — there the ground darkens downward instead, which
+          leaves the top of every photograph readable.
+        */}
+        <div className="absolute inset-0 hidden bg-gradient-to-r from-ink-950/94 via-ink-950/58 to-ink-950/15 sm:block" />
+        <div
+          className="absolute inset-0 sm:hidden"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgb(6 15 30 / 0.34) 0%, rgb(6 15 30 / 0.62) 38%, rgb(6 15 30 / 0.86) 100%)",
+          }}
+        />
+        {/*
+          Vertical seat for the stats and controls. The mid-band is kept light
+          on purpose: that is where faces fall in the group photographs, and a
+          flat bottom-heavy fade would put them in shadow.
+        */}
+        <div
+          className="absolute inset-0 hidden sm:block"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgb(6 15 30 / 0.55) 0%, rgb(6 15 30 / 0.10) 34%, rgb(6 15 30 / 0.28) 62%, rgb(6 15 30 / 0.86) 100%)",
+          }}
+        />
 
         {!hasSlides ? (
           <>
@@ -335,7 +359,7 @@ export function Hero({ stats }: { stats: StatItem[] }) {
       {/* Layer 4 — the type */}
       <motion.div
         style={prefersReduced ? undefined : { y: contentY, opacity: contentOpacity }}
-        className="container-page relative flex flex-1 flex-col pb-8 pt-20 sm:pt-24 lg:pb-10 lg:pt-32"
+        className="container-page relative flex flex-1 flex-col pb-7 pt-16 sm:pb-8 sm:pt-24 lg:pb-10 lg:pt-32"
       >
         <div className="flex-1">
           <AnimatePresence mode="wait">
@@ -433,7 +457,7 @@ export function Hero({ stats }: { stats: StatItem[] }) {
               delay: prefersReduced ? 0 : 0.75,
               ease: EASE,
             }}
-            className="mt-14 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-white/12 pt-8 sm:mt-16 lg:grid-cols-4 lg:gap-x-10"
+            className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-white/12 pt-6 sm:mt-14 sm:gap-y-8 sm:pt-8 lg:grid-cols-4 lg:gap-x-10"
           >
             {stats.map((stat) => (
               <div key={stat.id}>
@@ -505,7 +529,7 @@ function HeroControls({
   onSelect: (index: number) => void;
 }) {
   return (
-    <div className="mt-10 flex items-end justify-between gap-6 border-t border-white/12 pt-5 sm:mt-12">
+    <div className="mt-8 flex items-end justify-between gap-4 border-t border-white/12 pt-5 sm:mt-12 sm:gap-6">
       {/* Indicators double as a progress read-out for the current slide. */}
       <div
         role="tablist"

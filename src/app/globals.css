@@ -121,6 +121,10 @@
     scroll-behavior: smooth;
     /* Anchor targets clear the sticky header. */
     scroll-padding-top: calc(var(--spacing-header) + 1.5rem);
+    /* Declared on <html> as well as <body>: reveal animations park their
+       elements a little off-axis until they enter the viewport, and at narrow
+       widths that would otherwise widen the document before they trigger. */
+    overflow-x: clip;
   }
 
   body {

@@ -37,8 +37,8 @@ type RevealDirection = "up" | "down" | "left" | "right" | "none";
 const OFFSETS: Record<RevealDirection, { x: number; y: number }> = {
   up: { x: 0, y: 24 },
   down: { x: 0, y: -24 },
-  left: { x: 28, y: 0 },
-  right: { x: -28, y: 0 },
+  left: { x: 20, y: 0 },
+  right: { x: -20, y: 0 },
   none: { x: 0, y: 0 },
 };
 

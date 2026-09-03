@@ -3,7 +3,7 @@ const browser = await chromium.launch();
 for (const width of [320, 390]) {
   const ctx = await browser.newContext({ viewport: { width, height: 800 } });
   const page = await ctx.newPage();
-  await page.goto("http://localhost:3000/", { waitUntil: "domcontentloaded" });
+  await page.goto("http://localhost:3007/", { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(2500);
   const r = await page.evaluate(() => {
     const cw = document.documentElement.clientWidth;
