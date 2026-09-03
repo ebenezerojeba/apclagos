@@ -18,7 +18,7 @@ export const siteConfig = {
     "The official digital information platform of the All Progressives Congress, Lagos State Chapter - party leadership, local councils, elected representatives, candidates, news and events.",
   /** Set NEXT_PUBLIC_SITE_URL in the environment; this is the fallback. */
   url:
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
     "https://apclagos.vercel.app",
   locale: "en_NG",
   language: "en-NG",
