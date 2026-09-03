@@ -1,0 +1,49 @@
+{
+  "_readme": [
+    "Copy into the newsArticles array in src/data/editorial.ts.",
+    "`body` is a closed block model — only the node types below are rendered,",
+    "which is why no raw HTML from the data layer can ever reach the page."
+  ],
+  "article": {
+    "id": "n-0001",
+    "slug": "REQUIRED — url segment",
+    "status": "published",
+    "title": "REQUIRED — the headline",
+    "kicker": "Optional short deck shown above the headline",
+    "excerpt": "REQUIRED — one or two sentences, used on cards and as the meta description.",
+    "category": "apc-lagos | leadership | elections | government | lgas | lcdas | house-of-assembly | house-of-representatives | senate | events | press-releases",
+    "tags": ["secretariat"],
+    "author": { "name": "APC Lagos Media Office", "role": "Communications" },
+    "publishedAt": "REQUIRED — 2026-02-14T09:00:00+01:00",
+    "updatedAt": "2026-02-15T11:00:00+01:00",
+    "featured": true,
+    "popularity": 10,
+    "cover": {
+      "src": "/images/news/example.jpg",
+      "alt": "REQUIRED",
+      "width": 1600,
+      "height": 900,
+      "role": "news",
+      "caption": "Optional caption",
+      "credit": "Photographer"
+    },
+    "relatedPersonSlugs": ["person-slug"],
+    "relatedCouncilSlugs": ["ikorodu-north"],
+    "relatedArticleSlugs": ["another-article-slug"],
+    "body": [
+      { "type": "paragraph", "text": "Opening paragraph." },
+      { "type": "heading", "level": 2, "text": "A section heading" },
+      { "type": "list", "ordered": false, "items": ["Point one", "Point two"] },
+      { "type": "quote", "text": "A quotation.", "attribution": "Name, Office" },
+      {
+        "type": "image",
+        "image": { "src": "/images/news/inline.jpg", "alt": "REQUIRED", "width": 1600, "height": 900 }
+      },
+      {
+        "type": "video",
+        "title": "Optional caption",
+        "video": { "provider": "youtube", "ref": "YOUTUBE_VIDEO_ID" }
+      }
+    ]
+  }
+}

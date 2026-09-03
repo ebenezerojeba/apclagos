@@ -1,0 +1,34 @@
+{
+  "_readme": [
+    "Copy into the partyEvents array in src/data/editorial.ts.",
+    "startsAt/endsAt are ISO-8601 with the +01:00 West Africa Time offset."
+  ],
+  "event": {
+    "id": "e-0001",
+    "slug": "REQUIRED — url segment, e.g. lagos-west-stakeholders-meeting",
+    "status": "published",
+    "title": "REQUIRED",
+    "summary": "REQUIRED — one sentence shown on the event card.",
+    "category": "congress | rally | meeting | town-hall | commissioning | training | community | other",
+    "startsAt": "REQUIRED — 2027-03-04T10:00:00+01:00",
+    "endsAt": "2027-03-04T14:00:00+01:00",
+    "venueName": "Venue name",
+    "venueAddress": "Street, area, Lagos",
+    "lgaSlug": "ikeja",
+    "registrationUrl": "https://…",
+    "notice": "Set only when postponed or cancelled — rendered as a badge",
+    "galleryAlbumSlug": "album-slug",
+    "cover": {
+      "src": "/images/events/lagos-west-stakeholders-meeting.jpg",
+      "alt": "REQUIRED",
+      "width": 1600,
+      "height": 1067,
+      "role": "event"
+    },
+    "description": [
+      { "type": "paragraph", "text": "Opening paragraph." },
+      { "type": "heading", "level": 2, "text": "A section heading" },
+      { "type": "list", "items": ["Point one", "Point two"] }
+    ]
+  }
+}

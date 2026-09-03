@@ -1,0 +1,459 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   APC LAGOS — DESIGN SYSTEM
+   --------------------------------------------------------------------------
+   A restrained, institutional identity: deep navy as the constitutional
+   colour, a single disciplined crimson for emphasis, brass for ceremonial
+   detail, and warm paper neutrals so long documents stay readable.
+
+   Colour is deliberately rationed. Navy carries authority, crimson marks the
+   one thing that matters most in a view, brass appears only as a hairline or a
+   rule. Everything else is paper and ink.
+   ========================================================================== */
+
+@theme {
+  /* ---- Ink: the constitutional navy ---------------------------------- */
+  --color-ink-50: #f2f6fb;
+  --color-ink-100: #e2eaf4;
+  --color-ink-200: #c4d4e7;
+  --color-ink-300: #93aecb;
+  --color-ink-400: #5b7ea8;
+  --color-ink-500: #375d8a;
+  --color-ink-600: #27476e;
+  --color-ink-700: #1c3557;
+  --color-ink-800: #142642;
+  --color-ink-900: #0d1b31;
+  --color-ink-950: #060f1e;
+
+  /* ---- Crimson: emphasis, never decoration --------------------------- */
+  --color-crimson-50: #fdf3f3;
+  --color-crimson-100: #fbe3e4;
+  --color-crimson-200: #f7cbcd;
+  --color-crimson-300: #efa4a8;
+  --color-crimson-400: #e26f76;
+  --color-crimson-500: #d0434c;
+  --color-crimson-600: #b4232f;
+  --color-crimson-700: #971b26;
+  --color-crimson-800: #7c1a23;
+  --color-crimson-900: #681b23;
+
+  /* ---- Verdant: the party's progress accent, used sparingly ---------- */
+  --color-verdant-50: #f0f9f4;
+  --color-verdant-100: #daf0e3;
+  --color-verdant-300: #86c9a5;
+  --color-verdant-500: #2f9c68;
+  --color-verdant-600: #1f7a50;
+  --color-verdant-700: #17603f;
+  --color-verdant-900: #0d3a27;
+
+  /* ---- Brass: ceremonial hairlines and seals ------------------------- */
+  --color-brass-100: #f6efdf;
+  --color-brass-200: #ead9b4;
+  --color-brass-300: #d8bd80;
+  --color-brass-400: #c4a25a;
+  --color-brass-500: #ab8840;
+  --color-brass-600: #8b6c31;
+
+  /* ---- Paper: warm neutrals ------------------------------------------ */
+  --color-paper-50: #fdfcfa;
+  --color-paper-100: #faf8f4;
+  --color-paper-200: #f3efe8;
+  --color-paper-300: #e9e3d8;
+  --color-paper-400: #d8d0c1;
+  --color-paper-500: #b9b0a0;
+  --color-paper-600: #8b8375;
+
+  /* ---- Semantic aliases ---------------------------------------------- */
+  --color-canvas: #fbfaf7;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f7f4ee;
+  --color-border-subtle: #ebe6dc;
+  --color-border: #e0d9cc;
+  --color-border-strong: #cec4b2;
+  --color-fg: #0d1b31;
+  --color-fg-muted: #4f5c72;
+  --color-fg-subtle: #77808f;
+  --color-fg-inverse: #f5f7fa;
+
+  /* ---- Typography ----------------------------------------------------- */
+  --font-display: var(--font-newsreader), "Iowan Old Style", Georgia,
+    "Times New Roman", serif;
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Fluid display sizes — never require a media query to look right. */
+  --text-display-2xl: clamp(2.75rem, 1.6rem + 5.2vw, 6rem);
+  --text-display-xl: clamp(2.25rem, 1.35rem + 4vw, 4.5rem);
+  --text-display-lg: clamp(1.95rem, 1.3rem + 2.8vw, 3.25rem);
+  --text-display-md: clamp(1.6rem, 1.2rem + 1.8vw, 2.35rem);
+  --text-display-sm: clamp(1.35rem, 1.1rem + 1.1vw, 1.75rem);
+
+  /* ---- Elevation ------------------------------------------------------ */
+  --shadow-card: 0 1px 2px rgb(13 27 49 / 0.04), 0 8px 24px -12px rgb(13 27 49 / 0.12);
+  --shadow-card-hover:
+    0 2px 4px rgb(13 27 49 / 0.06), 0 24px 48px -20px rgb(13 27 49 / 0.22);
+  --shadow-overlay: 0 32px 80px -24px rgb(6 15 30 / 0.45);
+  --shadow-inset-line: inset 0 -1px 0 0 var(--color-border-subtle);
+
+  /* ---- Motion --------------------------------------------------------- */
+  --ease-out-institutional: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-institutional: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Layout --------------------------------------------------------- */
+  --spacing-header: 5rem;
+  --container-page: 88rem;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-border-subtle);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* Anchor targets clear the sticky header. */
+    scroll-padding-top: calc(var(--spacing-header) + 1.5rem);
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv05" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Nothing on this site may scroll the page sideways. */
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* A single, consistent focus treatment everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--color-ink-600);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .on-ink :focus-visible,
+  .on-ink:focus-visible {
+    outline-color: var(--color-brass-300);
+  }
+
+  ::selection {
+    background-color: var(--color-ink-800);
+    color: #fff;
+  }
+
+  /* Tabular figures for every statistic, table and date. */
+  .tnum,
+  time,
+  td[data-numeric],
+  th[data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Respect the viewer's motion preference — globally, not per component. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+
+/** The single page gutter. Every full-width section uses this. */
+@utility container-page {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 3rem;
+  }
+
+  @media (width >= 96rem) {
+    padding-inline: 4rem;
+  }
+}
+
+/** Small caps label used above every section heading. */
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-500);
+}
+
+/** Hairline rule with a brass seed — the recurring institutional detail. */
+@utility rule-brass {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--color-brass-300) 0,
+    var(--color-brass-300) 2.5rem,
+    var(--color-border) 2.5rem,
+    var(--color-border) 100%
+  );
+}
+
+/** Paper texture — barely perceptible, stops large flats looking flat. */
+@utility paper-grain {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgb(13 27 49 / 0.035) 1px,
+      transparent 0
+    );
+    background-size: 22px 22px;
+  }
+}
+
+/** Dark institutional panel. Sets `.on-ink` focus colours for descendants. */
+@utility panel-ink {
+  background-color: var(--color-ink-950);
+  color: var(--color-fg-inverse);
+}
+
+/** Long-form article typography. */
+@utility prose-institutional {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--color-fg-muted);
+
+  & > * + * {
+    margin-top: 1.35em;
+  }
+
+  & h2 {
+    font-size: var(--text-display-sm);
+    color: var(--color-fg);
+    margin-top: 2.25em;
+    line-height: 1.25;
+  }
+
+  & h3 {
+    font-size: 1.25rem;
+    color: var(--color-fg);
+    margin-top: 2em;
+    line-height: 1.35;
+  }
+
+  & strong {
+    color: var(--color-fg);
+    font-weight: 600;
+  }
+
+  & a {
+    color: var(--color-ink-700);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--color-ink-300);
+  }
+
+  & a:hover {
+    text-decoration-color: var(--color-ink-700);
+  }
+
+  & ul,
+  & ol {
+    padding-left: 1.35em;
+  }
+
+  & ul {
+    list-style: disc;
+  }
+
+  & ol {
+    list-style: decimal;
+  }
+
+  & li + li {
+    margin-top: 0.5em;
+  }
+
+  & li::marker {
+    color: var(--color-brass-500);
+  }
+
+  @media (width >= 64rem) {
+    font-size: 1.125rem;
+  }
+}
+
+/** Hides content visually but keeps it available to assistive technology. */
+@utility sr-only-focusable {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+
+  &:focus,
+  &:focus-within {
+    position: fixed;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+}
+
+/** Fades the bottom edge of a vertical scroll area so a clipped row reads as
+ *  "there is more" rather than as a rendering fault. */
+@utility scroll-fade-y {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 0.75rem,
+    black calc(100% - 2rem),
+    transparent 100%
+  );
+}
+
+/** Masks scroll edges on horizontal rails so cards fade rather than clip. */
+@utility rail-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 1.5rem,
+    black calc(100% - 1.5rem),
+    transparent 100%
+  );
+}
+
+/* ==========================================================================
+   KEYFRAMES
+   ========================================================================== */
+
+@keyframes apc-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -1.25rem, 0) scale(1.03);
+  }
+}
+
+@keyframes apc-sheen {
+  0% {
+    background-position: -160% 0;
+  }
+  100% {
+    background-position: 260% 0;
+  }
+}
+
+@keyframes apc-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Sweeps the active hero indicator across its slide's hold time. Driven by
+   --hero-interval, which the hero sets from `heroSettings.intervalMs`, so the
+   bar and the timer can never disagree. */
+@keyframes apc-hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes apc-scroll-hint {
+  0% {
+    transform: translateY(-60%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(160%);
+    opacity: 0;
+  }
+}
+
+/* Skeleton shimmer for loading states. */
+.skeleton {
+  background: linear-gradient(
+    100deg,
+    var(--color-paper-200) 20%,
+    var(--color-paper-100) 40%,
+    var(--color-paper-200) 60%
+  );
+  background-size: 220% 100%;
+  animation: apc-sheen 1.6s linear infinite;
+}

@@ -1,0 +1,35 @@
+{
+  "_readme": [
+    "Achievements and documents, both in src/data/resources.ts.",
+    "Every achievement carries a `source` so each claim stays attributable to the",
+    "ministry, agency or council that published it."
+  ],
+  "achievement": {
+    "id": "a-0001",
+    "slug": "REQUIRED — url segment",
+    "status": "published",
+    "title": "REQUIRED",
+    "summary": "REQUIRED — one sentence shown on the card.",
+    "description": ["Longer paragraph."],
+    "category": "infrastructure | education | health | security | economy | transport | environment | social | party-organisation",
+    "year": 2025,
+    "location": "Ikorodu, Lagos",
+    "lgaSlug": "ikorodu",
+    "metrics": [{ "label": "Kilometres delivered", "value": "12.4" }],
+    "source": "REQUIRED IN PRACTICE — the publishing ministry, agency or council",
+    "cover": { "src": "/images/achievements/example.jpg", "alt": "REQUIRED", "width": 1600, "height": 1067 },
+    "video": { "provider": "youtube", "ref": "YOUTUBE_VIDEO_ID" }
+  },
+  "document": {
+    "id": "d-0001",
+    "slug": "REQUIRED — url segment",
+    "status": "published",
+    "title": "REQUIRED",
+    "description": "What the document contains.",
+    "category": "constitution | policy | guidelines | forms | reports | press | manifesto",
+    "fileUrl": "REQUIRED — /documents/party-constitution.pdf",
+    "fileType": "pdf | doc | docx | xls | xlsx | zip | other",
+    "fileSizeLabel": "1.8 MB",
+    "publishedAt": "2022-03-26"
+  }
+}

@@ -1,0 +1,10 @@
+slug,name,code,lgaSlug,lcdaSlug,status
+# One row per ward. Delete these comment lines before importing.
+# slug      unique, lowercase, hyphenated. Convention: <lgaSlug>-<code>
+# name      the ward's published name, e.g. "Ward A" or "Ojodu Ward 3"
+# code      the INEC ward code where one is published; leave blank otherwise
+# lgaSlug   REQUIRED. Must match an LGA slug from src/data/geography.ts
+# lcdaSlug  optional. Must match an LCDA slug when the ward sits in one
+# status    published | draft | archived
+ikeja-01,Ward A,01,ikeja,onigbongbo,published
+ikeja-02,Ward B,02,ikeja,ojodu,published

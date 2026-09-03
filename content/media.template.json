@@ -1,0 +1,46 @@
+{
+  "_readme": [
+    "Albums go into galleryAlbums and videos into videos, both in src/data/media.ts.",
+    "Album images keep their own aspect ratio in the masonry grid, so supply real",
+    "width and height values — that is what prevents layout shift.",
+    "YouTube entries need only the video id: the poster and the privacy-enhanced",
+    "embed URL are derived, and the iframe only mounts after the viewer presses play."
+  ],
+  "album": {
+    "id": "g-0001",
+    "slug": "REQUIRED — url segment",
+    "status": "published",
+    "title": "REQUIRED",
+    "description": "One or two sentences.",
+    "category": "leadership | campaign | events | community | government | congress | other",
+    "date": "2026-02-20",
+    "location": "Ikeja, Lagos",
+    "relatedEventSlug": "event-slug",
+    "cover": { "src": "/images/gallery/album-slug/01.jpg", "alt": "REQUIRED", "width": 1600, "height": 1067 },
+    "images": [
+      {
+        "src": "/images/gallery/album-slug/01.jpg",
+        "alt": "REQUIRED — describe what is happening",
+        "width": 1600,
+        "height": 1067,
+        "caption": "Optional caption",
+        "credit": "Photographer"
+      }
+    ]
+  },
+  "video": {
+    "id": "v-0001",
+    "slug": "REQUIRED — url segment",
+    "status": "published",
+    "title": "REQUIRED",
+    "description": "What the recording covers.",
+    "category": "campaign | interviews | events | speeches | documentary | activities",
+    "publishedAt": "2026-02-22",
+    "featured": true,
+    "embed": {
+      "provider": "youtube | vimeo | file",
+      "ref": "REQUIRED — YouTube/Vimeo id, or an absolute URL when provider is \"file\"",
+      "duration": "12:04"
+    }
+  }
+}
