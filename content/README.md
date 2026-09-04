@@ -1,12 +1,17 @@
 # Content templates
 
+> **People are no longer edited here.** Leadership, council chairmen, senators,
+> members of both chambers and candidates are managed in the editor at
+> `/keystatic` and stored as JSON in `content/people/**`. The templates below
+> cover the collections that are still hand-edited in `src/data/*.ts`.
+
 Machine-readable templates for every record type on the platform. Copy a
 template, replace every value, and paste the result into the matching file in
 `src/data/`.
 
 | Template | Goes into | Powers |
 | --- | --- | --- |
-| `people.template.json` | `src/data/people.ts` | Leadership, chairmen, senators, House of Reps, House of Assembly, candidates |
+| — (use the editor at `/keystatic`) | `content/people/**` | Leadership, chairmen, senators, House of Reps, House of Assembly, candidates |
 | `wards.template.csv` | `src/data/resources.ts` | `/wards`, council pages, structure explorer |
 | `news.template.json` | `src/data/editorial.ts` | `/news`, homepage rails, search |
 | `events.template.json` | `src/data/editorial.ts` | `/events`, homepage rail |

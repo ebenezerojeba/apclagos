@@ -16,6 +16,7 @@ import {
   getVideos,
   getWards,
 } from "@/lib/content";
+import { cache } from "react";
 import { escapeRegExp } from "@/lib/utils";
 import { titleFromSlug } from "@/lib/format";
 import type { SearchDocument } from "@/types/content";
@@ -152,11 +153,16 @@ function haystack(...parts: (string | undefined | string[])[]): string {
     .toLowerCase();
 }
 
-let cached: SearchDocument[] | null = null;
-
-export async function getSearchIndex(): Promise<SearchDocument[]> {
-  if (cached) return cached;
-
+/**
+ * Built once per request, not once per process.
+ *
+ * People records now come from the CMS and can change between requests, so a
+ * module-level cache would serve a stale index — a profile that had just been
+ * published would be missing from search until the server restarted. `cache()`
+ * still dedupes the work within a single request, which is all the sharing that
+ * was ever actually needed.
+ */
+export const getSearchIndex = cache(async (): Promise<SearchDocument[]> => {
   const [
     leaders,
     representatives,
@@ -387,9 +393,8 @@ export async function getSearchIndex(): Promise<SearchDocument[]> {
     });
   }
 
-  cached = docs;
   return docs;
-}
+});
 
 export interface SearchResultGroup {
   type: SearchDocument["type"];

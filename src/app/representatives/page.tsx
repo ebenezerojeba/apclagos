@@ -131,7 +131,7 @@ export default async function RepresentativesPage() {
           <AwaitingRecordsState
             className="mt-10"
             what="Representative profiles"
-            dataFile="src/data/people.ts"
+            dataFile="the admin, under Elected representatives"
           />
         )}
       </Section>

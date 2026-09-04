@@ -111,7 +111,7 @@ export default async function ElectionPage({
         <Section tone="surface">
           <AwaitingRecordsState
             what="Candidate profiles"
-            dataFile="src/data/people.ts"
+            dataFile="the admin, under Elections → Candidates"
           />
         </Section>
       ) : (

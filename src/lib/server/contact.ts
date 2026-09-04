@@ -64,7 +64,13 @@ export const contactSchema = z.object({
     .min(20, "Please give us a little more detail (at least 20 characters).")
     .max(4000, "Message is too long — please keep it under 4,000 characters."),
   /** Honeypot. Must be empty. */
-  website: z.string().max(0).optional().or(z.literal("")),
+  /**
+   * Honeypot. Deliberately permissive: the schema must ACCEPT a filled value so
+   * the route can answer with a fake success. Rejecting it here would return
+   * `{"website": "String must contain at most 0 character(s)"}`, telling a bot
+   * exactly which field is the trap and how to beat it next time.
+   */
+  website: z.string().max(200).optional(),
   token: z.string().min(1, "This form has expired. Please reload the page."),
 });
 

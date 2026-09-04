@@ -16,7 +16,7 @@ import { slugify } from "@/lib/slug";
  * senatorial districts, 24 federal constituencies and 40 state constituencies.
  *
  * Nothing here names a person or claims an electoral outcome. Officeholders are
- * linked in separately from `src/data/people.ts` so that this file rarely needs
+ * linked in separately from the CMS (see `src/lib/cms.ts`) so this file rarely needs
  * to change.
  *
  * NEEDS-VERIFICATION markers below flag the two places where delimitation

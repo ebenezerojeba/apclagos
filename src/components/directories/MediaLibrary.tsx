@@ -96,6 +96,14 @@ export function MediaLibrary<T extends GalleryAlbum | Video>({
         ) : null}
       </div>
 
+      {/*
+        Card titles are h3. Without a heading for the results region they would
+        follow the page h1 directly, skipping a level and breaking heading
+        navigation. It is visually redundant, so it is exposed to assistive
+        technology only.
+      */}
+      <h2 className="sr-only">{kind === "album" ? "Albums" : "Videos"}</h2>
+
       {filtered.length === 0 ? (
         <NoResultsState
           className="mt-8"

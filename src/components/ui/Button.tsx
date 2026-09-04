@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LinkPending } from "@/components/ui/LinkPending";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -130,6 +131,8 @@ export function Button(props: ButtonProps) {
         className={classes}
       >
         {content}
+        {/* Acknowledges the press while the next route is being fetched. */}
+        <LinkPending />
       </Link>
     );
   }

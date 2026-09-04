@@ -9,6 +9,44 @@ import type { ContactInfo, SocialLinks } from "@/types/content";
  * with the party's authoritative details before launch.
  */
 
+/** Used when NEXT_PUBLIC_SITE_URL is not set. */
+const FALLBACK_SITE_URL = "https://apclagos.vercel.app";
+
+/**
+ * Resolves the canonical origin, and fails loudly on a malformed one.
+ *
+ * `siteConfig.url` feeds `metadataBase`, every canonical link, the sitemap and
+ * the structured data. A value like `apclagos.org` (no protocol) or a stray
+ * quote would otherwise surface during `next build` as a bare
+ * `TypeError: Invalid URL`, with nothing to say which variable caused it.
+ * Validating here turns that into a message naming the variable and the fix.
+ */
+function resolveSiteUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return FALLBACK_SITE_URL;
+
+  const candidate = raw.replace(/\/+$/, "");
+  let parsed: URL;
+  try {
+    parsed = new URL(candidate);
+  } catch {
+    throw new Error(
+      `NEXT_PUBLIC_SITE_URL is not a valid absolute URL (received ${JSON.stringify(
+        candidate,
+      )}). Set it to the full origin including the protocol, for example ` +
+        `"https://www.apclagos.org", or leave it unset to use ${FALLBACK_SITE_URL}.`,
+    );
+  }
+
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+    throw new Error(
+      `NEXT_PUBLIC_SITE_URL must use http or https (received protocol "${parsed.protocol}").`,
+    );
+  }
+
+  return candidate;
+}
+
 export const siteConfig = {
   name: "APC Lagos",
   legalName: "All Progressives Congress, Lagos State Chapter",
@@ -17,9 +55,7 @@ export const siteConfig = {
   description:
     "The official digital information platform of the All Progressives Congress, Lagos State Chapter - party leadership, local councils, elected representatives, candidates, news and events.",
   /** Set NEXT_PUBLIC_SITE_URL in the environment; this is the fallback. */
-  url:
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-    "https://apclagos.vercel.app",
+  url: resolveSiteUrl(),
   locale: "en_NG",
   language: "en-NG",
   /** Used for date formatting across the site. */
@@ -55,12 +91,12 @@ export const brandLogo: { src: string; alt: string; width: number; height: numbe
 
 /** NEEDS-VERIFICATION: replace with the secretariat's published details. */
 export const siteContact: ContactInfo = {
-  addressLines: ["APC Lagos State Secretariat", "Address line to be supplied"],
+  addressLines: ["APC Lagos State Secretariat", " 151 Acme Road, Ogba, Ikeja, Lagos"],
   city: "Lagos",
   state: "Lagos State",
   phones: ["+234 000 000 0000"],
   emails: ["info@apclagos.org"],
-  openingHours: "Monday to Friday, 9:00am - 5:00pm (WAT)",
+  openingHours: "Monday to Saturday, 9:00am - 4:00pm (WAT)",
   mapQuery: "Lagos State Secretariat, Alausa, Ikeja, Lagos",
 };
 

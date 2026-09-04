@@ -8,17 +8,41 @@ import { buildMetadata, itemListJsonLd } from "@/lib/seo";
 import { leadershipBodyLabels, optionsFrom } from "@/lib/labels";
 import type { LeadershipBody } from "@/types/content";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Leadership of APC Lagos",
-  description:
-    "The state executive, working committee and leadership organs of the All Progressives Congress, Lagos State Chapter.",
-  path: "/leadership",
-  keywords: [
-    "APC Lagos leadership",
-    "APC Lagos state chairman",
-    "APC Lagos state executive",
-  ],
-});
+/**
+ * The mega menu links to filtered views such as `?body=state-executive`. Those
+ * are the same page with a facet pre-selected, so each gets a title of its own
+ * — otherwise every filtered URL competes with `/leadership` on an identical
+ * title — while the canonical stays on the unfiltered page so search engines
+ * consolidate them rather than treating them as duplicate content.
+ */
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const body =
+    typeof params.body === "string" &&
+    Object.keys(leadershipBodyLabels).includes(params.body)
+      ? (params.body as LeadershipBody)
+      : undefined;
+
+  const organ = body ? leadershipBodyLabels[body] : undefined;
+
+  return buildMetadata({
+    title: organ ? `${organ} — Leadership of APC Lagos` : "Leadership of APC Lagos",
+    description: organ
+      ? `Members of the ${organ} of the All Progressives Congress, Lagos State Chapter.`
+      : "The state executive, working committee and leadership organs of the All Progressives Congress, Lagos State Chapter.",
+    // Always the unfiltered page: the facets are views, not separate documents.
+    path: "/leadership",
+    keywords: [
+      "APC Lagos leadership",
+      "APC Lagos state chairman",
+      "APC Lagos state executive",
+    ],
+  });
+}
 
 export default async function LeadershipPage({
   searchParams,

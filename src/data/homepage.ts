@@ -15,6 +15,16 @@ import type { ImageAsset } from "@/types/content";
 export interface HeroSlide {
   id: string;
   image: ImageAsset;
+  /**
+   * How the photograph is presented.
+   *
+   * `cover` fills the hero — right for landscape reportage.
+   * `portrait` is for upright studio portraits: the frame is shown whole in a
+   * card beside the type, over a soft, darkened enlargement of itself. Cropping
+   * an upright portrait to a wide hero would put the headline across the
+   * subject's face and cut any credit line baked into the image.
+   */
+  layout: "cover" | "portrait";
   /** Short label shown on the slide indicator. Two words at most. */
   label: string;
   eyebrow: string;
@@ -54,6 +64,7 @@ export interface HeroSlide {
 export const heroSlides: HeroSlide[] = [
   {
     id: "lagos",
+    layout: "cover",
     label: "Lagos",
     image: {
       src: "/images/hero/hero-background.jpg",
@@ -75,6 +86,7 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: "leadership",
+    layout: "cover",
     label: "Leadership",
     image: {
       src: "/images/hero/hero1.jpg",
@@ -96,7 +108,8 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: "party-at-work",
-    label: "The party at work",
+    layout: "cover",
+    label: "Party at work",
     image: {
       src: "/images/hero/hero2.jpg",
       alt: "Party officials in a working session around a boardroom table, with APC banners and party documents.",
@@ -114,6 +127,31 @@ export const heroSlides: HeroSlide[] = [
     overlay: "medium",
     focus: "50% 46%",
     focusMobile: "42% 46%",
+  },
+  {
+    id: "national",
+    layout: "portrait",
+    label: "National",
+    image: {
+      src: "/images/hero/president.jpg",
+      alt: "Official portrait of President Bola Ahmed Tinubu.",
+      width: 976,
+      height: 1089,
+      role: "hero",
+      // NEEDS-VERIFICATION: confirm the licence for this photograph. The credit
+      // is rendered in the hero rather than relying on the caption baked into
+      // the file, which a full-bleed crop would remove.
+      credit: "Oaspictures",
+    },
+    eyebrow: "National representation",
+    headline: "From Lagos to the Presidency.",
+    supporting:
+      "Bola Ahmed Tinubu, a former Governor of Lagos State, serves as President of the Federal Republic of Nigeria on the platform of the All Progressives Congress.",
+    primaryCta: { label: "Party history", href: "/about#history" },
+    secondaryCta: { label: "Our representatives", href: "/representatives" },
+    overlay: "medium",
+    focus: "50% 30%",
+    focusMobile: "50% 26%",
   },
 ];
 

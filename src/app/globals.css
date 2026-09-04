@@ -391,6 +391,47 @@
 }
 
 /* ==========================================================================
+   NAVIGATION PROGRESS
+   ========================================================================== */
+
+/*
+  Deliberately unlayered, so it outranks the layered reduced-motion reset below.
+  This transition is exempt from that reset on purpose: the bar communicates
+  state rather than decoration, and with its duration zeroed it would jump
+  between steps instead of reading as progress. It is 3px of horizontal scale —
+  none of the movement the preference exists to suppress.
+*/
+.link-pending-bar {
+  animation: apc-link-pending 1s ease-in-out infinite;
+}
+
+/*
+  With the animation suppressed the sweep would park off-screen and show
+  nothing at all, so under reduced motion it becomes a static filled rule —
+  the same information, without the movement.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .link-pending-bar {
+    width: 100%;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+.route-progress {
+  transition:
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms linear;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-progress {
+    transition-duration: 200ms, 260ms !important;
+  }
+}
+
+/* ==========================================================================
    KEYFRAMES
    ========================================================================== */
 
@@ -427,6 +468,16 @@
 /* Sweeps the active hero indicator across its slide's hold time. Driven by
    --hero-interval, which the hero sets from `heroSettings.intervalMs`, so the
    bar and the timer can never disagree. */
+/* Indeterminate sweep along the bottom of a link that is navigating. */
+@keyframes apc-link-pending {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
 @keyframes apc-hero-progress {
   from {
     transform: scaleX(0);

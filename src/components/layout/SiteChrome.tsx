@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Header } from "@/components/layout/Header";
+import { RouteProgress } from "@/components/layout/RouteProgress";
 import { SearchDialog } from "@/components/search/SearchDialog";
 
 /**
- * Client shell that owns the one piece of cross-page UI state: whether the
- * search palette is open. Keeping it here means the header, the mobile drawer
+ * Client shell for the cross-page UI: the search palette's open state and the
+ * global navigation progress bar. Keeping it here means the header, the mobile drawer
  * and the "/" shortcut all drive the same dialog, while every page underneath
  * stays a server component.
  */
@@ -36,6 +37,7 @@ export function SiteChrome() {
 
   return (
     <>
+      <RouteProgress />
       <Header onOpenSearch={openSearch} />
       <SearchDialog open={searchOpen} onClose={closeSearch} />
     </>

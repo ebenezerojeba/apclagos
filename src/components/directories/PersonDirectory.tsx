@@ -59,7 +59,7 @@ export function PersonDirectory({
   pageSize = 24,
   initialFacetValues,
   emptyWhat,
-  emptyDataFile = "src/data/people.ts",
+  emptyDataFile = "the admin",
 }: {
   rows: PersonRow[];
   facets?: PersonFacet[];
@@ -213,6 +213,14 @@ export function PersonDirectory({
           </Button>
         ) : null}
       </div>
+
+      {/*
+        Card titles are h3. Without a heading for the results region they would
+        follow the page h1 directly, skipping a level and breaking heading
+        navigation. It is visually redundant, so it is exposed to assistive
+        technology only.
+      */}
+      <h2 className="sr-only">{`${noun.charAt(0).toUpperCase()}${noun.slice(1)}s`}</h2>
 
       {filtered.length === 0 ? (
         <NoResultsState

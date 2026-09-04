@@ -9,13 +9,13 @@ import {
   stateConstituencies,
 } from "@/data/geography";
 import {
-  candidates,
-  councilOfficials,
-  houseOfAssemblyMembers,
-  houseOfRepresentativesMembers,
-  leaders,
-  senators,
-} from "@/data/people";
+  readCandidates,
+  readCouncilOfficials,
+  readHouseOfAssembly,
+  readHouseOfRepresentatives,
+  readLeaders,
+  readSenators,
+} from "@/lib/cms";
 import { elections } from "@/data/elections";
 import { newsArticles, partyEvents } from "@/data/editorial";
 import { galleryAlbums, videos } from "@/data/media";
@@ -54,7 +54,9 @@ import type {
 /**
  * The content repository — the single boundary between the site and its data.
  *
- * Today every function reads the typed files in `src/data`. Because the whole
+ * People records are read from the CMS (`src/lib/cms.ts`, backed by JSON in
+ * `content/people/**`). Everything else still reads the typed files in
+ * `src/data`. Because the whole
  * surface is async and returns plain serialisable objects, switching to a
  * Node/Express + database API later means changing only the bodies of these
  * functions:
@@ -95,7 +97,7 @@ function newestFirst<T extends { publishedAt?: string; createdAt?: string }>(
 /* -------------------------------------------------------------------------- */
 
 export async function getLeaders(body?: LeadershipBody): Promise<Leader[]> {
-  const list = published(leaders).sort(byOrderThenName);
+  const list = published(await readLeaders()).sort(byOrderThenName);
   return body ? list.filter((l) => l.body === body) : list;
 }
 
@@ -106,7 +108,7 @@ export async function getFeaturedLeaders(limit = 6): Promise<Leader[]> {
 }
 
 export async function getLeaderBySlug(slug: Slug): Promise<Leader | undefined> {
-  return bySlug(published(leaders), slug);
+  return bySlug(published(await readLeaders()), slug);
 }
 
 /** Distinct leadership bodies that actually have published members. */
@@ -155,7 +157,7 @@ export async function getLcdasForLga(
 export async function getCouncilOfficials(
   councilSlug?: Slug,
 ): Promise<CouncilOfficial[]> {
-  const list = published(councilOfficials).sort(byOrderThenName);
+  const list = published(await readCouncilOfficials()).sort(byOrderThenName);
   return councilSlug
     ? list.filter((o) => o.councilSlug === councilSlug)
     : list;
@@ -209,19 +211,19 @@ export async function getGeographyCounts() {
 /* -------------------------------------------------------------------------- */
 
 export async function getSenators(): Promise<Senator[]> {
-  return published(senators).sort(byOrderThenName);
+  return published(await readSenators()).sort(byOrderThenName);
 }
 
 export async function getHouseOfRepresentativesMembers(): Promise<
   HouseOfRepresentativesMember[]
 > {
-  return published(houseOfRepresentativesMembers).sort(byOrderThenName);
+  return published(await readHouseOfRepresentatives()).sort(byOrderThenName);
 }
 
 export async function getHouseOfAssemblyMembers(): Promise<
   HouseOfAssemblyMember[]
 > {
-  return published(houseOfAssemblyMembers).sort(byOrderThenName);
+  return published(await readHouseOfAssembly()).sort(byOrderThenName);
 }
 
 export async function getRepresentatives(
@@ -272,7 +274,7 @@ export interface CandidateFilters {
 export async function getCandidates(
   filters: CandidateFilters = {},
 ): Promise<Candidate[]> {
-  return published(candidates)
+  return published(await readCandidates())
     .filter((c) =>
       (Object.keys(filters) as (keyof CandidateFilters)[]).every((key) => {
         const wanted = filters[key];
@@ -285,7 +287,7 @@ export async function getCandidates(
 export async function getCandidateBySlug(
   slug: Slug,
 ): Promise<Candidate | undefined> {
-  return bySlug(published(candidates), slug);
+  return bySlug(published(await readCandidates()), slug);
 }
 
 export async function getFeaturedCandidates(limit = 4): Promise<Candidate[]> {

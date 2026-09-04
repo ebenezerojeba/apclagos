@@ -1,6 +1,6 @@
 import type { StatItem } from "@/types/content";
 import { geographyCounts } from "@/data/geography";
-import { leaders } from "@/data/people";
+import { getLeaders } from "@/lib/content";
 import { wards } from "@/data/resources";
 
 /**
@@ -19,7 +19,8 @@ import { wards } from "@/data/resources";
  */
 const DELIMITED_WARD_TOTAL = 245;
 
-export function getHeadlineStats(): StatItem[] {
+export async function getHeadlineStats(): Promise<StatItem[]> {
+  const leaders = await getLeaders();
   const items: StatItem[] = [
     {
       id: "councils",
@@ -87,9 +88,9 @@ export function getHeadlineStats(): StatItem[] {
 }
 
 /** The four figures used in the compact homepage hero strip. */
-export function getHeroStats(): StatItem[] {
+export async function getHeroStats(): Promise<StatItem[]> {
   const wanted = ["councils", "state-constituencies", "federal-constituencies", "wards"];
-  const all = getHeadlineStats();
+  const all = await getHeadlineStats();
   return wanted
     .map((id) => all.find((s) => s.id === id))
     .filter((s): s is StatItem => Boolean(s));

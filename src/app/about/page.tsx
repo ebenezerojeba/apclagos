@@ -24,8 +24,8 @@ export const metadata: Metadata = buildMetadata({
   ],
 });
 
-export default function AboutPage() {
-  const stats = getHeadlineStats();
+export default async function AboutPage() {
+  const stats = await getHeadlineStats();
   const placeholders = [
     missionVision.mission,
     missionVision.vision,

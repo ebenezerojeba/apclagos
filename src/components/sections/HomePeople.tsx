@@ -53,7 +53,7 @@ export async function LeadershipPreview() {
           variant="compact"
           className="mt-10"
           what="Leadership profiles"
-          dataFile="src/data/people.ts"
+          dataFile="the admin, under Party leadership"
         />
       )}
     </Section>
@@ -307,7 +307,7 @@ export async function ElectionPreview() {
           variant="compact"
           className="mt-10"
           what="Candidate profiles"
-          dataFile="src/data/people.ts"
+          dataFile="the admin, under Elections"
         />
       )}
     </Section>

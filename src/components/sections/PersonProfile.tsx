@@ -98,11 +98,8 @@ export function PersonProfile({
                 <p className="text-sm leading-relaxed text-fg-muted">
                   A full biography for{" "}
                   {[person.honorific, person.name].filter(Boolean).join(" ")} has
-                  not been published yet. Biographies are added to{" "}
-                  <code className="rounded bg-paper-200 px-1.5 py-0.5 font-mono text-[0.75rem] text-ink-800">
-                    src/data/people.ts
-                  </code>{" "}
-                  as the party supplies them.
+                  not been published yet. Biographies are added through the
+                  admin as the party supplies them.
                 </p>
               </div>
             )}

@@ -32,12 +32,12 @@ export const metadata: Metadata = buildMetadata({
   ],
 });
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <>
-      <Hero stats={getHeroStats()} />
+      <Hero stats={await getHeroStats()} />
       <QuickLinks />
-      <StatsBand stats={getHeadlineStats()} />
+      <StatsBand stats={await getHeadlineStats()} />
       <LeadershipPreview />
       <CouncilsPreview />
       <StructurePromo />

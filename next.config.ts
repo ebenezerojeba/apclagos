@@ -26,8 +26,32 @@ const csp = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  output: 'standalone', // Reduces deployment size
-  
+
+  // The CMS reader loads JSON from `content/` at request time on the routes
+  // that are not prerendered. Vercel traces imports, not runtime file reads, so
+  // the directory has to be declared or those routes 404 their own content.
+  outputFileTracingIncludes: {
+    "/**": ["./content/**/*"],
+  },
+
+  async redirects() {
+    return [
+      // One door to the editor. `/admin` is what people type.
+      { source: "/admin", destination: "/keystatic", permanent: false },
+    ];
+  },
+  // NOTE: `output: "standalone"` is deliberately NOT set.
+  //
+  // It targets self-hosting (Docker, a bare Node server) and it does two
+  // unhelpful things here: Vercel already does its own output-file tracing, so
+  // it saves nothing on the configured target, and it breaks `npm start` —
+  // `next start` refuses to run against a standalone build, which is the
+  // documented way to check a production build locally.
+  //
+  // If this ever moves off Vercel, re-add it AND change the start script to
+  // `node .next/standalone/server.js`, remembering that standalone does not
+  // copy `public/` or `.next/static` — those have to be placed alongside the
+  // server manually or the images and CSS will 404.
 
   images: {
     formats: ["image/avif", "image/webp"],

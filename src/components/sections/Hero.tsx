@@ -13,7 +13,12 @@ import { ArrowLeft, ArrowRight, MoveDown } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Counter, Magnetic, SplitText } from "@/components/motion/Motion";
-import { heroFallback, heroSettings, heroSlides } from "@/data/homepage";
+import {
+  heroFallback,
+  heroSettings,
+  heroSlides,
+  type HeroSlide,
+} from "@/data/homepage";
 import { usePrefersReducedMotion } from "@/hooks";
 import { cn } from "@/lib/utils";
 import type { StatItem } from "@/types/content";
@@ -259,9 +264,14 @@ export function Hero({ stats }: { stats: StatItem[] }) {
                     // stream in behind it while the viewer reads slide one.
                     priority={i === 0}
                     loading={i === 0 ? undefined : "lazy"}
-                    sizes="100vw"
-                    quality={82}
-                    className="size-full object-cover [object-position:var(--focus-mobile)] sm:[object-position:var(--focus)]"
+                    // An upright portrait is blurred back into ambience here;
+                    // it is shown whole, sharp, in the card beside the type.
+                    sizes={slide.layout === "portrait" ? "50vw" : "100vw"}
+                    quality={slide.layout === "portrait" ? 45 : 82}
+                    className={cn(
+                      "size-full object-cover [object-position:var(--focus-mobile)] sm:[object-position:var(--focus)]",
+                      slide.layout === "portrait" && "scale-110 blur-2xl",
+                    )}
                     style={
                       {
                         "--focus": slide.focus,
@@ -365,7 +375,12 @@ export function Hero({ stats }: { stats: StatItem[] }) {
           <AnimatePresence mode="wait">
             <motion.div
               key={active?.id ?? "fallback"}
-              className="max-w-4xl"
+              className={cn(
+                "relative",
+                active?.layout === "portrait"
+                  ? "max-w-6xl lg:pr-[23rem]"
+                  : "max-w-4xl",
+              )}
               initial={
                 prefersReduced ? false : { opacity: 0, y: 26, filter: "blur(6px)" }
               }
@@ -392,6 +407,10 @@ export function Hero({ stats }: { stats: StatItem[] }) {
                 <span aria-hidden="true" className="h-px w-8 bg-brass-400" />
                 {copy.eyebrow}
               </p>
+
+              {active?.layout === "portrait" ? (
+                <HeroPortrait slide={active} />
+              ) : null}
 
               <h1
                 id="hero-heading"
@@ -594,6 +613,52 @@ function HeroControls({
         </HeroArrow>
       </div>
     </div>
+  );
+}
+
+/**
+ * An upright portrait, shown whole.
+ *
+ * On wide screens it sits in the right-hand column beside the type; on phones
+ * it collapses to a compact card under the eyebrow so the slide still leads
+ * with the photograph without adding half a screen of height. The credit is
+ * rendered here rather than left to the caption baked into the file, which the
+ * background crop removes.
+ */
+function HeroPortrait({ slide }: { slide: HeroSlide }) {
+  return (
+    <figure
+      className={cn(
+        "mt-5 flex items-center gap-4",
+        "lg:absolute lg:right-0 lg:top-1/2 lg:mt-0 lg:w-[19rem] lg:-translate-y-1/2 lg:flex-col lg:items-stretch lg:gap-3",
+      )}
+    >
+      {/*
+        A square crop from the top trims the caption strip printed into the
+        foot of the file; the same credit is typeset below instead, so the
+        attribution survives in the site's own voice rather than as pixels.
+        `alt` is empty because the caption already describes the image — with
+        both set, a screen reader would read it twice.
+      */}
+      <div className="relative aspect-square w-20 shrink-0 overflow-hidden rounded-xl ring-1 ring-white/25 sm:w-24 lg:w-full lg:rounded-2xl lg:shadow-[0_40px_80px_-32px_rgb(6_15_30/0.85)]">
+        <Image
+          src={slide.image.src}
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 19rem, 6rem"
+          quality={88}
+          className="object-cover object-top"
+        />
+      </div>
+      <figcaption className="text-[0.6875rem] leading-relaxed text-white/85 [text-shadow:0_1px_10px_rgb(6_15_30/0.85)] lg:text-right">
+        {slide.image.alt}
+        {slide.image.credit ? (
+          <span className="mt-0.5 block text-white/60">
+            Photograph: {slide.image.credit}
+          </span>
+        ) : null}
+      </figcaption>
+    </figure>
   );
 }
 

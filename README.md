@@ -77,7 +77,7 @@ state→federal constituency mapping where an LGA carries two federal seats.
 
 ### What ships empty, on purpose
 
-`people.ts`, `editorial.ts`, `media.ts` and `resources.ts` export empty arrays.
+The CMS collections and `editorial.ts`, `media.ts` and `resources.ts` all start empty.
 No name, office, biography, headline, achievement or electoral claim has been
 invented. Each file carries a worked example in its header comment, and
 `content/` holds machine-readable templates for every record type.
@@ -92,7 +92,7 @@ filters, search, sitemap, structured data, Open Graph cards.
 
 | To add | Edit | Template |
 | --- | --- | --- |
-| A leader, chairman, senator, member or candidate | `src/data/people.ts` | `content/people.template.json` |
+| A leader, chairman, senator, member or candidate | **the editor at `/keystatic`** | — |
 | A news article or event | `src/data/editorial.ts` | `content/news.template.json`, `content/events.template.json` |
 | A photo album or video | `src/data/media.ts` | `content/media.template.json` |
 | An achievement or document | `src/data/resources.ts` | `content/resources.template.json` |
@@ -152,27 +152,134 @@ councils) and `PersonDirectory` (leadership, each chamber, candidates). Both are
 configured with plain serialisable data, so adding a filtered listing is a
 matter of describing its facets rather than writing another one.
 
-## Administration
+## Navigation feedback
 
-There is deliberately **no login form, no hard-coded credential and no
-client-side `isAdmin` flag**. A placeholder auth system is worse than none: it
-looks like protection while providing none, and it survives to production.
+The App Router emits no "navigation started" event, so a click on a slow
+connection used to produce no acknowledgement at all — the classic cause of
+people clicking the same link three times.
 
-Instead `src/lib/server/auth.ts` defines the contract a real identity provider
-must satisfy, and fails closed:
+Three layers now cover it:
 
-- `ADMIN_ENABLED` defaults to false, and `/admin` returns 404
-- `getSession()` returns `null` until `resolveSession()` is implemented
-- `requireAdmin(capability)` is the single gate every admin route must call
-- `src/middleware.ts` is a coarse first line of defence, never the check itself
+| Layer | File | What it does |
+| --- | --- | --- |
+| Global progress bar | `src/components/layout/RouteProgress.tsx` | A 3px crimson-to-brass bar appears on the same tick a link is pressed |
+| Per-control state | `src/components/ui/LinkPending.tsx` | The pressed button shows a sweeping rule until its route arrives |
+| Route skeletons | `src/app/**/loading.tsx` | 31 segment-level skeletons shaped like their destination |
 
-`src/lib/server/repository.ts` defines the write side — list, get, create,
-update, delete, publish, unpublish and image upload across all 16 collections.
-The default implementation is read-only and throws a clear error rather than
-pretending a write succeeded.
+`RouteProgress` listens for the click itself, then detects completion three
+ways — `usePathname()` changing, `location.href` changing (which catches
+query-string-only navigations like `/news?category=…`, where the pathname never
+moves), and a safety timeout so a cancelled navigation can never strand the bar.
+It writes `transform` and `opacity` straight to the node rather than through
+state, so a bar that updates several times a second never re-renders the tree or
+touches layout. External links, in-page anchors, downloads, modified clicks and
+new-tab clicks are all skipped.
 
-**To enable it:** connect a provider, implement `resolveSession()`, set
-`ADMIN_ENABLED=true`, and implement `ApiContentRepository` against your API.
+`LinkPending` uses Next's `useLinkStatus`, so it knows about *its own* link
+rather than navigation in general. It draws a rule along the bottom of the
+control instead of swapping in a spinner, which would resize the label at the
+moment the viewer is looking at it.
+
+Skeletons live in `src/components/ui/skeletons.tsx` and mirror the block
+structure of the page they stand in for, so nothing jumps when the real content
+arrives. Note that for prefetched routes Next keeps the current page on screen
+rather than showing a skeleton — which is why the progress bar, not
+`loading.tsx`, is the load-bearing part of this.
+
+Both animated layers are reduced-motion aware, and both are deliberately
+*exempt* from the global motion reset in `globals.css`: with their durations
+zeroed they would convey nothing. They are a 3px bar and a hairline rule, not
+the kind of movement the preference exists to suppress.
+
+## Editing content
+
+People records — leadership, council chairmen, senators, members of both federal
+chambers and the State House of Assembly, and candidates — are edited in a CMS
+and stored as JSON under `content/people/**`.
+
+```
+/keystatic          the editor  (/admin redirects here)
+keystatic.config.ts the schema every form is generated from
+src/lib/cms.ts      reads those files and maps them onto the domain types
+src/lib/content.ts  the repository every page already used
+```
+
+Nothing downstream changed. Pages still consume `Senator`, `Leader` and
+`Candidate` exactly as before — the content simply moved.
+
+### Adding a representative
+
+1. Open `/keystatic` and choose the chamber.
+2. Fill in the name, title and position, and pick the constituency from the
+   dropdown. Those lists are generated from `src/data/geography.ts`, so a slug
+   can never be mistyped into a seat that does not exist.
+3. Upload the photograph. It is written to `public/images/people/` and wired to
+   the profile automatically — 3:4, at least 900x1200, face in the upper third.
+4. Set **Status** to Published. Drafts stay off the public site.
+
+One record populates the chamber directory, its filters, the profile page,
+global search, the constituency page, the sitemap and the Open Graph card.
+
+### How saving works
+
+| | Development | Production |
+| --- | --- | --- |
+| Mode | `local` | `github` |
+| Auth | none | GitHub sign-in |
+| Saves to | your working tree | a commit on the repo |
+| Goes live | on save | after the redeploy (~1 min) |
+
+The mode is chosen by `NODE_ENV`, which `next build` and `next start` both set
+to production — local mode, which has no authentication, cannot be switched on
+in a deployment by setting a variable.
+
+Every change is a commit with an author and a timestamp. For a register of who
+holds which office, that audit trail is the point.
+
+### Connecting it in production
+
+Until the five `KEYSTATIC_*` variables in `.env.example` are set, `/keystatic`
+shows a setup screen naming what is missing, and the public site builds and
+deploys normally — an unconfigured editor must never block a deployment.
+
+To set them up: run `npm run dev`, open `/keystatic`, and use Keystatic's own
+setup screen to create the GitHub App. It writes the values into `.env.local`;
+copy them into the deployment's environment and redeploy.
+
+Access is the repository's collaborator list. Adding someone on GitHub gives
+them editing rights; removing them takes those rights away. There is no separate
+user list to keep in step.
+
+### Still in TypeScript files
+
+News, events, media, achievements, documents, wards and elections are still
+edited in `src/data/*.ts`. Adding them to the CMS is a matter of describing them
+in `keystatic.config.ts` and adding a reader to `src/lib/cms.ts` — the article
+body model needs the most thought, since it maps to a block field rather than a
+plain text one.
+
+## Environment variables
+
+No secret is required to build or to serve the public site — every variable
+below is optional, and the app falls back to safe defaults. Values are read only
+in `server-only` modules unless the name is prefixed `NEXT_PUBLIC_`.
+
+| Variable | Used by | Scope | Build | Runtime | Format |
+| --- | --- | --- | --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | `src/data/site.ts` → canonicals, sitemap, OG, JSON-LD | client + server | yes | yes | absolute origin, e.g. `https://www.apclagos.org` |
+| `GOOGLE_SITE_VERIFICATION` | `src/app/layout.tsx` | server | yes | no | Search Console token |
+| `CONTACT_FORM_SECRET` | `src/lib/server/contact.ts` | server | no | yes | long random string |
+| `CONTACT_INBOX_EMAIL` | `src/lib/server/contact.ts` | server | no | yes | email address |
+| `ADMIN_ENABLED` | `src/lib/server/auth.ts`, `src/middleware.ts` | server | no | yes | `"true"` to expose `/admin`; anything else 404s it |
+| `CONTENT_API_URL` | `src/lib/server/repository.ts` | server | no | yes | base URL of the future admin API |
+| `CONTENT_API_TOKEN` | reserved for `ApiContentRepository` | server | no | yes | bearer token |
+
+`NEXT_PUBLIC_SITE_URL` is validated at import time: a value missing its protocol
+fails the build with a message naming the variable, rather than a bare
+`TypeError: Invalid URL`. Leave it unset and the site uses its fallback origin.
+
+Without `CONTACT_FORM_SECRET` the contact endpoint refuses every submission and
+says so — it fails closed rather than silently accepting mail it cannot sign.
 
 ## Security
 

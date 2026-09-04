@@ -18,6 +18,7 @@ export function EmptyState({
   icon,
   className,
   tone = "light",
+  headingLevel = 2,
 }: {
   title: string;
   description?: ReactNode;
@@ -25,8 +26,15 @@ export function EmptyState({
   icon?: ReactNode;
   className?: string;
   tone?: "light" | "dark";
+  /**
+   * Most empty states stand directly under the page `h1`, so `h2` is the
+   * default. Pass 3 when one sits inside a section that already has its own
+   * `h2` — skipping a level breaks heading navigation for screen readers.
+   */
+  headingLevel?: 2 | 3;
 }) {
   const dark = tone === "dark";
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   return (
     <div
       className={cn(
@@ -46,14 +54,14 @@ export function EmptyState({
       >
         {icon ?? <Inbox className="size-5" />}
       </span>
-      <h3
+      <Heading
         className={cn(
           "font-display text-xl leading-snug",
           dark ? "text-white" : "text-fg",
         )}
       >
         {title}
-      </h3>
+      </Heading>
       {description ? (
         <p
           className={cn(
@@ -79,11 +87,14 @@ export function AwaitingRecordsState({
   className,
   tone = "light",
   variant = "panel",
+  headingLevel,
 }: {
   what: string;
+  /** Where an administrator adds these records — shown verbatim to the viewer. */
   dataFile: string;
   className?: string;
   tone?: "light" | "dark";
+  headingLevel?: 2 | 3;
   /**
    * `panel` is the full screen used on a dedicated page. `compact` is a single
    * strip, used where several sections of a page are still awaiting records —
@@ -108,11 +119,8 @@ export function AwaitingRecordsState({
             {what} have not been published yet.
           </span>{" "}
           Nothing here is generated or estimated — they appear as soon as the
-          party&rsquo;s records are added to{" "}
-          <code className="rounded bg-paper-200 px-1.5 py-0.5 font-mono text-[0.75rem] text-ink-800">
-            {dataFile}
-          </code>
-          .
+          party&rsquo;s records are added in{" "}
+          <span className="font-medium text-fg">{dataFile}</span>.
         </p>
       </div>
     );
@@ -122,17 +130,15 @@ export function AwaitingRecordsState({
     <EmptyState
       tone={tone}
       className={className}
+      headingLevel={headingLevel}
       icon={<FileQuestion className="size-5" />}
       title={`${what} will be published here`}
       description={
         <>
           No records have been published yet. Nothing on this platform is
           generated or estimated — {what.toLowerCase()} appear as soon as the
-          party&rsquo;s authoritative records are added to{" "}
-          <code className="rounded bg-paper-200 px-1.5 py-0.5 font-mono text-[0.75rem] text-ink-800">
-            {dataFile}
-          </code>
-          .
+          party&rsquo;s authoritative records are added in{" "}
+          <span className="font-medium text-fg">{dataFile}</span>.
         </>
       }
     />
@@ -143,14 +149,17 @@ export function NoResultsState({
   query,
   onReset,
   className,
+  headingLevel,
 }: {
   query?: string;
   onReset?: ReactNode;
   className?: string;
+  headingLevel?: 2 | 3;
 }) {
   return (
     <EmptyState
       className={className}
+      headingLevel={headingLevel}
       icon={<FileQuestion className="size-5" />}
       title={query ? `No matches for “${query}”` : "No matches"}
       description="Try a different spelling, a shorter term, or clear the filters to see everything."
@@ -197,64 +206,16 @@ export function ErrorState({
 /*  Loading                                                                    */
 /* -------------------------------------------------------------------------- */
 
-export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn("skeleton rounded-lg", className)} />;
-}
-
-export function CardSkeleton({ className }: { className?: string }) {
-  return (
-    <div
-      className={cn(
-        "overflow-hidden rounded-2xl border border-border-subtle bg-surface",
-        className,
-      )}
-    >
-      <Skeleton className="aspect-3/4 rounded-none" />
-      <div className="space-y-2.5 p-5">
-        <Skeleton className="h-3 w-20" />
-        <Skeleton className="h-5 w-3/4" />
-        <Skeleton className="h-3 w-1/2" />
-      </div>
-    </div>
-  );
-}
-
-export function GridSkeleton({
-  count = 8,
-  className,
-}: {
-  count?: number;
-  className?: string;
-}) {
-  return (
-    <div
-      role="status"
-      aria-live="polite"
-      aria-busy="true"
-      className={cn(
-        "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
-        className,
-      )}
-    >
-      <span className="sr-only">Loading…</span>
-      {Array.from({ length: count }).map((_, i) => (
-        <CardSkeleton key={i} />
-      ))}
-    </div>
-  );
-}
-
-export function PageSkeleton() {
-  return (
-    <div className="container-page py-16">
-      <Skeleton className="h-3 w-40" />
-      <Skeleton className="mt-6 h-12 w-full max-w-xl" />
-      <Skeleton className="mt-4 h-4 w-full max-w-2xl" />
-      <Skeleton className="mt-2 h-4 w-3/4 max-w-xl" />
-      <GridSkeleton className="mt-14" />
-    </div>
-  );
-}
+// Skeletons live in `./skeletons` — they grew into a set large enough to
+// deserve their own module, and every route-level `loading.tsx` pulls from it.
+// Re-exported here so the older `@/components/ui/states` import path keeps
+// working for the empty/error states it sits beside.
+export {
+  Skeleton,
+  CardSkeleton,
+  GridSkeleton,
+  PageSkeleton,
+} from "./skeletons";
 
 /** Shared 404-style block for a record that does not exist. */
 export function NotFoundState({
