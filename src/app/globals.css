@@ -391,6 +391,45 @@
 }
 
 /* ==========================================================================
+   CONTENT EDITOR
+   --------------------------------------------------------------------------
+   The editor at /keystatic renders inside the site's root layout, because in
+   the App Router a nested layout composes inside the root rather than
+   replacing it. Left alone it would sit between the public header and footer.
+
+   `#admin-shell` marks that subtree, and these rules take the chrome out of
+   the layout entirely — not merely hidden, but not occupying space, not
+   focusable and not announced. Unlayered so they win over the base layer.
+   ========================================================================== */
+
+body:has(#admin-shell) > header,
+body:has(#admin-shell) > footer,
+body:has(#admin-shell) > a[href="#main"],
+body:has(#admin-shell) .route-progress {
+  display: none !important;
+}
+
+/* The root layout makes <body> a column flexbox with a flex-1 <main>. The
+   editor manages its own height, so that constraint is released here. */
+body:has(#admin-shell) {
+  display: block;
+}
+
+body:has(#admin-shell) > main {
+  flex: none;
+}
+
+/* Also the fallback: where :has() is unsupported the chrome still renders, but
+   the editor claims the viewport and paints over it rather than being squeezed
+   into whatever space is left. */
+#admin-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  background: #fff;
+}
+
+/* ==========================================================================
    NAVIGATION PROGRESS
    ========================================================================== */
 
