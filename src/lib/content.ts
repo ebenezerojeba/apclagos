@@ -9,15 +9,16 @@ import {
   stateConstituencies,
 } from "@/data/geography";
 import {
-  readCandidates,
-  readCouncilOfficials,
-  readHouseOfAssembly,
-  readHouseOfRepresentatives,
-  readLeaders,
-  readSenators,
-} from "@/lib/cms";
+  fetchArticles,
+  fetchCandidates,
+  fetchCouncilOfficials,
+  fetchEvents,
+  fetchHouseOfAssembly,
+  fetchHouseOfRepresentatives,
+  fetchLeaders,
+  fetchSenators,
+} from "@/lib/server/repository";
 import { elections } from "@/data/elections";
-import { newsArticles, partyEvents } from "@/data/editorial";
 import { galleryAlbums, videos } from "@/data/media";
 import { achievements, partyDocuments, wards } from "@/data/resources";
 import { byOrderThenName } from "@/lib/utils";
@@ -54,9 +55,11 @@ import type {
 /**
  * The content repository — the single boundary between the site and its data.
  *
- * People records are read from the CMS (`src/lib/cms.ts`, backed by JSON in
- * `content/people/**`). Everything else still reads the typed files in
- * `src/data`. Because the whole
+ * People, articles and events are read from MongoDB via
+ * `src/lib/server/repository.ts`. Structural data — the 20 LGAs, 37 LCDAs and
+ * 67 constituencies of Lagos — stays in `src/data/geography.ts`, because it
+ * changes through legislation rather than through the CMS and a mistyped slug
+ * there would silently detach every officeholder attached to it. Because the whole
  * surface is async and returns plain serialisable objects, switching to a
  * Node/Express + database API later means changing only the bodies of these
  * functions:
@@ -97,7 +100,7 @@ function newestFirst<T extends { publishedAt?: string; createdAt?: string }>(
 /* -------------------------------------------------------------------------- */
 
 export async function getLeaders(body?: LeadershipBody): Promise<Leader[]> {
-  const list = published(await readLeaders()).sort(byOrderThenName);
+  const list = published(await fetchLeaders()).sort(byOrderThenName);
   return body ? list.filter((l) => l.body === body) : list;
 }
 
@@ -108,7 +111,7 @@ export async function getFeaturedLeaders(limit = 6): Promise<Leader[]> {
 }
 
 export async function getLeaderBySlug(slug: Slug): Promise<Leader | undefined> {
-  return bySlug(published(await readLeaders()), slug);
+  return bySlug(published(await fetchLeaders()), slug);
 }
 
 /** Distinct leadership bodies that actually have published members. */
@@ -157,7 +160,7 @@ export async function getLcdasForLga(
 export async function getCouncilOfficials(
   councilSlug?: Slug,
 ): Promise<CouncilOfficial[]> {
-  const list = published(await readCouncilOfficials()).sort(byOrderThenName);
+  const list = published(await fetchCouncilOfficials()).sort(byOrderThenName);
   return councilSlug
     ? list.filter((o) => o.councilSlug === councilSlug)
     : list;
@@ -211,19 +214,19 @@ export async function getGeographyCounts() {
 /* -------------------------------------------------------------------------- */
 
 export async function getSenators(): Promise<Senator[]> {
-  return published(await readSenators()).sort(byOrderThenName);
+  return published(await fetchSenators()).sort(byOrderThenName);
 }
 
 export async function getHouseOfRepresentativesMembers(): Promise<
   HouseOfRepresentativesMember[]
 > {
-  return published(await readHouseOfRepresentatives()).sort(byOrderThenName);
+  return published(await fetchHouseOfRepresentatives()).sort(byOrderThenName);
 }
 
 export async function getHouseOfAssemblyMembers(): Promise<
   HouseOfAssemblyMember[]
 > {
-  return published(await readHouseOfAssembly()).sort(byOrderThenName);
+  return published(await fetchHouseOfAssembly()).sort(byOrderThenName);
 }
 
 export async function getRepresentatives(
@@ -274,7 +277,7 @@ export interface CandidateFilters {
 export async function getCandidates(
   filters: CandidateFilters = {},
 ): Promise<Candidate[]> {
-  return published(await readCandidates())
+  return published(await fetchCandidates())
     .filter((c) =>
       (Object.keys(filters) as (keyof CandidateFilters)[]).every((key) => {
         const wanted = filters[key];
@@ -287,7 +290,7 @@ export async function getCandidates(
 export async function getCandidateBySlug(
   slug: Slug,
 ): Promise<Candidate | undefined> {
-  return bySlug(published(await readCandidates()), slug);
+  return bySlug(published(await fetchCandidates()), slug);
 }
 
 export async function getFeaturedCandidates(limit = 4): Promise<Candidate[]> {
@@ -301,7 +304,7 @@ export async function getFeaturedCandidates(limit = 4): Promise<Candidate[]> {
 /* -------------------------------------------------------------------------- */
 
 export async function getNews(category?: NewsCategorySlug): Promise<NewsArticle[]> {
-  const list = published(newsArticles).sort(newestFirst);
+  const list = published(await fetchArticles()).sort(newestFirst);
   return category ? list.filter((n) => n.category === category) : list;
 }
 
@@ -321,7 +324,7 @@ export async function getPopularNews(limit = 5): Promise<NewsArticle[]> {
 }
 
 export async function getNewsBySlug(slug: Slug): Promise<NewsArticle | undefined> {
-  return bySlug(published(newsArticles), slug);
+  return bySlug(published(await fetchArticles()), slug);
 }
 
 export async function getRelatedNews(
@@ -345,7 +348,7 @@ export async function getRelatedNews(
 /* -------------------------------------------------------------------------- */
 
 export async function getEvents(): Promise<PartyEvent[]> {
-  return published(partyEvents).sort((a, b) => a.startsAt.localeCompare(b.startsAt));
+  return published(await fetchEvents()).sort((a, b) => a.startsAt.localeCompare(b.startsAt));
 }
 
 export async function getUpcomingEvents(limit?: number): Promise<PartyEvent[]> {
@@ -365,7 +368,7 @@ export async function getPastEvents(limit?: number): Promise<PartyEvent[]> {
 }
 
 export async function getEventBySlug(slug: Slug): Promise<PartyEvent | undefined> {
-  return bySlug(published(partyEvents), slug);
+  return bySlug(published(await fetchEvents()), slug);
 }
 
 /* -------------------------------------------------------------------------- */
