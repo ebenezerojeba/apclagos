@@ -25,6 +25,18 @@ import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
+/**
+ * The database to use inside the cluster.
+ *
+ * Atlas hands out a connection string with no database path segment
+ * (`...mongodb.net/?appName=Cluster0`). Left alone, Mongoose silently falls
+ * back to a database literally called `test`, so the site would appear to
+ * work while writing production content somewhere nobody would think to
+ * look. Naming it here removes that trap; a database path in the URI still
+ * wins if one is ever added, because `MONGODB_DB_NAME` can be set to match.
+ */
+const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME || "apclagos";
+
 /** Cached across module reloads and warm invocations. */
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -68,6 +80,7 @@ export async function connectToDatabase(): Promise<typeof mongoose> {
     cached.promise = mongoose
       .connect(MONGODB_URI, {
         bufferCommands: false,
+        dbName: MONGODB_DB_NAME,
         // Fail fast rather than sitting on a dead socket for the default 30s;
         // a serverless invocation does not have that long to spare.
         serverSelectionTimeoutMS: 8000,
