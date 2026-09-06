@@ -5,11 +5,12 @@
   "description": "Official digital information platform for the All Progressives Congress, Lagos State.",
   "scripts": {
     "dev": "node --import ./scripts/dns-override.mjs ./node_modules/next/dist/bin/next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "node --import ./scripts/dns-override.mjs ./node_modules/next/dist/bin/next build",
+    "start": "node --import ./scripts/dns-override.mjs ./node_modules/next/dist/bin/next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "admin:create": "node --env-file=.env.local scripts/create-admin.mjs"
+    "admin:create": "node --env-file=.env.local scripts/create-admin.mjs",
+    "import:people": "node --no-warnings --import ./scripts/with-models.mjs --env-file=.env.local scripts/import-people.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.3.0",

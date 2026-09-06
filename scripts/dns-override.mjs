@@ -77,14 +77,33 @@ function propagateToChildProcesses() {
   process.env.NODE_OPTIONS = current ? `${current} ${flag}` : flag;
 }
 
+/**
+ * Whether this process is running on a deployment platform rather than a
+ * developer's machine.
+ *
+ * The earlier version of this guard tested `NODE_ENV === "production"`, which
+ * was wrong in a way that silently produced a broken site: `next build` sets
+ * `NODE_ENV=production` on a local machine too, so the override was skipped
+ * during the build and every prerendered page was generated against an
+ * unreachable database. The pages rendered - `safeRead` degrades to an empty
+ * result by design - so the build passed and shipped a site with no content in
+ * it. Testing for the platform's own marker is what the guard actually meant.
+ */
+function onDeploymentPlatform() {
+  return Boolean(process.env.VERCEL || process.env.CI);
+}
+
 if (servers.length > 0) {
-  if (process.env.NODE_ENV === "production") {
-    console.warn("[dns] DEV_DNS_SERVERS ignored: this is a development-only override.");
+  if (onDeploymentPlatform()) {
+    console.warn(
+      "[dns] DEV_DNS_SERVERS is set but ignored here: it is a local workaround " +
+        "and must not be configured on a deployment.",
+    );
   } else {
     dns.setServers(servers);
     propagateToChildProcesses();
-    // Logged once per process, so seeing it twice means a worker inherited it
-    // correctly rather than something going wrong.
+    // Logged once per process, so seeing it more than once means a worker
+    // inherited it correctly rather than something going wrong.
     console.log(`[dns] resolver set to ${servers.join(", ")} (pid ${process.pid})`);
   }
 }

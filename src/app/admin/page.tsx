@@ -20,10 +20,11 @@ export const dynamic = "force-dynamic";
 /**
  * What an administrator manages.
  *
- * `ready: false` marks a collection whose model, validation and read path are
- * in place but whose editing screen has not been built yet. It is rendered as a
- * disabled tile rather than a link — a dashboard that navigates to a 404 is
- * worse than one that says plainly what is not finished.
+ * `ready` marks a collection whose editing screen exists. A tile that is not
+ * ready renders disabled rather than as a link, because a dashboard that
+ * navigates to a 404 is worse than one that says plainly what is unfinished.
+ * The flag is kept now that all seven are built, so the next collection added
+ * can be listed here before its screens land.
  */
 const COLLECTIONS: {
   href: string;
@@ -31,13 +32,13 @@ const COLLECTIONS: {
   hint: string;
   ready: boolean;
 }[] = [
-  { href: "/admin/people", label: "People", hint: "Leadership, chairmen, representatives and candidates", ready: false },
-  { href: "/admin/articles", label: "News & announcements", hint: "Articles, announcements and press releases", ready: false },
-  { href: "/admin/events", label: "Events", hint: "Congresses, rallies, meetings and town halls", ready: false },
-  { href: "/admin/pages", label: "Pages", hint: "Institutional pages", ready: false },
-  { href: "/admin/categories", label: "Categories", hint: "Newsroom taxonomy", ready: false },
-  { href: "/admin/media", label: "Media library", hint: "Uploaded images", ready: false },
-  { href: "/admin/settings", label: "Site settings", hint: "Contact details and social channels", ready: false },
+  { href: "/admin/people", label: "People", hint: "Leadership, chairmen, representatives and candidates", ready: true },
+  { href: "/admin/articles", label: "News & announcements", hint: "Articles, announcements and press releases", ready: true },
+  { href: "/admin/events", label: "Events", hint: "Congresses, rallies, meetings and town halls", ready: true },
+  { href: "/admin/pages", label: "Pages", hint: "Institutional pages", ready: true },
+  { href: "/admin/categories", label: "Categories", hint: "Newsroom taxonomy", ready: true },
+  { href: "/admin/media", label: "Media library", hint: "Uploaded images", ready: true },
+  { href: "/admin/settings", label: "Site settings", hint: "Contact details and social channels", ready: true },
 ];
 
 export default async function AdminDashboard() {
@@ -166,9 +167,9 @@ export default async function AdminDashboard() {
         </ul>
 
         <p className="mt-6 max-w-2xl text-[0.8125rem] leading-relaxed text-fg-muted">
-          Collections marked <strong className="font-medium text-fg">Not built</strong>{" "}
-          have their database model, validation, indexes and public read path in
-          place — the editing screens are the remaining work.
+          Changes take effect on the public site as soon as a record is set to{" "}
+          <strong className="font-medium text-fg">Published</strong>. Drafts are
+          only ever visible here.
         </p>
       </main>
     </div>

@@ -213,7 +213,7 @@ attachPublishHook(personSchema);
  * that lists senators by district — a silent disappearance, which is the worst
  * failure mode for a directory of officeholders.
  */
-addPreHook(personSchema, "validate", function (next) {
+addPreHook(personSchema, "validate", function () {
   const doc = this as PersonDoc & {
     invalidate: (path: string, message: string) => void;
   };
@@ -232,7 +232,6 @@ addPreHook(personSchema, "validate", function (next) {
   if (doc.kind === "leader" && !doc.body) {
     doc.invalidate("body", "Select which leadership organ this person belongs to.");
   }
-  next();
 });
 
 export const Person = defineModel<PersonDoc>("Person", personSchema);

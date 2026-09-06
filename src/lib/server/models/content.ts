@@ -183,14 +183,13 @@ eventSchema.index({ status: 1, startsAt: 1 });
 attachPublishHook(eventSchema);
 
 // An event that ends before it starts is a data-entry error, not a valid state.
-addPreHook(eventSchema, "validate", function (next) {
+addPreHook(eventSchema, "validate", function () {
   const doc = this as EventDoc & {
     invalidate: (path: string, message: string) => void;
   };
   if (doc.endsAt && doc.startsAt && doc.endsAt < doc.startsAt) {
     doc.invalidate("endsAt", "The end time cannot be before the start time.");
   }
-  next();
 });
 
 export const EventModel = defineModel<EventDoc>("Event", eventSchema);

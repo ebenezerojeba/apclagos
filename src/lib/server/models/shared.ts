@@ -182,10 +182,18 @@ export const publishableFields = {
 /**
  * Registers a `pre` hook.
  *
- * `Schema<any>` leaves Mongoose's heavily overloaded `pre` signature
- * unresolvable to TypeScript, so it is narrowed to the one shape used here.
+ * The hook takes no `next` callback, and that is not a style choice: Mongoose 9
+ * removed callback-style middleware. Kareem now invokes a hook as
+ * `fn.apply(context, args)` where `args` is empty for document middleware, so a
+ * hook written as `function (next) { ...; next(); }` receives `undefined` and
+ * dies with "next is not a function" the first time it runs - at save time, not
+ * at build time, which is why this survived a passing build and a passing type
+ * check. Throw to abort; return a promise to go async.
+ *
+ * `Schema<any>` also leaves Mongoose's heavily overloaded `pre` unresolvable to
+ * TypeScript, so it is narrowed here to the one shape used.
  */
-type PreHookFn = (this: unknown, next: (err?: Error) => void) => void;
+type PreHookFn = (this: unknown) => void | Promise<void>;
 
 export function addPreHook(
   schema: Schema<any>,
@@ -205,11 +213,10 @@ export function addPreHook(
  * never gets a date at all and sorts as epoch zero.
  */
 export function attachPublishHook(schema: Schema<any>) {
-  addPreHook(schema, "save", function (next) {
+  addPreHook(schema, "save", function () {
     const doc = this as { status?: string; publishedAt?: Date };
     if (doc.status === "published" && !doc.publishedAt) {
       doc.publishedAt = new Date();
     }
-    next();
   });
 }
