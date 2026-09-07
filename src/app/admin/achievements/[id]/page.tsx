@@ -5,20 +5,20 @@ import { ExternalLink } from "lucide-react";
 import { isValidObjectId } from "mongoose";
 import { getActiveSession } from "@/lib/server/auth";
 import { connectToDatabase, safeRead } from "@/lib/server/db";
-import { Article, Category, roleCan } from "@/lib/server/models";
+import { Achievement, Person, roleCan } from "@/lib/server/models";
 import { AdminShell } from "@/components/admin/AdminShell";
-import { ArticleFormScreen } from "@/components/admin/ArticleFields";
-import { toArticleInitial } from "@/lib/server/admin/serialise";
-import { updateArticle } from "@/lib/server/actions/content";
+import { AchievementFormScreen } from "@/components/admin/AchievementFields";
+import { lgaOptions, toAchievementInitial } from "@/lib/server/admin/serialise";
+import { updateAchievement } from "@/lib/server/actions/content";
 
 export const metadata: Metadata = {
-  title: "Edit article — APC Lagos administration",
+  title: "Edit achievement — APC Lagos administration",
   robots: { index: false, follow: false },
 };
 
 export const dynamic = "force-dynamic";
 
-export default async function EditArticlePage({
+export default async function EditAchievementPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -26,38 +26,36 @@ export default async function EditArticlePage({
   const session = await getActiveSession();
   const { id } = await params;
   if (!session) {
-    redirect(`/admin/login?next=${encodeURIComponent(`/admin/articles/${id}`)}`);
+    redirect(`/admin/login?next=${encodeURIComponent(`/admin/achievements/${id}`)}`);
   }
 
-  // A malformed id would otherwise surface as a driver CastError rather than
-  // the 404 it plainly is.
   if (!isValidObjectId(id)) notFound();
 
   await connectToDatabase();
-  const article = await Article.findById(id).lean();
-  if (!article) notFound();
+  const record = await Achievement.findById(id).lean();
+  if (!record) notFound();
 
-  const categories = await safeRead(
-    () => Category.find({}).select("name").sort({ order: 1, name: 1 }).lean(),
+  const people = await safeRead(
+    () => Person.find({}).select("name slug").sort({ name: 1 }).limit(500).lean(),
     [],
-    "list categories",
+    "list people for attribution",
   );
 
-  const initial = toArticleInitial(article);
+  const initial = toAchievementInitial(record);
 
   return (
     <AdminShell
       session={session}
       crumbs={[
         { label: "Dashboard", href: "/admin" },
-        { label: "News & announcements", href: "/admin/articles" },
+        { label: "Achievements", href: "/admin/achievements" },
         { label: initial.title || "Untitled" },
       ]}
       title={initial.title || "Untitled"}
       actions={
         initial.status === "published" ? (
           <Link
-            href={`/news/${initial.slug}`}
+            href="/achievements"
             target="_blank"
             rel="noreferrer"
             className="inline-flex h-11 items-center gap-2 rounded-full border border-border px-4 text-sm font-medium text-fg-muted transition-colors hover:border-border-strong hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-600"
@@ -68,14 +66,12 @@ export default async function EditArticlePage({
         ) : null
       }
     >
-      <ArticleFormScreen
-        action={updateArticle}
+      <AchievementFormScreen
+        action={updateAchievement}
         initial={initial}
         canPublish={roleCan(session.role, "publish")}
-        categories={categories.map((category) => ({
-          id: String(category._id),
-          name: category.name,
-        }))}
+        people={people.map((person) => ({ slug: person.slug, name: person.name }))}
+        lgas={lgaOptions()}
       />
     </AdminShell>
   );

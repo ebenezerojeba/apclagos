@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { getSession } from "@/lib/server/auth";
+import { getActiveSession } from "@/lib/server/auth";
 import { safeRead } from "@/lib/server/db";
 import { roleCan, Settings } from "@/lib/server/models";
 import { AdminShell } from "@/components/admin/AdminShell";
@@ -28,7 +28,7 @@ export default async function SettingsPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const session = await getSession();
+  const session = await getActiveSession();
   if (!session) redirect("/admin/login?next=%2Fadmin%2Fsettings");
 
   const params = await searchParams;

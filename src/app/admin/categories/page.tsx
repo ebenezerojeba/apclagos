@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { isValidObjectId } from "mongoose";
-import { getSession } from "@/lib/server/auth";
+import { getActiveSession } from "@/lib/server/auth";
 import { safeRead } from "@/lib/server/db";
 import { Article, Category } from "@/lib/server/models";
 import { AdminShell } from "@/components/admin/AdminShell";
@@ -30,7 +30,7 @@ export default async function CategoriesPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const session = await getSession();
+  const session = await getActiveSession();
   if (!session) redirect("/admin/login?next=%2Fadmin%2Fcategories");
 
   const params = await searchParams;

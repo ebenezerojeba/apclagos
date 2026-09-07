@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Plus } from "lucide-react";
-import { getSession } from "@/lib/server/auth";
+import { getActiveSession } from "@/lib/server/auth";
 import { safeRead } from "@/lib/server/db";
 import { Person, PERSON_KINDS } from "@/lib/server/models";
 import { AdminShell, PrimaryLink } from "@/components/admin/AdminShell";
@@ -41,7 +41,7 @@ export default async function PeopleListPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const session = await getSession();
+  const session = await getActiveSession();
   if (!session) redirect("/admin/login?next=%2Fadmin%2Fpeople");
 
   const params = await searchParams;

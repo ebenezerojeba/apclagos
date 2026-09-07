@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Section } from "@/components/sections/Section";
 import { Button } from "@/components/ui/Button";
+import { EyebrowMark } from "@/components/ui/primitives";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -22,7 +23,7 @@ export default function NotFound() {
     <Section tone="canvas" size="lg">
       <div className="mx-auto max-w-2xl text-center">
         <p className="eyebrow justify-center text-crimson-700">
-          <span aria-hidden="true" className="h-px w-6 bg-crimson-400" />
+          <EyebrowMark tone="crimson" />
           Error 404
         </p>
         <h1 className="mt-4 text-display-xl leading-tight">

@@ -2,11 +2,12 @@ import "server-only";
 
 import { cache } from "react";
 import { safeRead } from "./db";
-import { Article, EventModel, Category, Person } from "./models";
-import type { ArticleDoc, EventDoc, PersonDoc } from "./models";
+import { Achievement, Article, EventModel, Category, Person } from "./models";
+import type { AchievementDoc, ArticleDoc, EventDoc, PersonDoc } from "./models";
 import type { CloudinaryImage, ContentBlock } from "./models";
 import { lgas } from "@/data/geography";
 import type {
+  Achievement as DomainAchievement,
   ArticleBlock,
   Candidate,
   CouncilOfficial,
@@ -339,3 +340,56 @@ export const fetchCategories = cache(async () =>
     "categories",
   ),
 );
+
+/* -------------------------------------------------------------------------- */
+/*  Achievements                                                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Published achievements, newest year first.
+ *
+ * `personName` is resolved here rather than stored on the record. Storing the
+ * name alongside the slug would duplicate it, and the copy would go stale the
+ * day somebody corrects a spelling on the person's own profile — so the slug is
+ * the record and the name is looked up. `allPeople()` is already cached for the
+ * request, so this costs no extra query.
+ */
+export const fetchAchievements = cache(async (): Promise<DomainAchievement[]> => {
+  const [docs, people] = await Promise.all([
+    safeRead(
+      () =>
+        Achievement.find(PUBLISHED)
+          .sort({ year: -1, order: 1, title: 1 })
+          .lean<AchievementDoc[]>()
+          .exec(),
+      [],
+      "achievements",
+    ),
+    allPeople(),
+  ]);
+
+  const nameFor = new Map(people.map((person) => [person.slug, person.name]));
+
+  return docs.map((doc) => ({
+    id: String(doc._id),
+    slug: doc.slug,
+    status: doc.status,
+    order: doc.order,
+    title: doc.title,
+    summary: doc.summary,
+    description: toBlocks(doc.description)
+      .map((block) => ("text" in block ? block.text : undefined))
+      .filter((text): text is string => Boolean(text)),
+    category: doc.category,
+    year: doc.year,
+    location: doc.location,
+    lgaSlug: doc.lgaSlug,
+    personSlug: doc.personSlug,
+    personName: doc.personSlug ? nameFor.get(doc.personSlug) : undefined,
+    metrics: doc.metrics?.map((metric) => ({ label: metric.label, value: metric.value })),
+    cover: toImageAsset(doc.cover),
+    source: doc.source,
+    createdAt: doc.createdAt?.toISOString(),
+    updatedAt: doc.updatedAt?.toISOString(),
+  }));
+});

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { getSession } from "@/lib/server/auth";
+import { getActiveSession } from "@/lib/server/auth";
 import { roleCan } from "@/lib/server/models";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { EventFormScreen } from "@/components/admin/EventFields";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function NewEventPage() {
-  const session = await getSession();
+  const session = await getActiveSession();
   if (!session) redirect("/admin/login?next=%2Fadmin%2Fevents%2Fnew");
 
   return (

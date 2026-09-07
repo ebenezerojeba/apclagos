@@ -1,5 +1,6 @@
 import "server-only";
 
+import dns from "node:dns";
 import mongoose from "mongoose";
 
 /**
@@ -22,6 +23,46 @@ import mongoose from "mongoose";
  * function that turns a connection failure into a silent hang until the
  * platform kills the invocation. Failing immediately gives a real error.
  */
+
+/**
+ * Optional local DNS override, applied in whichever process opens the
+ * connection.
+ *
+ * `mongodb+srv://` resolves through a DNS SRV lookup before the driver opens a
+ * socket, and some routers and phone hotspots answer SRV queries with a
+ * malformed packet - Node reports `querySrv EBADRESP`, which reads like a bad
+ * password rather than a broken network.
+ *
+ * This lived in a `--import` preload that re-declared itself in `NODE_OPTIONS`
+ * so Next's worker processes would inherit it. That worked for `next dev` and
+ * broke `next build`: every build worker inherited the flag and the build died
+ * with `Cannot find module for page: /_document`. Setting the resolver here
+ * instead reaches exactly the processes that need it - the ones that talk to
+ * MongoDB - and leaves Next's workers alone.
+ *
+ * It does nothing unless `DEV_DNS_SERVERS` is set, and nothing on a deployment
+ * platform, where the platform's own resolver is the correct one.
+ */
+function applyDevDnsOverride() {
+  const configured = process.env.DEV_DNS_SERVERS?.trim();
+  if (!configured) return;
+  if (process.env.VERCEL || process.env.CI) return;
+
+  const servers = configured
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  if (servers.length === 0) return;
+
+  try {
+    dns.setServers(servers);
+  } catch {
+    // A malformed value should not stop the application from starting; the
+    // connection attempt below will report the real problem.
+  }
+}
+
+applyDevDnsOverride();
 
 const MONGODB_URI = process.env.MONGODB_URI;
 

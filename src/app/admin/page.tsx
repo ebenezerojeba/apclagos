@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
-import { getSession } from "@/lib/server/auth";
+import { getActiveSession } from "@/lib/server/auth";
 import { isDatabaseConfigured, safeRead } from "@/lib/server/db";
 import { isCloudinaryConfigured } from "@/lib/server/cloudinary";
-import { Article, EventModel, Media, Person } from "@/lib/server/models";
+import { Article, ContactMessage, EventModel, Media, Person } from "@/lib/server/models";
 import { SignOutButton } from "@/components/admin/SignOutButton";
 import { Wordmark } from "@/components/layout/Brand";
 
@@ -35,21 +35,24 @@ const COLLECTIONS: {
   { href: "/admin/people", label: "People", hint: "Leadership, chairmen, representatives and candidates", ready: true },
   { href: "/admin/articles", label: "News & announcements", hint: "Articles, announcements and press releases", ready: true },
   { href: "/admin/events", label: "Events", hint: "Congresses, rallies, meetings and town halls", ready: true },
+  { href: "/admin/achievements", label: "Achievements", hint: "Projects, programmes and milestones", ready: true },
   { href: "/admin/pages", label: "Pages", hint: "Institutional pages", ready: true },
   { href: "/admin/categories", label: "Categories", hint: "Newsroom taxonomy", ready: true },
   { href: "/admin/media", label: "Media library", hint: "Uploaded images", ready: true },
+  { href: "/admin/messages", label: "Messages", hint: "Enquiries from the public contact form", ready: true },
   { href: "/admin/settings", label: "Site settings", hint: "Contact details and social channels", ready: true },
 ];
 
 export default async function AdminDashboard() {
-  const session = await getSession();
+  const session = await getActiveSession();
   if (!session) redirect("/admin/login");
 
-  const [people, articles, events, media] = await Promise.all([
+  const [people, articles, events, media, unread] = await Promise.all([
     safeRead(() => Person.countDocuments({}), 0, "count people"),
     safeRead(() => Article.countDocuments({}), 0, "count articles"),
     safeRead(() => EventModel.countDocuments({}), 0, "count events"),
     safeRead(() => Media.countDocuments({}), 0, "count media"),
+    safeRead(() => ContactMessage.countDocuments({ status: "new" }), 0, "count new messages"),
   ]);
 
   const warnings: string[] = [];
@@ -61,6 +64,7 @@ export default async function AdminDashboard() {
     { label: "Articles", value: articles },
     { label: "Events", value: events },
     { label: "Media assets", value: media },
+    { label: "Unread messages", value: unread },
   ];
 
   return (

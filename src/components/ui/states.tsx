@@ -2,6 +2,7 @@ import { FileQuestion, Inbox, TriangleAlert } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { EyebrowMark } from "@/components/ui/primitives";
 
 /**
  * Empty, loading and error states.
@@ -232,7 +233,7 @@ export function NotFoundState({
   return (
     <div className="container-page py-24 text-center sm:py-32">
       <p className="eyebrow justify-center text-crimson-700">
-        <span aria-hidden="true" className="h-px w-6 bg-crimson-400" />
+        <EyebrowMark tone="crimson" />
         Not found
       </p>
       <h1 className="mt-4 text-display-lg">{title}</h1>

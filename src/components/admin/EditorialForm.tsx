@@ -43,6 +43,8 @@ export function EditorialForm({
   summaryName,
   summaryLabel,
   summaryHint,
+  bodyName = "body",
+  bodyLabel = "Body",
   /** Rendered between the summary and the body — the per-collection fields. */
   extras,
   /** Rendered after the body, for anything that belongs below the content. */
@@ -62,6 +64,13 @@ export function EditorialForm({
   summaryName: "excerpt" | "summary" | "description";
   summaryLabel: string;
   summaryHint: string;
+  /**
+   * The model's field name for the rich body. Articles, events and pages
+   * store `body`; achievements store `description`. Named rather than
+   * assumed, for the same reason as `summaryName`.
+   */
+  bodyName?: string;
+  bodyLabel?: string;
   extras?: (errors: Record<string, string>) => React.ReactNode;
   footerExtras?: (errors: Record<string, string>) => React.ReactNode;
 }) {
@@ -110,10 +119,10 @@ export function EditorialForm({
             </Section>
 
             <Section
-              title="Body"
+              title={bodyLabel}
               hint="Built from blocks rather than free markup, so the page renders consistently and nothing unsafe can be stored."
             >
-              <BlockEditor name="body" folder={folder} initial={initial.body} />
+              <BlockEditor name={bodyName} folder={folder} initial={initial.body} />
             </Section>
 
             {footerExtras ? <Section title="Details">{footerExtras(errors)}</Section> : null}

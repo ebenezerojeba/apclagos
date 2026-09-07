@@ -234,3 +234,97 @@ pageSchema.index({ slug: 1 }, { unique: true });
 attachPublishHook(pageSchema);
 
 export const Page = defineModel<PageDoc>("Page", pageSchema);
+
+/* -------------------------------------------------------------------------- */
+/*  Achievement                                                                */
+/* -------------------------------------------------------------------------- */
+
+export const ACHIEVEMENT_CATEGORIES = [
+  "infrastructure",
+  "education",
+  "health",
+  "security",
+  "economy",
+  "transport",
+  "environment",
+  "social",
+  "party-organisation",
+] as const;
+
+/**
+ * A delivered project, programme or milestone.
+ *
+ * `source` is what keeps this collection honest: every entry names the
+ * ministry, agency or council that published the claim, so nothing here is an
+ * unattributed assertion.
+ *
+ * `personSlug` credits an individual where one is being credited - the
+ * President, the governorship candidate, a council chairman. It is a plain slug
+ * rather than an enum on purpose: adding another leader is a new record, not a
+ * schema migration, which is what "keep it flexible" has to mean if it is to
+ * mean anything.
+ */
+export interface AchievementDoc {
+  _id: Types.ObjectId;
+  slug: string;
+  status: PublishStatus;
+  publishedAt?: Date;
+  order?: number;
+  title: string;
+  summary: string;
+  description: ContentBlock[];
+  category: (typeof ACHIEVEMENT_CATEGORIES)[number];
+  year?: number;
+  location?: string;
+  lgaSlug?: string;
+  personSlug?: string;
+  metrics: { label: string; value: string }[];
+  cover?: CloudinaryImage;
+  source?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const metricSchema = new Schema<any>(
+  {
+    label: { type: String, required: true, trim: true, maxlength: 120 },
+    value: { type: String, required: true, trim: true, maxlength: 60 },
+  },
+  { _id: false },
+);
+
+const achievementSchema = new Schema<any>(
+  {
+    ...publishableFields,
+    title: { type: String, required: [true, "A title is required."], trim: true, maxlength: 220 },
+    summary: {
+      type: String,
+      required: [true, "A one-sentence summary is required - it is what the card shows."],
+      trim: true,
+      maxlength: 400,
+    },
+    description: { type: [blockSchema], default: [] },
+    category: {
+      type: String,
+      enum: [...ACHIEVEMENT_CATEGORIES],
+      default: "infrastructure",
+      index: true,
+    },
+    year: { type: Number, min: 1960, max: 2100 },
+    location: { type: String, trim: true, maxlength: 200 },
+    lgaSlug: { type: String, trim: true, lowercase: true, index: true },
+    personSlug: { type: String, trim: true, lowercase: true, index: true },
+    metrics: { type: [metricSchema], default: [] },
+    cover: { type: imageSchema },
+    source: { type: String, trim: true, maxlength: 300 },
+  },
+  { timestamps: true },
+);
+
+achievementSchema.index({ slug: 1 }, { unique: true });
+achievementSchema.index({ status: 1, year: -1 });
+achievementSchema.index({ status: 1, category: 1, year: -1 });
+achievementSchema.index({ title: "text", summary: "text" });
+attachPublishHook(achievementSchema);
+
+export const Achievement = defineModel<AchievementDoc>("Achievement", achievementSchema);

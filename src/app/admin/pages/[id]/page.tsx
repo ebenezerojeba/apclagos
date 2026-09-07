@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { isValidObjectId } from "mongoose";
-import { getSession } from "@/lib/server/auth";
+import { getActiveSession } from "@/lib/server/auth";
 import { connectToDatabase } from "@/lib/server/db";
 import { Page, roleCan } from "@/lib/server/models";
 import { AdminShell } from "@/components/admin/AdminShell";
@@ -21,7 +21,7 @@ export default async function EditPagePage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await getSession();
+  const session = await getActiveSession();
   const { id } = await params;
   if (!session) {
     redirect(`/admin/login?next=${encodeURIComponent(`/admin/pages/${id}`)}`);

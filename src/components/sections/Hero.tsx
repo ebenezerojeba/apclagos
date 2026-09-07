@@ -22,6 +22,7 @@ import {
 import { usePrefersReducedMotion } from "@/hooks";
 import { cn } from "@/lib/utils";
 import type { StatItem } from "@/types/content";
+import { EyebrowMark } from "@/components/ui/primitives";
 
 /** The WebGL layer is a separate chunk and never ships with the initial JS. */
 const HeroField = dynamic(() => import("@/components/three/HeroField"), {
@@ -404,7 +405,7 @@ export function Hero({ stats }: { stats: StatItem[] }) {
               transition={{ duration: prefersReduced ? 0 : 0.55, ease: EASE }}
             >
               <p className="eyebrow text-brass-300">
-                <span aria-hidden="true" className="h-px w-8 bg-brass-400" />
+                <EyebrowMark tone="dark" />
                 {copy.eyebrow}
               </p>
 

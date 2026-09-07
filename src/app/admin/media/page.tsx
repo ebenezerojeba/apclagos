@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
-import { getSession } from "@/lib/server/auth";
+import { getActiveSession } from "@/lib/server/auth";
 import { safeRead } from "@/lib/server/db";
 import { cloudinaryMissingVars } from "@/lib/server/cloudinary";
 import { Media } from "@/lib/server/models";
@@ -34,7 +34,7 @@ export default async function MediaLibraryPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const session = await getSession();
+  const session = await getActiveSession();
   if (!session) redirect("/admin/login?next=%2Fadmin%2Fmedia");
 
   const params = await searchParams;

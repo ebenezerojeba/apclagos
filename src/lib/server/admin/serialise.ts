@@ -6,6 +6,7 @@ import type { Block } from "@/components/admin/BlockEditor";
 import type { ArticleInitial } from "@/components/admin/ArticleFields";
 import type { EventInitial } from "@/components/admin/EventFields";
 import type { PageInitial } from "@/components/admin/PageFields";
+import type { AchievementInitial } from "@/components/admin/AchievementFields";
 import type { CloudinaryImage, ContentBlock } from "../models";
 import {
   senatorialDistricts,
@@ -288,4 +289,49 @@ export function toPageInitial(doc: any): PageInitial {
 /** The local government list, for the event form's location field. */
 export function lgaOptions() {
   return lgas.map((entry) => ({ slug: entry.slug, name: entry.name }));
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Achievements                                                               */
+/* -------------------------------------------------------------------------- */
+
+export function blankAchievement(): AchievementInitial {
+  return {
+    slug: "",
+    status: "draft",
+    title: "",
+    summary: "",
+    body: [],
+    cover: null,
+    category: "infrastructure",
+    metricLabels: [],
+    metricValues: [],
+  };
+}
+
+export function toAchievementInitial(doc: any): AchievementInitial {
+  const metrics: { label: string; value: string }[] = Array.isArray(doc.metrics)
+    ? doc.metrics
+    : [];
+
+  return {
+    id: String(doc._id),
+    slug: doc.slug ?? "",
+    status: doc.status ?? "draft",
+    order: doc.order ?? undefined,
+    title: doc.title ?? "",
+    summary: doc.summary ?? "",
+    cover: toImageValue(doc.cover),
+    // The model calls the rich field `description`; the shared form calls every
+    // rich field `body` and submits under the name it is given.
+    body: toBlockValues(doc.description),
+    category: doc.category ?? "infrastructure",
+    year: doc.year ?? undefined,
+    location: doc.location ?? undefined,
+    lgaSlug: doc.lgaSlug ?? undefined,
+    personSlug: doc.personSlug ?? undefined,
+    source: doc.source ?? undefined,
+    metricLabels: metrics.map((metric) => metric.label),
+    metricValues: metrics.map((metric) => metric.value),
+  };
 }

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import { isValidObjectId } from "mongoose";
-import { getSession } from "@/lib/server/auth";
+import { getActiveSession } from "@/lib/server/auth";
 import { connectToDatabase } from "@/lib/server/db";
 import { Person, roleCan } from "@/lib/server/models";
 import { AdminShell } from "@/components/admin/AdminShell";
@@ -41,7 +41,7 @@ export default async function EditPersonPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await getSession();
+  const session = await getActiveSession();
   const { id } = await params;
   if (!session) {
     redirect(`/admin/login?next=${encodeURIComponent(`/admin/people/${id}`)}`);

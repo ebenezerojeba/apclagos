@@ -2,6 +2,8 @@ import "server-only";
 
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { z } from "zod";
+import { connectToDatabase } from "./db";
+import { ContactMessage } from "./models";
 
 /**
  * Contact form: validation, spam protection and delivery.
@@ -173,37 +175,55 @@ export function pruneRateLimiter(now = Date.now()) {
 /* -------------------------------------------------------------------------- */
 
 /**
- * Delivers a validated submission.
+ * Records a validated submission.
  *
- * Deliberately left as a single seam: connect an SMTP transport, a
- * transactional email provider, or the party's own Express API here. Until one
- * is configured the submission is logged server-side and the caller is told the
- * message was received but not yet routed, rather than being shown a false
- * success.
+ * The message is written to MongoDB, and `delivered` reports whether that
+ * actually happened. It previously returned `delivered: true` after doing
+ * nothing but `console.info` the subject line - the sender's name and their
+ * entire message were discarded, and the form told them it had been delivered.
+ * For a party's public contact channel that is silent loss of constituent
+ * correspondence behind a false confirmation.
+ *
+ * Storing rather than emailing is deliberate. An inbox can fill up, a provider
+ * can be misconfigured and an address can change hands; the database is the
+ * record, and the admin inbox at `/admin/messages` is where it is read. Email
+ * notification can be layered on later without putting the message at risk,
+ * because by then it is already saved.
+ *
+ * If the write fails the caller is told plainly that the message was not
+ * received, and the full submission is logged server-side so nothing is lost
+ * while the database is unreachable.
  */
 export async function deliverContactMessage(
   input: Omit<ContactInput, "token" | "website">,
 ): Promise<{ delivered: boolean; detail?: string }> {
-  const inbox = process.env.CONTACT_INBOX_EMAIL;
+  try {
+    await connectToDatabase();
+    const saved = await ContactMessage.create({
+      name: input.name,
+      email: input.email,
+      phone: input.phone || undefined,
+      subject: input.subject,
+      message: input.message,
+      status: "new",
+    });
 
-  if (!inbox) {
-    console.warn(
-      "[contact] CONTACT_INBOX_EMAIL is not set — submission was validated but not delivered.",
-      { subject: input.subject },
-    );
+    // Identify the record, never the sender: an email address in a log line is
+    // personal data sitting somewhere nobody audits.
+    console.info(`[contact] message stored (${saved._id})`);
+    return { delivered: true };
+  } catch (error) {
+    const name = error instanceof Error ? error.name : "UnknownError";
+    // Last resort. The submission is on its way to being lost, so the whole of
+    // it goes to the server log where an operator can still retrieve it.
+    console.error(`[contact] could not store message (${name}) - full submission follows`);
+    console.error(JSON.stringify(input));
+
     return {
       delivered: false,
-      detail: "No delivery inbox is configured for this site yet.",
+      detail:
+        "Your message could not be saved just now. Please try again shortly, " +
+        "or contact the secretariat directly using the details on this page.",
     };
   }
-
-  // TODO(integration): send via the chosen provider, e.g.
-  //   await transporter.sendMail({ to: inbox, replyTo: input.email, ... })
-  console.info("[contact] Submission received", {
-    to: inbox,
-    subject: input.subject,
-    from: input.email,
-  });
-
-  return { delivered: true };
 }

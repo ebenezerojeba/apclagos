@@ -1,8 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { Article, EventModel, Page, Category } from "../models";
-import type { ArticleDoc, EventDoc } from "../models";
+import { Achievement, Article, EventModel, Page, Category } from "../models";
+import type { AchievementDoc, ArticleDoc, EventDoc } from "../models";
 import { guard, statusFor } from "../admin/guard";
 import { revalidateFor } from "../admin/revalidate";
 import {
@@ -15,6 +15,7 @@ import {
   image,
   num,
   reqStr,
+  lines,
   slugFrom,
   str,
   writable,
@@ -351,3 +352,109 @@ export async function deleteCategory(form: FormData): Promise<void> {
 }
 
 /* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/*  Achievements                                                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Metrics arrive as two parallel textareas — labels and values, one per line —
+ * because a repeatable pair of inputs is slower to fill and impossible to
+ * paste into. Rows are matched by position and any row missing either half is
+ * dropped rather than stored half-empty.
+ */
+function buildMetrics(form: FormData): { label: string; value: string }[] {
+  const labels = lines(form, "metricLabels");
+  const values = lines(form, "metricValues");
+  const rows: { label: string; value: string }[] = [];
+
+  for (let index = 0; index < Math.max(labels.length, values.length); index += 1) {
+    const label = labels[index];
+    const value = values[index];
+    if (label && value) rows.push({ label, value });
+  }
+  return rows;
+}
+
+function buildAchievement(form: FormData, role: string) {
+  return {
+    slug: slugFrom(form, "slug", "title"),
+    status: statusFor(str(form, "status"), role),
+    order: num(form, "order"),
+    title: reqStr(form, "title"),
+    summary: reqStr(form, "summary"),
+    description: blocks(form, "description"),
+    category: (str(form, "category") ?? "infrastructure") as AchievementDoc["category"],
+    year: num(form, "year"),
+    location: str(form, "location"),
+    lgaSlug: str(form, "lgaSlug"),
+    personSlug: str(form, "personSlug"),
+    metrics: buildMetrics(form),
+    cover: image(form, "cover"),
+    source: str(form, "source"),
+  };
+}
+
+export async function createAchievement(
+  _previous: ActionState,
+  form: FormData,
+): Promise<ActionState> {
+  const auth = await guard("write");
+  if (!auth.ok) return auth.state;
+
+  const doc = buildAchievement(form, auth.session.role);
+  if (!doc.slug) return fail("A URL slug is required.", { slug: "Enter a title, or a slug." });
+
+  let slug: string;
+  try {
+    const created = await Achievement.create(writable(doc));
+    slug = created.slug;
+  } catch (error) {
+    return fromDatabaseError(error, "create achievement");
+  }
+
+  revalidateFor("achievements");
+  redirect(`/admin/achievements?saved=${encodeURIComponent(slug)}`);
+}
+
+export async function updateAchievement(
+  _previous: ActionState,
+  form: FormData,
+): Promise<ActionState> {
+  const auth = await guard("write");
+  if (!auth.ok) return auth.state;
+
+  const id = str(form, "id");
+  if (!id) return fail("This record could not be identified. Reload the page and try again.");
+
+  const doc = buildAchievement(form, auth.session.role);
+  if (!doc.slug) return fail("A URL slug is required.", { slug: "Enter a title, or a slug." });
+
+  try {
+    const existing = await Achievement.findById(id);
+    if (!existing) return fail("That achievement no longer exists. It may have been deleted.");
+    Object.assign(existing, writable(doc));
+    if (doc.cover === null) existing.set("cover", undefined);
+    // An emptied optional field must be unset, not left at its previous value.
+    for (const field of ["year", "location", "lgaSlug", "personSlug", "source"] as const) {
+      if (doc[field] === undefined) existing.set(field, undefined);
+    }
+    await existing.save();
+  } catch (error) {
+    return fromDatabaseError(error, "update achievement");
+  }
+
+  revalidateFor("achievements");
+  redirect(`/admin/achievements?saved=${encodeURIComponent(doc.slug)}`);
+}
+
+export async function deleteAchievement(form: FormData): Promise<void> {
+  const auth = await guard("delete");
+  if (!auth.ok) {
+    redirect(`/admin/achievements?error=${encodeURIComponent(auth.state.error ?? "Not permitted.")}`);
+  }
+  const id = str(form, "id");
+  if (id) await Achievement.findByIdAndDelete(id).catch(() => null);
+  revalidateFor("achievements");
+  redirect("/admin/achievements?deleted=1");
+}

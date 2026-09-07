@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Breadcrumbs, JsonLd, type Crumb } from "@/components/ui/primitives";
+import { Breadcrumbs, JsonLd, type Crumb, EyebrowMark } from "@/components/ui/primitives";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -62,10 +62,7 @@ export function PageHeader({
           <div className="max-w-3xl">
             {eyebrow ? (
               <p className={cn("eyebrow", dark && "text-brass-300")}>
-                <span
-                  aria-hidden="true"
-                  className={cn("h-px w-6", dark ? "bg-brass-400" : "bg-brass-400")}
-                />
+                <EyebrowMark tone={dark ? "dark" : "light"} />
                 {eyebrow}
               </p>
             ) : null}

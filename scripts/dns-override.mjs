@@ -59,25 +59,6 @@ const servers = (raw ?? "")
   .filter(Boolean);
 
 /**
- * Makes the override survive into child processes.
- *
- * `next dev` renders in a separate worker process, and that worker is the one
- * that actually opens the MongoDB connection. `--import` applies only to the
- * process it was passed to, so overriding DNS in the parent alone changes
- * nothing that matters. `NODE_OPTIONS` is inherited, so re-declaring the
- * preload there carries it into every worker Next spawns.
- *
- * The guard against re-appending matters: each child runs this module too, and
- * without it `NODE_OPTIONS` would grow by one flag per process generation.
- */
-function propagateToChildProcesses() {
-  const flag = `--import ${JSON.stringify(import.meta.url)}`;
-  const current = process.env.NODE_OPTIONS ?? "";
-  if (current.includes(import.meta.url)) return;
-  process.env.NODE_OPTIONS = current ? `${current} ${flag}` : flag;
-}
-
-/**
  * Whether this process is running on a deployment platform rather than a
  * developer's machine.
  *
@@ -101,10 +82,7 @@ if (servers.length > 0) {
     );
   } else {
     dns.setServers(servers);
-    propagateToChildProcesses();
-    // Logged once per process, so seeing it more than once means a worker
-    // inherited it correctly rather than something going wrong.
-    console.log(`[dns] resolver set to ${servers.join(", ")} (pid ${process.pid})`);
+    console.log(`[dns] resolver set to ${servers.join(", ")}`);
   }
 }
 

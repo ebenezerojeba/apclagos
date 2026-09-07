@@ -17,10 +17,11 @@ import {
   fetchHouseOfRepresentatives,
   fetchLeaders,
   fetchSenators,
+  fetchAchievements,
 } from "@/lib/server/repository";
 import { elections } from "@/data/elections";
 import { galleryAlbums, videos } from "@/data/media";
-import { achievements, partyDocuments, wards } from "@/data/resources";
+import { partyDocuments, wards } from "@/data/resources";
 import { byOrderThenName } from "@/lib/utils";
 import type {
   Achievement,
@@ -400,9 +401,14 @@ export async function getVideoBySlug(slug: Slug): Promise<Video | undefined> {
 /* -------------------------------------------------------------------------- */
 
 export async function getAchievements(): Promise<Achievement[]> {
-  return published(achievements).sort(
-    (a, b) => (b.year ?? 0) - (a.year ?? 0) || byOrderThenName(a, b),
-  );
+  // Database-backed, and already filtered to published and sorted by year in
+  // the query. The repository array this replaced could only ever be empty,
+  // so `/achievements` was permanently showing its empty state.
+  return fetchAchievements();
+}
+
+export async function getAchievementsByPerson(personSlug: Slug): Promise<Achievement[]> {
+  return (await fetchAchievements()).filter((entry) => entry.personSlug === personSlug);
 }
 
 export async function getDocuments(): Promise<PartyDocument[]> {

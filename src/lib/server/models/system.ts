@@ -196,3 +196,63 @@ export const AdminUser = defineModel<AdminUserDoc>("AdminUser", adminUserSchema)
 export function roleCan(role: AdminRole, capability: string): boolean {
   return ROLE_CAPABILITIES[role].includes(capability);
 }
+
+/* -------------------------------------------------------------------------- */
+/*  Contact messages                                                           */
+/* -------------------------------------------------------------------------- */
+
+export const CONTACT_STATUSES = ["new", "read", "handled", "spam"] as const;
+export type ContactStatus = (typeof CONTACT_STATUSES)[number];
+
+/**
+ * A message submitted through the public contact form.
+ *
+ * These are stored, not merely forwarded. A political party's contact address
+ * is constituent correspondence: it has to survive a mail provider being
+ * misconfigured, an inbox filling up, or an address changing hands. Before
+ * this collection existed the route validated a submission, logged its subject
+ * line and threw the message away while answering `delivered: true` - the
+ * sender was told their message had arrived when nothing had been kept.
+ *
+ * The sender's own words are the record, so `message` is stored verbatim and
+ * never truncated. No IP address is kept: it would add nothing an editor can
+ * act on, and it is the one field here that a subject-access request would
+ * make awkward.
+ */
+export interface ContactMessageDoc {
+  _id: Types.ObjectId;
+  name: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
+  status: ContactStatus;
+  /** Set when an administrator marks the message dealt with. */
+  handledAt?: Date;
+  handledBy?: Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const contactMessageSchema = new Schema<any>(
+  {
+    name: { type: String, required: true, trim: true, maxlength: 120 },
+    email: { type: String, required: true, trim: true, lowercase: true, maxlength: 200 },
+    phone: { type: String, trim: true, maxlength: 40 },
+    subject: { type: String, required: true, trim: true, maxlength: 120 },
+    message: { type: String, required: true, trim: true, maxlength: 4000 },
+    status: { type: String, enum: [...CONTACT_STATUSES], default: "new", index: true },
+    handledAt: { type: Date },
+    handledBy: { type: Schema.Types.ObjectId, ref: "AdminUser" },
+  },
+  { timestamps: true },
+);
+
+// The inbox is read newest-first, and filtered by status.
+contactMessageSchema.index({ status: 1, createdAt: -1 });
+contactMessageSchema.index({ createdAt: -1 });
+
+export const ContactMessage = defineModel<ContactMessageDoc>(
+  "ContactMessage",
+  contactMessageSchema,
+);

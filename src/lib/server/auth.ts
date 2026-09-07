@@ -194,6 +194,36 @@ export async function requireAdmin(
   };
 }
 
+/**
+ * The session a PAGE should render from.
+ *
+ * `getSession()` verifies the cookie's signature and nothing else, because it
+ * is deliberately cheap. That is the right primitive for middleware, but it is
+ * the wrong one for a page: a JWT is a snapshot, so an administrator who has
+ * been deactivated, had their password reset, been demoted, or had their
+ * account deleted outright kept full READ access to every admin screen - the
+ * dashboard, the people directory, the contact inbox and its senders' personal
+ * details - until the token expired seven days later. Only writes were revoked,
+ * because only `requireAdmin()` re-read the user.
+ *
+ * This closes that gap: it re-reads the account on every page render, so
+ * revocation takes effect on the next navigation. It returns `null` rather than
+ * throwing so a page can redirect to the login screen, which is what a person
+ * whose session has ended should see.
+ *
+ * The cost is one indexed `findById` per admin page load, on screens that were
+ * already querying the database for their own content.
+ */
+export async function getActiveSession(): Promise<AdminSession | null> {
+  try {
+    return await requireAdmin("read");
+  } catch {
+    // Unauthorised, forbidden, or the database is unreachable. A page that
+    // cannot confirm the viewer is still an administrator must not render.
+    return null;
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Sign in                                                                    */
 /* -------------------------------------------------------------------------- */

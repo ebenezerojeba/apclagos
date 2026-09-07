@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { getSession } from "@/lib/server/auth";
+import { getActiveSession } from "@/lib/server/auth";
 import { safeRead } from "@/lib/server/db";
 import { Category, roleCan } from "@/lib/server/models";
 import { AdminShell } from "@/components/admin/AdminShell";
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function NewArticlePage() {
-  const session = await getSession();
+  const session = await getActiveSession();
   if (!session) redirect("/admin/login?next=%2Fadmin%2Farticles%2Fnew");
 
   const categories = await safeRead(

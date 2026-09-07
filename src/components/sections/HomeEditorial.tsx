@@ -1,6 +1,6 @@
 import { ArrowRight, CalendarDays, Images, Newspaper } from "lucide-react";
 import { Section } from "@/components/sections/Section";
-import { SectionHeader, ArrowLink } from "@/components/ui/primitives";
+import { SectionHeader, ArrowLink, EyebrowMark } from "@/components/ui/primitives";
 import { Button } from "@/components/ui/Button";
 import {
   EventCard,
@@ -174,7 +174,7 @@ export function ContactCta() {
       <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-16">
         <div className="max-w-2xl">
           <p className="eyebrow text-brass-300">
-            <span aria-hidden="true" className="h-px w-8 bg-brass-400" />
+            <EyebrowMark tone="dark" />
             Get in touch
           </p>
           <h2

@@ -19,7 +19,14 @@ import { revalidatePath } from "next/cache";
  * "page" as the type, which is what covers a record whose slug just changed.
  */
 
-type Collection = "people" | "articles" | "events" | "pages" | "categories" | "settings";
+type Collection =
+  | "people"
+  | "articles"
+  | "events"
+  | "pages"
+  | "categories"
+  | "achievements"
+  | "settings";
 
 /** Routes that list or summarise each collection. */
 const LIST_ROUTES: Record<Collection, string[]> = {
@@ -40,6 +47,7 @@ const LIST_ROUTES: Record<Collection, string[]> = {
   events: ["/", "/events", "/search"],
   pages: ["/", "/about", "/achievements", "/documents"],
   categories: ["/news"],
+  achievements: ["/", "/achievements"],
   settings: ["/", "/contact"],
 };
 
@@ -56,6 +64,7 @@ const DETAIL_ROUTES: Record<Collection, string[]> = {
   events: ["/events/[slug]"],
   pages: [],
   categories: ["/news/[slug]"],
+  achievements: ["/lgas/[slug]"],
   settings: [],
 };
 

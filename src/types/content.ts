@@ -505,6 +505,17 @@ export interface Achievement extends BaseRecord {
   video?: VideoEmbed;
   /** Source or approving authority, so every claim stays attributable. */
   source?: string;
+  /**
+   * The person this milestone is credited to, by their `Person` slug.
+   *
+   * Optional, and deliberately not an enum: an achievement may belong to a
+   * named officeholder, to a ministry, or to the party as a whole. Keying on a
+   * slug rather than a hardcoded list means a new leader needs a record, not a
+   * code change.
+   */
+  personSlug?: Slug;
+  /** Display name for the credited person, resolved when the record is read. */
+  personName?: string;
 }
 
 export type DocumentCategory =

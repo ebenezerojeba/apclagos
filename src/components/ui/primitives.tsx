@@ -54,6 +54,56 @@ export function Badge({
 }
 
 /* -------------------------------------------------------------------------- */
+/*  Eyebrow mark                                                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The mark that opens every section label.
+ *
+ * Three bars stepping upward, not a rule. The single hairline this replaces is
+ * the default flourish of every template on the internet, which is exactly the
+ * problem: it says nothing about whose site this is. A rising step reads as
+ * progress, which is the party's own name and the first word of its tagline -
+ * so the mark carries meaning rather than decoration, and it is recognisable at
+ * the 11px the eyebrow is set in, where a logo or an icon would turn to mud.
+ *
+ * The ascent is carried by height AND opacity together. Height alone disappears
+ * at small sizes and against a dark ground; the opacity ramp keeps the
+ * direction legible either way, and survives forced-colours mode as three
+ * distinct bars rather than one ambiguous smear.
+ *
+ * `aria-hidden` throughout: it is ornament attached to text that already reads
+ * perfectly well without it.
+ */
+/** Bar colours per surface. Named, so a call site cannot pick a dim one. */
+const EYEBROW_MARK_TONES = {
+  /** On paper and other light grounds. */
+  light: "bg-brass-500",
+  /** On ink, and any dark section where brass-500 would sink into the ground. */
+  dark: "bg-brass-300",
+  /** Error and empty states, which already speak in crimson. */
+  crimson: "bg-crimson-500",
+} as const;
+
+export function EyebrowMark({
+  tone = "light",
+  className,
+}: {
+  tone?: keyof typeof EYEBROW_MARK_TONES;
+  className?: string;
+}) {
+  const bar = cn("w-[3px] rounded-[1px]", EYEBROW_MARK_TONES[tone], className);
+
+  return (
+    <span aria-hidden="true" className="inline-flex shrink-0 items-end gap-[2px]">
+      <span className={cn(bar, "h-[5px] opacity-40")} />
+      <span className={cn(bar, "h-[8px] opacity-70")} />
+      <span className={cn(bar, "h-[11px]")} />
+    </span>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Section header                                                             */
 /* -------------------------------------------------------------------------- */
 
@@ -88,13 +138,7 @@ export function SectionHeader({
       <div className={cn("max-w-2xl", align === "center" && "md:max-w-3xl")}>
         {eyebrow ? (
           <p className={cn("eyebrow", dark && "text-brass-300")}>
-            <span
-              aria-hidden="true"
-              className={cn(
-                "h-px w-6",
-                dark ? "bg-brass-400/70" : "bg-brass-400",
-              )}
-            />
+            <EyebrowMark tone={dark ? "dark" : "light"} />
             {eyebrow}
           </p>
         ) : null}

@@ -18,9 +18,11 @@ const SECTIONS = [
   { href: "/admin/people", label: "People" },
   { href: "/admin/articles", label: "News" },
   { href: "/admin/events", label: "Events" },
+  { href: "/admin/achievements", label: "Achievements" },
   { href: "/admin/pages", label: "Pages" },
   { href: "/admin/categories", label: "Categories" },
   { href: "/admin/media", label: "Media" },
+  { href: "/admin/messages", label: "Messages" },
   { href: "/admin/settings", label: "Settings" },
 ];
 
