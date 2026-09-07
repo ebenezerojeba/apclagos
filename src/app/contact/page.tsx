@@ -181,13 +181,6 @@ export default function ContactPage() {
                   className="absolute inset-0 size-full border-0"
                 />
               </div>
-              <p className="px-6 py-4 text-xs leading-relaxed text-fg-subtle">
-                Map location is derived from the address above. Update it in{" "}
-                <code className="rounded bg-paper-200 px-1.5 py-0.5 font-mono text-[0.7rem] text-ink-800">
-                  src/data/site.ts
-                </code>
-                .
-              </p>
             </Card>
           </aside>
         </div>

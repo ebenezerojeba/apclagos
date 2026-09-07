@@ -1,0 +1,956 @@
+{
+  "source": "LASIEC (Lagos State Independent Electoral Commission) coding system for field operations, 57 LGA/LCDA breakdown",
+  "totals": {
+    "lga_lcda_count": 57,
+    "ward_count": 376,
+    "polling_unit_count": 13325
+  },
+  "lgas": [
+    {
+      "name": "AGBADO-OKE ODO",
+      "slug": "agbado-oke-odo",
+      "code": "03B",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 7,
+      "polling_unit_count": 288,
+      "wards": [
+        { "name": "OKI", "slug": "agbado-oke-odo-oki", "polling_units": 36 },
+        { "name": "OKE-ODO", "slug": "agbado-oke-odo-oke-odo", "polling_units": 54 },
+        { "name": "ABORU", "slug": "agbado-oke-odo-aboru", "polling_units": 37 },
+        { "name": "ABUE-EGBA", "slug": "agbado-oke-odo-abue-egba", "polling_units": 36 },
+        { "name": "AGBELEKALE", "slug": "agbado-oke-odo-agbelekale", "polling_units": 35 },
+        { "name": "ALAGBADO/ALUKO", "slug": "agbado-oke-odo-alagbado-aluko", "polling_units": 46 },
+        { "name": "AJASA/AMIKANLE", "slug": "agbado-oke-odo-ajasa-amikanle", "polling_units": 44 }
+      ]
+    },
+    {
+      "name": "AGBOYI-KETU",
+      "slug": "agboyi-ketu",
+      "code": "13B",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 7,
+      "polling_unit_count": 235,
+      "wards": [
+        { "name": "BAMGBE/ELEGBIJU", "slug": "agboyi-ketu-bamgbe-elegbiju", "polling_units": 53 },
+        { "name": "AROWOSEGBE/ALAPERE", "slug": "agboyi-ketu-arowosegbe-alapere", "polling_units": 31 },
+        { "name": "AGIDI/OSHOGUN", "slug": "agboyi-ketu-agidi-oshogun", "polling_units": 43 },
+        { "name": "ERUKAN ORISHINGUN", "slug": "agboyi-ketu-erukan-orishingun", "polling_units": 52 },
+        { "name": "AGBOYI I", "slug": "agboyi-ketu-agboyi-i", "polling_units": 6 },
+        { "name": "AGBOYI II", "slug": "agboyi-ketu-agboyi-ii", "polling_units": 5 },
+        { "name": "ODO OGUN/AJEGUNLE", "slug": "agboyi-ketu-odo-ogun-ajegunle", "polling_units": 45 }
+      ]
+    },
+    {
+      "name": "AGEGE",
+      "slug": "agege",
+      "code": null,
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 7,
+      "polling_unit_count": 316,
+      "wards": [
+        { "name": "ISALE OJA", "slug": "agege-isale-oja", "polling_units": 58 },
+        { "name": "DOPEMU", "slug": "agege-dopemu", "polling_units": 39 },
+        { "name": "PAPA UKU/OLUSANYA", "slug": "agege-papa-uku-olusanya", "polling_units": 36 },
+        { "name": "AWORI/ONIWAYA", "slug": "agege-awori-oniwaya", "polling_units": 59 },
+        { "name": "ATOBALE", "slug": "agege-atobale", "polling_units": 17 },
+        { "name": "KEKE", "slug": "agege-keke", "polling_units": 58 },
+        { "name": "SANGO", "slug": "agege-sango", "polling_units": 49 }
+      ]
+    },
+    {
+      "name": "AJEROMI-IFELODUN",
+      "slug": "ajeromi-ifelodun",
+      "code": null,
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 9,
+      "polling_unit_count": 450,
+      "wards": [
+        { "name": "ALAYABIAGBA", "slug": "ajeromi-ifelodun-alayabiagba", "polling_units": 45 },
+        { "name": "AIYETORO", "slug": "ajeromi-ifelodun-aiyetoro", "polling_units": 49 },
+        { "name": "AJEGUNLE", "slug": "ajeromi-ifelodun-ajegunle", "polling_units": 36 },
+        { "name": "AWODI-ORA", "slug": "ajeromi-ifelodun-awodi-ora", "polling_units": 67 },
+        { "name": "TOLU", "slug": "ajeromi-ifelodun-tolu", "polling_units": 59 },
+        { "name": "TEMIDIRE", "slug": "ajeromi-ifelodun-temidire", "polling_units": 39 },
+        { "name": "ALAKOTO", "slug": "ajeromi-ifelodun-alakoto", "polling_units": 41 },
+        { "name": "IBAFON", "slug": "ajeromi-ifelodun-ibafon", "polling_units": 53 },
+        { "name": "OLUWA", "slug": "ajeromi-ifelodun-oluwa", "polling_units": 61 }
+      ]
+    },
+    {
+      "name": "ALIMOSHO",
+      "slug": "alimosho",
+      "code": null,
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 7,
+      "polling_unit_count": 259,
+      "wards": [
+        { "name": "OMITUNTUN-OLORI", "slug": "alimosho-omituntun-olori", "polling_units": 36 },
+        { "name": "SANTO-ILUPEJU", "slug": "alimosho-santo-ilupeju", "polling_units": 24 },
+        { "name": "AKOWONJO", "slug": "alimosho-akowonjo", "polling_units": 36 },
+        { "name": "OGUNTADE/BAMEKE", "slug": "alimosho-oguntade-bameke", "polling_units": 46 },
+        { "name": "EGBEDA", "slug": "alimosho-egbeda", "polling_units": 49 },
+        { "name": "ALABATA", "slug": "alimosho-alabata", "polling_units": 42 },
+        { "name": "ALAGUTAN", "slug": "alimosho-alagutan", "polling_units": 26 }
+      ]
+    },
+    {
+      "name": "AMUWO-ODOFIN",
+      "slug": "amuwo-odofin",
+      "code": null,
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 7,
+      "polling_unit_count": 310,
+      "wards": [
+        { "name": "EKO AKETE", "slug": "amuwo-odofin-eko-akete", "polling_units": 43 },
+        { "name": "ODOFIN", "slug": "amuwo-odofin-odofin", "polling_units": 38 },
+        { "name": "IFELODUN (FESTAC III)", "slug": "amuwo-odofin-ifelodun-festac-iii", "polling_units": 56 },
+        { "name": "ORIRE (FESTAC II)", "slug": "amuwo-odofin-orire-festac-ii", "polling_units": 80 },
+        { "name": "IREPODUN (FESTAC 1A)", "slug": "amuwo-odofin-irepodun-festac-1a", "polling_units": 36 },
+        { "name": "ADO (FESTAC 1B)", "slug": "amuwo-odofin-ado-festac-1b", "polling_units": 29 },
+        { "name": "TOMARO/ILADO", "slug": "amuwo-odofin-tomaro-ilado", "polling_units": 28 }
+      ]
+    },
+    {
+      "name": "APAPA",
+      "slug": "apapa",
+      "code": null,
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 5,
+      "polling_unit_count": 149,
+      "wards": [
+        { "name": "ODUDUWA", "slug": "apapa-oduduwa", "polling_units": 39 },
+        { "name": "APAPA", "slug": "apapa-apapa", "polling_units": 24 },
+        { "name": "ABRAHAM ADESANYA", "slug": "apapa-abraham-adesanya", "polling_units": 25 },
+        { "name": "ANJORIN", "slug": "apapa-anjorin", "polling_units": 32 },
+        { "name": "IJORA OLOYE", "slug": "apapa-ijora-oloye", "polling_units": 29 }
+      ]
+    },
+    {
+      "name": "APAPA-IGANMU",
+      "slug": "apapa-iganmu",
+      "code": "05B",
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 7,
+      "polling_unit_count": 225,
+      "wards": [
+        { "name": "GASKIYA", "slug": "apapa-iganmu-gaskiya", "polling_units": 24 },
+        { "name": "SARI", "slug": "apapa-iganmu-sari", "polling_units": 34 },
+        { "name": "OWOSENI", "slug": "apapa-iganmu-owoseni", "polling_units": 29 },
+        { "name": "ABETE", "slug": "apapa-iganmu-abete", "polling_units": 26 },
+        { "name": "BADIA", "slug": "apapa-iganmu-badia", "polling_units": 34 },
+        { "name": "MARINE BEACH", "slug": "apapa-iganmu-marine-beach", "polling_units": 30 },
+        { "name": "ALAFIA", "slug": "apapa-iganmu-alafia", "polling_units": 48 }
+      ]
+    },
+    {
+      "name": "AYOBO-IPAJA",
+      "slug": "ayobo-ipaja",
+      "code": "03C",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 5,
+      "polling_unit_count": 159,
+      "wards": [
+        { "name": "BADA-MEGIDA", "slug": "ayobo-ipaja-bada-megida", "polling_units": 32 },
+        { "name": "AYOBO", "slug": "ayobo-ipaja-ayobo", "polling_units": 36 },
+        { "name": "IPAJA", "slug": "ayobo-ipaja-ipaja", "polling_units": 45 },
+        { "name": "ATAN", "slug": "ayobo-ipaja-atan", "polling_units": 14 },
+        { "name": "BARUWA", "slug": "ayobo-ipaja-baruwa", "polling_units": 32 }
+      ]
+    },
+    {
+      "name": "BADAGRY",
+      "slug": "badagry",
+      "code": null,
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 10,
+      "polling_unit_count": 178,
+      "wards": [
+        { "name": "JEGBA", "slug": "badagry-jegba", "polling_units": 25 },
+        { "name": "POSUKOH", "slug": "badagry-posukoh", "polling_units": 18 },
+        { "name": "AWHANJIGOH", "slug": "badagry-awhanjigoh", "polling_units": 10 },
+        { "name": "AHOVIKOH", "slug": "badagry-ahovikoh", "polling_units": 16 },
+        { "name": "AJARA VETHO", "slug": "badagry-ajara-vetho", "polling_units": 28 },
+        { "name": "AJARA TOPA", "slug": "badagry-ajara-topa", "polling_units": 17 },
+        { "name": "AJIDO", "slug": "badagry-ajido", "polling_units": 15 },
+        { "name": "ISALU/IYAFIN", "slug": "badagry-isalu-iyafin", "polling_units": 11 },
+        { "name": "IKOGA", "slug": "badagry-ikoga", "polling_units": 32 },
+        { "name": "TOPO-IDALE", "slug": "badagry-topo-idale", "polling_units": 6 }
+      ]
+    },
+    {
+      "name": "BADAGRY WEST",
+      "slug": "badagry-west",
+      "code": "06B",
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 5,
+      "polling_unit_count": 63,
+      "wards": [
+        { "name": "KWEME", "slug": "badagry-west-kweme", "polling_units": 12 },
+        { "name": "WESERE", "slug": "badagry-west-wesere", "polling_units": 6 },
+        { "name": "APA", "slug": "badagry-west-apa", "polling_units": 17 },
+        { "name": "AKORO", "slug": "badagry-west-akoro", "polling_units": 7 },
+        { "name": "GBETHROME", "slug": "badagry-west-gbethrome", "polling_units": 21 }
+      ]
+    },
+    {
+      "name": "BARIGA",
+      "slug": "bariga",
+      "code": "19B",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 8,
+      "polling_unit_count": 387,
+      "wards": [
+        { "name": "IBUOWO/OWOTUTU", "slug": "bariga-ibuowo-owotutu", "polling_units": 41 },
+        { "name": "AIYETORO/MAFOLUKU", "slug": "bariga-aiyetoro-mafoluku", "polling_units": 57 },
+        { "name": "OWODE/ORILE BARIGA", "slug": "bariga-owode-orile-bariga", "polling_units": 35 },
+        { "name": "AKOKA/ANU-OLUWAPO", "slug": "bariga-akoka-anu-oluwapo", "polling_units": 57 },
+        { "name": "PEDRO/GBAGADA", "slug": "bariga-pedro-gbagada", "polling_units": 50 },
+        { "name": "APELERIN", "slug": "bariga-apelerin", "polling_units": 59 },
+        { "name": "ILAJE", "slug": "bariga-ilaje", "polling_units": 44 },
+        { "name": "SERIKI-OKUTA", "slug": "bariga-seriki-okuta", "polling_units": 44 }
+      ]
+    },
+    {
+      "name": "COKER-AGUDA",
+      "slug": "coker-aguda",
+      "code": "20C",
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 7,
+      "polling_unit_count": 240,
+      "wards": [
+        { "name": "COKER", "slug": "coker-aguda-coker", "polling_units": 34 },
+        { "name": "IRONE", "slug": "coker-aguda-irone", "polling_units": 39 },
+        { "name": "NURU-ONIWO", "slug": "coker-aguda-nuru-oniwo", "polling_units": 30 },
+        { "name": "JINADU AIYETORO", "slug": "coker-aguda-jinadu-aiyetoro", "polling_units": 52 },
+        { "name": "BALE", "slug": "coker-aguda-bale", "polling_units": 27 },
+        { "name": "OSHO", "slug": "coker-aguda-osho", "polling_units": 31 },
+        { "name": "SAVAGE", "slug": "coker-aguda-savage", "polling_units": 27 }
+      ]
+    },
+    {
+      "name": "EGBE-IDIMU",
+      "slug": "egbe-idimu",
+      "code": "03D",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 5,
+      "polling_unit_count": 271,
+      "wards": [
+        { "name": "ISHERI-OLOFIN", "slug": "egbe-idimu-isheri-olofin", "polling_units": 53 },
+        { "name": "UNITY ESTATE", "slug": "egbe-idimu-unity-estate", "polling_units": 50 },
+        { "name": "IDIMU", "slug": "egbe-idimu-idimu", "polling_units": 39 },
+        { "name": "EGBE AGODO", "slug": "egbe-idimu-egbe-agodo", "polling_units": 71 },
+        { "name": "EGBE LIASU", "slug": "egbe-idimu-egbe-liasu", "polling_units": 58 }
+      ]
+    },
+    {
+      "name": "EJIGBO",
+      "slug": "ejigbo",
+      "code": "18C",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 6,
+      "polling_unit_count": 186,
+      "wards": [
+        { "name": "AIGBAKA", "slug": "ejigbo-aigbaka", "polling_units": 54 },
+        { "name": "FADU", "slug": "ejigbo-fadu", "polling_units": 26 },
+        { "name": "IFOSHI", "slug": "ejigbo-ifoshi", "polling_units": 38 },
+        { "name": "ILAMOSHE", "slug": "ejigbo-ilamoshe", "polling_units": 19 },
+        { "name": "AILEGUN", "slug": "ejigbo-ailegun", "polling_units": 22 },
+        { "name": "OKE AFA", "slug": "ejigbo-oke-afa", "polling_units": 27 }
+      ]
+    },
+    {
+      "name": "EPE",
+      "slug": "epe",
+      "code": "07A",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 8,
+      "polling_unit_count": 186,
+      "wards": [
+        { "name": "BADO/EBODE/ETITA/IBEREKODO", "slug": "epe-bado-ebode-etita-iberekodo", "polling_units": 16 },
+        { "name": "AIYETORO/LAGBADE/AGBALA/OLOTA", "slug": "epe-aiyetoro-lagbade-agbala-olota", "polling_units": 22 },
+        { "name": "SAGIDAN/OKEPOSU", "slug": "epe-sagidan-okeposu", "polling_units": 10 },
+        { "name": "ISALE AGORO/OKE BALOGUN/OGUNMUDE/ESERE", "slug": "epe-isale-agoro-oke-balogun-ogunmude-esere", "polling_units": 19 },
+        { "name": "AJAGANABE", "slug": "epe-ajaganabe", "polling_units": 31 },
+        { "name": "PAPA", "slug": "epe-papa", "polling_units": 29 },
+        { "name": "MAYUNRE-ORIBA/OREPETE-ITI OMU", "slug": "epe-mayunre-oriba-orepete-iti-omu", "polling_units": 25 },
+        { "name": "OLUGBOKERE/ABOMITI", "slug": "epe-olugbokere-abomiti", "polling_units": 34 }
+      ]
+    },
+    {
+      "name": "EREDO",
+      "slug": "eredo",
+      "code": "07B",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 5,
+      "polling_unit_count": 98,
+      "wards": [
+        { "name": "ILARA", "slug": "eredo-ilara", "polling_units": 22 },
+        { "name": "IBONWON", "slug": "eredo-ibonwon", "polling_units": 15 },
+        { "name": "ODORAGUNSHIN", "slug": "eredo-odoragunshin", "polling_units": 16 },
+        { "name": "NAFORIJA/POKA", "slug": "eredo-naforija-poka", "polling_units": 21 },
+        { "name": "ODOMOLA", "slug": "eredo-odomola", "polling_units": 24 }
+      ]
+    },
+    {
+      "name": "ETI-OSA",
+      "slug": "eti-osa",
+      "code": null,
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 5,
+      "polling_unit_count": 225,
+      "wards": [
+        { "name": "IKATE/LEKKI", "slug": "eti-osa-ikate-lekki", "polling_units": 67 },
+        { "name": "AJIRAN/OSSAPA", "slug": "eti-osa-ajiran-ossapa", "polling_units": 56 },
+        { "name": "MAROKO/OKUN ALFA", "slug": "eti-osa-maroko-okun-alfa", "polling_units": 27 },
+        { "name": "IGBO EFON/MAYEGUN", "slug": "eti-osa-igbo-efon-mayegun", "polling_units": 32 },
+        { "name": "ILASAN/ORILE", "slug": "eti-osa-ilasan-orile", "polling_units": 43 }
+      ]
+    },
+    {
+      "name": "ETI-OSA EAST",
+      "slug": "eti-osa-east",
+      "code": "08B",
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 5,
+      "polling_unit_count": 150,
+      "wards": [
+        { "name": "AJAH", "slug": "eti-osa-east-ajah", "polling_units": 39 },
+        { "name": "SANGOTEDO", "slug": "eti-osa-east-sangotedo", "polling_units": 39 },
+        { "name": "ADO/OKE-IRA", "slug": "eti-osa-east-ado-oke-ira", "polling_units": 25 },
+        { "name": "BADORE/LANGBASA", "slug": "eti-osa-east-badore-langbasa", "polling_units": 28 },
+        { "name": "OKUN AJAH/OKUN MOPO", "slug": "eti-osa-east-okun-ajah-okun-mopo", "polling_units": 19 }
+      ]
+    },
+    {
+      "name": "IBA",
+      "slug": "iba",
+      "code": "17B",
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 5,
+      "polling_unit_count": 194,
+      "wards": [
+        { "name": "IBA", "slug": "iba-iba", "polling_units": 48 },
+        { "name": "OKOKOMIAKO", "slug": "iba-okokomiako", "polling_units": 34 },
+        { "name": "AJANGBADI", "slug": "iba-ajangbadi", "polling_units": 28 },
+        { "name": "IGBOELERIN", "slug": "iba-igboelerin", "polling_units": 57 },
+        { "name": "KEMBERI", "slug": "iba-kemberi", "polling_units": 27 }
+      ]
+    },
+    {
+      "name": "IBEJU-LEKKI",
+      "slug": "ibeju-lekki",
+      "code": null,
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 7,
+      "polling_unit_count": 178,
+      "wards": [
+        { "name": "IBEJU I", "slug": "ibeju-lekki-ibeju-i", "polling_units": 20 },
+        { "name": "IBEJU II", "slug": "ibeju-lekki-ibeju-ii", "polling_units": 19 },
+        { "name": "ORIMEDU I", "slug": "ibeju-lekki-orimedu-i", "polling_units": 21 },
+        { "name": "ORIMEDU II", "slug": "ibeju-lekki-orimedu-ii", "polling_units": 16 },
+        { "name": "ORIMEDU III", "slug": "ibeju-lekki-orimedu-iii", "polling_units": 15 },
+        { "name": "IWEREKUN I", "slug": "ibeju-lekki-iwerekun-i", "polling_units": 56 },
+        { "name": "IWEREKUN II", "slug": "ibeju-lekki-iwerekun-ii", "polling_units": 31 }
+      ]
+    },
+    {
+      "name": "IFAKO-IJAIYE",
+      "slug": "ifako-ijaiye",
+      "code": null,
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 7,
+      "polling_unit_count": 328,
+      "wards": [
+        { "name": "IJAIYE/OKE-IRA", "slug": "ifako-ijaiye-ijaiye-oke-ira", "polling_units": 39 },
+        { "name": "IFAKO PELE", "slug": "ifako-ijaiye-ifako-pele", "polling_units": 47 },
+        { "name": "IJAIYE IFAKO", "slug": "ifako-ijaiye-ijaiye-ifako", "polling_units": 60 },
+        { "name": "IFAKO COKER", "slug": "ifako-ijaiye-ifako-coker", "polling_units": 22 },
+        { "name": "IJU OBAWOLE", "slug": "ifako-ijaiye-iju-obawole", "polling_units": 30 },
+        { "name": "IJU ISHAGA", "slug": "ifako-ijaiye-iju-ishaga", "polling_units": 72 },
+        { "name": "IJU OGUNDINMU", "slug": "ifako-ijaiye-iju-ogundinmu", "polling_units": 58 }
+      ]
+    },
+    {
+      "name": "IFELODUN",
+      "slug": "ifelodun",
+      "code": "02B",
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 7,
+      "polling_unit_count": 284,
+      "wards": [
+        { "name": "LAYENI", "slug": "ifelodun-layeni", "polling_units": 39 },
+        { "name": "OWOYEMI", "slug": "ifelodun-owoyemi", "polling_units": 48 },
+        { "name": "ALABA", "slug": "ifelodun-alaba", "polling_units": 29 },
+        { "name": "AMUKOKO", "slug": "ifelodun-amukoko", "polling_units": 39 },
+        { "name": "OKE-OJA", "slug": "ifelodun-oke-oja", "polling_units": 38 },
+        { "name": "OJORA", "slug": "ifelodun-ojora", "polling_units": 39 },
+        { "name": "APASA", "slug": "ifelodun-apasa", "polling_units": 52 }
+      ]
+    },
+    {
+      "name": "IGANDO-IKOTUN",
+      "slug": "igando-ikotun",
+      "code": "03E",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 7,
+      "polling_unit_count": 379,
+      "wards": [
+        { "name": "IKOTUN", "slug": "igando-ikotun-ikotun", "polling_units": 100 },
+        { "name": "ABARANJE/OKERUBE", "slug": "igando-ikotun-abaranje-okerube", "polling_units": 77 },
+        { "name": "ISHERI-OSUN", "slug": "igando-ikotun-isheri-osun", "polling_units": 42 },
+        { "name": "IJEGUN", "slug": "igando-ikotun-ijegun", "polling_units": 40 },
+        { "name": "IGANDO", "slug": "igando-ikotun-igando", "polling_units": 42 },
+        { "name": "EGAN", "slug": "igando-ikotun-egan", "polling_units": 45 },
+        { "name": "AKESAN/OBADORE", "slug": "igando-ikotun-akesan-obadore", "polling_units": 33 }
+      ]
+    },
+    {
+      "name": "IGBOGBO-BAIYEKU",
+      "slug": "igbogbo-baiyeku",
+      "code": "12D",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 5,
+      "polling_unit_count": 133,
+      "wards": [
+        { "name": "ABOSAN", "slug": "igbogbo-baiyeku-abosan", "polling_units": 30 },
+        { "name": "MOKUN", "slug": "igbogbo-baiyeku-mokun", "polling_units": 34 },
+        { "name": "BAIYEKU/ORETA/OFIN", "slug": "igbogbo-baiyeku-baiyeku-oreta-ofin", "polling_units": 29 },
+        { "name": "IBESE", "slug": "igbogbo-baiyeku-ibese", "polling_units": 29 },
+        { "name": "ELEPE", "slug": "igbogbo-baiyeku-elepe", "polling_units": 11 }
+      ]
+    },
+    {
+      "name": "IJEDE",
+      "slug": "ijede",
+      "code": "12E",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 4,
+      "polling_unit_count": 48,
+      "wards": [
+        { "name": "EGBI/ITUN OLIWO", "slug": "ijede-egbi-itun-oliwo", "polling_units": 11 },
+        { "name": "AYEGBAMI/ODORO", "slug": "ijede-ayegbami-odoro", "polling_units": 10 },
+        { "name": "OKE-OYINBO/AIYETORO", "slug": "ijede-oke-oyinbo-aiyetoro", "polling_units": 16 },
+        { "name": "OKE-ELETU/ABULE EKO", "slug": "ijede-oke-eletu-abule-eko", "polling_units": 11 }
+      ]
+    },
+    {
+      "name": "IKEJA",
+      "slug": "ikeja",
+      "code": null,
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 6,
+      "polling_unit_count": 210,
+      "wards": [
+        { "name": "ORILE-IKEJA", "slug": "ikeja-orile-ikeja", "polling_units": 36 },
+        { "name": "ALADE", "slug": "ikeja-alade", "polling_units": 20 },
+        { "name": "ONILEKERE", "slug": "ikeja-onilekere", "polling_units": 37 },
+        { "name": "ANIFOWOSHE", "slug": "ikeja-anifowoshe", "polling_units": 47 },
+        { "name": "SERIKI ARO", "slug": "ikeja-seriki-aro", "polling_units": 25 },
+        { "name": "ALAUSA", "slug": "ikeja-alausa", "polling_units": 45 }
+      ]
+    },
+    {
+      "name": "IKORODU CENTRAL",
+      "slug": "ikorodu-central",
+      "code": null,
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 7,
+      "polling_unit_count": 237,
+      "wards": [
+        { "name": "OLORI/EYITA", "slug": "ikorodu-central-olori-eyita", "polling_units": 29 },
+        { "name": "AIGE/SOLOMADE", "slug": "ikorodu-central-aige-solomade", "polling_units": 59 },
+        { "name": "ISELE", "slug": "ikorodu-central-isele", "polling_units": 26 },
+        { "name": "ITUNPATE/ITUNMAJA", "slug": "ikorodu-central-itunpate-itunmaja", "polling_units": 33 },
+        { "name": "AGA/IJOMU", "slug": "ikorodu-central-aga-ijomu", "polling_units": 36 },
+        { "name": "SHOLAFUN/ABELE", "slug": "ikorodu-central-sholafun-abele", "polling_units": 20 },
+        { "name": "AGURA/GBERIGBE", "slug": "ikorodu-central-agura-gberigbe", "polling_units": 34 }
+      ]
+    },
+    {
+      "name": "IKORODU NORTH",
+      "slug": "ikorodu-north",
+      "code": "12B",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 5,
+      "polling_unit_count": 142,
+      "wards": [
+        { "name": "ODOGUNYAN", "slug": "ikorodu-north-odogunyan", "polling_units": 65 },
+        { "name": "ERIKORODO", "slug": "ikorodu-north-erikorodo", "polling_units": 19 },
+        { "name": "AGBALA/ALASUWON", "slug": "ikorodu-north-agbala-alasuwon", "polling_units": 38 },
+        { "name": "OLORUNDA", "slug": "ikorodu-north-olorunda", "polling_units": 8 },
+        { "name": "ISIWU", "slug": "ikorodu-north-isiwu", "polling_units": 12 }
+      ]
+    },
+    {
+      "name": "IKORODU WEST",
+      "slug": "ikorodu-west",
+      "code": "12C",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 5,
+      "polling_unit_count": 79,
+      "wards": [
+        { "name": "IPAKODO", "slug": "ikorodu-west-ipakodo", "polling_units": 15 },
+        { "name": "MAJIDUN", "slug": "ikorodu-west-majidun", "polling_units": 15 },
+        { "name": "OWUTU", "slug": "ikorodu-west-owutu", "polling_units": 20 },
+        { "name": "AJAGURO", "slug": "ikorodu-west-ajaguro", "polling_units": 13 },
+        { "name": "ISAOKU", "slug": "ikorodu-west-isaoku", "polling_units": 16 }
+      ]
+    },
+    {
+      "name": "IKOSI ISHERI",
+      "slug": "ikosi-isheri",
+      "code": "13C",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 7,
+      "polling_unit_count": 330,
+      "wards": [
+        { "name": "ISHERI/OLOWORA", "slug": "ikosi-isheri-isheri-olowora", "polling_units": 81 },
+        { "name": "SHANGISHA MAGODO", "slug": "ikosi-isheri-shangisha-magodo", "polling_units": 40 },
+        { "name": "IKOSI OKE", "slug": "ikosi-isheri-ikosi-oke", "polling_units": 30 },
+        { "name": "ORILE IKOSI", "slug": "ikosi-isheri-orile-ikosi", "polling_units": 50 },
+        { "name": "ORILE KETU", "slug": "ikosi-isheri-orile-ketu", "polling_units": 52 },
+        { "name": "AGILITI/MAIDAN", "slug": "ikosi-isheri-agiliti-maidan", "polling_units": 61 },
+        { "name": "IDERA", "slug": "ikosi-isheri-idera", "polling_units": 16 }
+      ]
+    },
+    {
+      "name": "IKOSI-EJINRIN",
+      "slug": "ikosi-ejinrin",
+      "code": "07C",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 6,
+      "polling_unit_count": 63,
+      "wards": [
+        { "name": "AGBOWA I", "slug": "ikosi-ejinrin-agbowa-i", "polling_units": 12 },
+        { "name": "AGBOWA II/ADO", "slug": "ikosi-ejinrin-agbowa-ii-ado", "polling_units": 11 },
+        { "name": "OWU/OTA", "slug": "ikosi-ejinrin-owu-ota", "polling_units": 12 },
+        { "name": "AJEBO/ORUGBO", "slug": "ikosi-ejinrin-ajebo-orugbo", "polling_units": 5 },
+        { "name": "EJINRIN/KETU", "slug": "ikosi-ejinrin-ejinrin-ketu", "polling_units": 8 },
+        { "name": "IFESOWAPO/TEMU/OKE-OSO", "slug": "ikosi-ejinrin-ifesowapo-temu-oke-oso", "polling_units": 15 }
+      ]
+    },
+    {
+      "name": "IKOYI-OBALENDE",
+      "slug": "ikoyi-obalende",
+      "code": "08C",
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 5,
+      "polling_unit_count": 176,
+      "wards": [
+        { "name": "OBALENDE", "slug": "ikoyi-obalende-obalende", "polling_units": 47 },
+        { "name": "IJEH/DOLPHIN ESTATE", "slug": "ikoyi-obalende-ijeh-dolphin-estate", "polling_units": 27 },
+        { "name": "IKOYI I", "slug": "ikoyi-obalende-ikoyi-i", "polling_units": 45 },
+        { "name": "IKOYI II", "slug": "ikoyi-obalende-ikoyi-ii", "polling_units": 26 },
+        { "name": "FALOMO OYINKAN/ABAYOMI", "slug": "ikoyi-obalende-falomo-oyinkan-abayomi", "polling_units": 31 }
+      ]
+    },
+    {
+      "name": "IMOTA",
+      "slug": "imota",
+      "code": "12F",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 4,
+      "polling_unit_count": 43,
+      "wards": [
+        { "name": "ATERE", "slug": "imota-atere", "polling_units": 10 },
+        { "name": "MAJA", "slug": "imota-maja", "polling_units": 16 },
+        { "name": "ONABU/OPOPO", "slug": "imota-onabu-opopo", "polling_units": 12 },
+        { "name": "IGBOKUTA/OKE-AGBO/IGBALU", "slug": "imota-igbokuta-oke-agbo-igbalu", "polling_units": 5 }
+      ]
+    },
+    {
+      "name": "IRU-VICTORIA ISLAND",
+      "slug": "iru-victoria-island",
+      "code": "08D",
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 5,
+      "polling_unit_count": 174,
+      "wards": [
+        { "name": "TAKWA BAY", "slug": "iru-victoria-island-takwa-bay", "polling_units": 12 },
+        { "name": "VICTORIA ISLAND", "slug": "iru-victoria-island-victoria-island", "polling_units": 63 },
+        { "name": "KURAMO", "slug": "iru-victoria-island-kuramo", "polling_units": 26 },
+        { "name": "APESE/V.I. EXTENSION", "slug": "iru-victoria-island-apese-v-i-extension", "polling_units": 37 },
+        { "name": "1004/ABOYADE", "slug": "iru-victoria-island-1004-aboyade", "polling_units": 36 }
+      ]
+    },
+    {
+      "name": "ISOLO",
+      "slug": "isolo",
+      "code": "18B",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 7,
+      "polling_unit_count": 339,
+      "wards": [
+        { "name": "ALAGBEJI", "slug": "isolo-alagbeji", "polling_units": 27 },
+        { "name": "AKINBAYE", "slug": "isolo-akinbaye", "polling_units": 50 },
+        { "name": "ILASAMAJA", "slug": "isolo-ilasamaja", "polling_units": 76 },
+        { "name": "OKOTA", "slug": "isolo-okota", "polling_units": 52 },
+        { "name": "APENA", "slug": "isolo-apena", "polling_units": 40 },
+        { "name": "ISHAGA/IRE AKARI", "slug": "isolo-ishaga-ire-akari", "polling_units": 58 },
+        { "name": "AJAO", "slug": "isolo-ajao", "polling_units": 36 }
+      ]
+    },
+    {
+      "name": "ITIRE-IKATE",
+      "slug": "itire-ikate",
+      "code": "20B",
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 7,
+      "polling_unit_count": 259,
+      "wards": [
+        { "name": "AIRWAYS", "slug": "itire-ikate-airways", "polling_units": 33 },
+        { "name": "AGUNBIADE", "slug": "itire-ikate-agunbiade", "polling_units": 33 },
+        { "name": "ODO OLOWU", "slug": "itire-ikate-odo-olowu", "polling_units": 20 },
+        { "name": "SANUSI", "slug": "itire-ikate-sanusi", "polling_units": 37 },
+        { "name": "OGUNSANMI KAROEUNWI", "slug": "itire-ikate-ogunsanmi-karoeunwi", "polling_units": 57 },
+        { "name": "RAMONI", "slug": "itire-ikate-ramoni", "polling_units": 40 },
+        { "name": "BARUWA", "slug": "itire-ikate-baruwa", "polling_units": 39 }
+      ]
+    },
+    {
+      "name": "KOSOFE",
+      "slug": "kosofe",
+      "code": null,
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 7,
+      "polling_unit_count": 334,
+      "wards": [
+        { "name": "OLUBORI/MOSAFEJO", "slug": "kosofe-olubori-mosafejo", "polling_units": 54 },
+        { "name": "ORILE OWORO", "slug": "kosofe-orile-oworo", "polling_units": 35 },
+        { "name": "ARAROMI/IFAKO", "slug": "kosofe-araromi-ifako", "polling_units": 79 },
+        { "name": "ANTHONY", "slug": "kosofe-anthony", "polling_units": 27 },
+        { "name": "MENDE", "slug": "kosofe-mende", "polling_units": 24 },
+        { "name": "OJOTA", "slug": "kosofe-ojota", "polling_units": 65 },
+        { "name": "OGUDU", "slug": "kosofe-ogudu", "polling_units": 50 }
+      ]
+    },
+    {
+      "name": "LAGOS ISLAND",
+      "slug": "lagos-island",
+      "code": null,
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 10,
+      "polling_unit_count": 190,
+      "wards": [
+        { "name": "OKE-OLOWOGBOWO", "slug": "lagos-island-oke-olowogbowo", "polling_units": 13 },
+        { "name": "BALOGUN", "slug": "lagos-island-balogun", "polling_units": 17 },
+        { "name": "ARIN/IDUMOTA", "slug": "lagos-island-arin-idumota", "polling_units": 26 },
+        { "name": "OLUWOLE", "slug": "lagos-island-oluwole", "polling_units": 10 },
+        { "name": "IDUNMOYINBO", "slug": "lagos-island-idunmoyinbo", "polling_units": 30 },
+        { "name": "OKO-AWO", "slug": "lagos-island-oko-awo", "polling_units": 19 },
+        { "name": "ALAGBA/OBADINA", "slug": "lagos-island-alagba-obadina", "polling_units": 15 },
+        { "name": "IDUNGANRAN/IDUMAGBO", "slug": "lagos-island-idunganran-idumagbo", "polling_units": 24 },
+        { "name": "ILUPESI/EBUTE-AWE", "slug": "lagos-island-ilupesi-ebute-awe", "polling_units": 23 },
+        { "name": "ISALE GANGAN", "slug": "lagos-island-isale-gangan", "polling_units": 13 }
+      ]
+    },
+    {
+      "name": "LAGOS ISLAND EAST",
+      "slug": "lagos-island-east",
+      "code": "14B",
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 10,
+      "polling_unit_count": 199,
+      "wards": [
+        { "name": "OLOSUN/OJO-OTO", "slug": "lagos-island-east-olosun-ojo-oto", "polling_units": 17 },
+        { "name": "AJELE", "slug": "lagos-island-east-ajele", "polling_units": 22 },
+        { "name": "ANIKANTAMO", "slug": "lagos-island-east-anikantamo", "polling_units": 14 },
+        { "name": "OKEPOPO WEST", "slug": "lagos-island-east-okepopo-west", "polling_units": 19 },
+        { "name": "OKEPOPO EAST", "slug": "lagos-island-east-okepopo-east", "polling_units": 29 },
+        { "name": "ODAN", "slug": "lagos-island-east-odan", "polling_units": 18 },
+        { "name": "ARAROMI OJO", "slug": "lagos-island-east-araromi-ojo", "polling_units": 14 },
+        { "name": "LAFIAJI", "slug": "lagos-island-east-lafiaji", "polling_units": 16 },
+        { "name": "EPETEDO WEST", "slug": "lagos-island-east-epetedo-west", "polling_units": 24 },
+        { "name": "EPETEDO EAST", "slug": "lagos-island-east-epetedo-east", "polling_units": 26 }
+      ]
+    },
+    {
+      "name": "LAGOS MAINLAND",
+      "slug": "lagos-mainland",
+      "code": null,
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 9,
+      "polling_unit_count": 229,
+      "wards": [
+        { "name": "OTTO", "slug": "lagos-mainland-otto", "polling_units": 15 },
+        { "name": "BOTANICAL GARDEN", "slug": "lagos-mainland-botanical-garden", "polling_units": 25 },
+        { "name": "OJO ONIYUN", "slug": "lagos-mainland-ojo-oniyun", "polling_units": 28 },
+        { "name": "ALOBA/DESALU", "slug": "lagos-mainland-aloba-desalu", "polling_units": 19 },
+        { "name": "IPONRI/OLALEYE", "slug": "lagos-mainland-iponri-olaleye", "polling_units": 31 },
+        { "name": "OYINGBO", "slug": "lagos-mainland-oyingbo", "polling_units": 24 },
+        { "name": "ARAROMI", "slug": "lagos-mainland-araromi", "polling_units": 24 },
+        { "name": "FREEMAN/GOVER", "slug": "lagos-mainland-freeman-gover", "polling_units": 29 },
+        { "name": "OKOBABA", "slug": "lagos-mainland-okobaba", "polling_units": 34 }
+      ]
+    },
+    {
+      "name": "LEKKI",
+      "slug": "lekki",
+      "code": "09B",
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 5,
+      "polling_unit_count": 76,
+      "wards": [
+        { "name": "LEKKI I", "slug": "lekki-lekki-i", "polling_units": 12 },
+        { "name": "LEKKI II", "slug": "lekki-lekki-ii", "polling_units": 19 },
+        { "name": "SIRIWON/IGBERIKODO I", "slug": "lekki-siriwon-igberikodo-i", "polling_units": 13 },
+        { "name": "SIRIWON/IGBERIKODO II", "slug": "lekki-siriwon-igberikodo-ii", "polling_units": 11 },
+        { "name": "ISE/IGBOGUN", "slug": "lekki-ise-igbogun", "polling_units": 21 }
+      ]
+    },
+    {
+      "name": "MOSAN-OKUNOLA",
+      "slug": "mosan-okunola",
+      "code": "03F",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 5,
+      "polling_unit_count": 190,
+      "wards": [
+        { "name": "MOSAN/AKINOSUN", "slug": "mosan-okunola-mosan-akinosun", "polling_units": 44 },
+        { "name": "GOWON ESTATE", "slug": "mosan-okunola-gowon-estate", "polling_units": 55 },
+        { "name": "OKUNOLA", "slug": "mosan-okunola-okunola", "polling_units": 19 },
+        { "name": "ABESAN I", "slug": "mosan-okunola-abesan-i", "polling_units": 46 },
+        { "name": "ABESAN II", "slug": "mosan-okunola-abesan-ii", "polling_units": 26 }
+      ]
+    },
+    {
+      "name": "MUSHIN",
+      "slug": "mushin",
+      "code": null,
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 10,
+      "polling_unit_count": 547,
+      "wards": [
+        { "name": "MUSHIN ATEWOLARA", "slug": "mushin-mushin-atewolara", "polling_units": 83 },
+        { "name": "PAPA AJAO", "slug": "mushin-papa-ajao", "polling_units": 64 },
+        { "name": "ALAFIA/ADEOYO", "slug": "mushin-alafia-adeoyo", "polling_units": 55 },
+        { "name": "ALAFIA/IGBEYIN", "slug": "mushin-alafia-igbeyin", "polling_units": 50 },
+        { "name": "BABAOLOSA", "slug": "mushin-babaolosa", "polling_units": 50 },
+        { "name": "MOSALASI AGORO", "slug": "mushin-mosalasi-agoro", "polling_units": 45 },
+        { "name": "ONITIRE", "slug": "mushin-onitire", "polling_units": 66 },
+        { "name": "ODUSELU/OLA", "slug": "mushin-oduselu-ola", "polling_units": 42 },
+        { "name": "ODO ERAN/OGUNLANA", "slug": "mushin-odo-eran-ogunlana", "polling_units": 45 },
+        { "name": "IDI ARABA", "slug": "mushin-idi-araba", "polling_units": 47 }
+      ]
+    },
+    {
+      "name": "ODIOLOWO-OJUWOYE",
+      "slug": "odiolowo-ojuwoye",
+      "code": "16B",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 9,
+      "polling_unit_count": 318,
+      "wards": [
+        { "name": "ALAKARA", "slug": "odiolowo-ojuwoye-alakara", "polling_units": 44 },
+        { "name": "IDI-ORO/IDI-OLOWO", "slug": "odiolowo-ojuwoye-idi-oro-idi-olowo", "polling_units": 34 },
+        { "name": "BABALOSA", "slug": "odiolowo-ojuwoye-babalosa", "polling_units": 35 },
+        { "name": "OJUWOYE", "slug": "odiolowo-ojuwoye-ojuwoye", "polling_units": 40 },
+        { "name": "ILUPEJU", "slug": "odiolowo-ojuwoye-ilupeju", "polling_units": 37 },
+        { "name": "OWODUNNI", "slug": "odiolowo-ojuwoye-owodunni", "polling_units": 25 },
+        { "name": "OLATEJU", "slug": "odiolowo-ojuwoye-olateju", "polling_units": 30 },
+        { "name": "KAYODE/FADEYI", "slug": "odiolowo-ojuwoye-kayode-fadeyi", "polling_units": 50 },
+        { "name": "ILUPEJU-INDUSTRIAL ESTATE", "slug": "odiolowo-ojuwoye-ilupeju-industrial-estate", "polling_units": 23 }
+      ]
+    },
+    {
+      "name": "OJO",
+      "slug": "ojo",
+      "code": null,
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 5,
+      "polling_unit_count": 235,
+      "wards": [
+        { "name": "OJO TOWN", "slug": "ojo-ojo-town", "polling_units": 42 },
+        { "name": "IRA", "slug": "ojo-ira", "polling_units": 51 },
+        { "name": "SABO ONIBA", "slug": "ojo-sabo-oniba", "polling_units": 125 },
+        { "name": "IREWE", "slug": "ojo-irewe", "polling_units": 9 },
+        { "name": "TAFI", "slug": "ojo-tafi", "polling_units": 8 }
+      ]
+    },
+    {
+      "name": "OJODU",
+      "slug": "ojodu",
+      "code": "11B",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 6,
+      "polling_unit_count": 243,
+      "wards": [
+        { "name": "OGBA/OLUWOLE", "slug": "ojodu-ogba-oluwole", "polling_units": 35 },
+        { "name": "AGUDA", "slug": "ojodu-aguda", "polling_units": 47 },
+        { "name": "OKE-IRA CENTRAL", "slug": "ojodu-oke-ira-central", "polling_units": 29 },
+        { "name": "OKE-IRA POWERLINE", "slug": "ojodu-oke-ira-powerline", "polling_units": 24 },
+        { "name": "AKIODE", "slug": "ojodu-akiode", "polling_units": 36 },
+        { "name": "OJODU", "slug": "ojodu-ojodu", "polling_units": 72 }
+      ]
+    },
+    {
+      "name": "OJOKORO",
+      "slug": "ojokoro",
+      "code": "10B",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 7,
+      "polling_unit_count": 433,
+      "wards": [
+        { "name": "PANADA", "slug": "ojokoro-panada", "polling_units": 57 },
+        { "name": "OKO OBA/OKE EGBIRI", "slug": "ojokoro-oko-oba-oke-egbiri", "polling_units": 50 },
+        { "name": "ABULE EGBA/ILUPEJU", "slug": "ojokoro-abule-egba-ilupeju", "polling_units": 62 },
+        { "name": "IJAIYE GBIRINMI", "slug": "ojokoro-ijaiye-gbirinmi", "polling_units": 48 },
+        { "name": "IJAIYE/OJOKORO", "slug": "ojokoro-ijaiye-ojokoro", "polling_units": 120 },
+        { "name": "ALAGBADO/KOLLINGTON", "slug": "ojokoro-alagbado-kollington", "polling_units": 47 },
+        { "name": "ALAKUKO/AJEGUNLE", "slug": "ojokoro-alakuko-ajegunle", "polling_units": 49 }
+      ]
+    },
+    {
+      "name": "OLORUNDA",
+      "slug": "olorunda",
+      "code": "06C",
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 5,
+      "polling_unit_count": 170,
+      "wards": [
+        { "name": "IWORO-GBANKO", "slug": "olorunda-iworo-gbanko", "polling_units": 29 },
+        { "name": "IBEREKO", "slug": "olorunda-ibereko", "polling_units": 41 },
+        { "name": "ARADAGUN-MOWO", "slug": "olorunda-aradagun-mowo", "polling_units": 23 },
+        { "name": "ILOGBO", "slug": "olorunda-ilogbo", "polling_units": 32 },
+        { "name": "ARAROMI ALE", "slug": "olorunda-araromi-ale", "polling_units": 45 }
+      ]
+    },
+    {
+      "name": "ONIGBONGBO",
+      "slug": "onigbongbo",
+      "code": "11C",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 6,
+      "polling_unit_count": 214,
+      "wards": [
+        { "name": "ONIGBONGBO", "slug": "onigbongbo-onigbongbo", "polling_units": 51 },
+        { "name": "G.R.A.", "slug": "onigbongbo-g-r-a", "polling_units": 49 },
+        { "name": "WASIMI", "slug": "onigbongbo-wasimi", "polling_units": 13 },
+        { "name": "OPEBI", "slug": "onigbongbo-opebi", "polling_units": 46 },
+        { "name": "OREGUN", "slug": "onigbongbo-oregun", "polling_units": 34 },
+        { "name": "OLUSOSUN", "slug": "onigbongbo-olusosun", "polling_units": 21 }
+      ]
+    },
+    {
+      "name": "ORIADE",
+      "slug": "oriade",
+      "code": "04B",
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 7,
+      "polling_unit_count": 327,
+      "wards": [
+        { "name": "KIRIKIRI", "slug": "oriade-kirikiri", "polling_units": 59 },
+        { "name": "KUJE", "slug": "oriade-kuje", "polling_units": 60 },
+        { "name": "AGBOJU", "slug": "oriade-agboju", "polling_units": 49 },
+        { "name": "IJEGUN EGBA", "slug": "oriade-ijegun-egba", "polling_units": 44 },
+        { "name": "SATELLITE (ABULE ODUN/ONIREKE", "slug": "oriade-satellite-abule-odun-onireke", "polling_units": 80 },
+        { "name": "IREDE", "slug": "oriade-irede", "polling_units": 14 },
+        { "name": "IBESHE", "slug": "oriade-ibeshe", "polling_units": 21 }
+      ]
+    },
+    {
+      "name": "ORILE-AGEGE",
+      "slug": "orile-agege",
+      "code": "01B",
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 6,
+      "polling_unit_count": 380,
+      "wards": [
+        { "name": "ORILE", "slug": "orile-agege-orile", "polling_units": 69 },
+        { "name": "OE KOTO", "slug": "orile-agege-oe-koto", "polling_units": 58 },
+        { "name": "POWERLINE/OKO-OBA", "slug": "orile-agege-powerline-oko-oba", "polling_units": 64 },
+        { "name": "PAPA-ASHAFA", "slug": "orile-agege-papa-ashafa", "polling_units": 91 },
+        { "name": "OYEWOLE/ALAGBA", "slug": "orile-agege-oyewole-alagba", "polling_units": 43 },
+        { "name": "ISALE ODO/AYIGE", "slug": "orile-agege-isale-odo-ayige", "polling_units": 55 }
+      ]
+    },
+    {
+      "name": "OSHODI-ISOLO",
+      "slug": "oshodi-isolo",
+      "code": null,
+      "senatorial_district": "LAGOS WEST I",
+      "ward_count": 7,
+      "polling_unit_count": 365,
+      "wards": [
+        { "name": "OLUYELE", "slug": "oshodi-isolo-oluyele", "polling_units": 60 },
+        { "name": "OGUDNLOKO", "slug": "oshodi-isolo-ogudnloko", "polling_units": 41 },
+        { "name": "IGBEHINADUN", "slug": "oshodi-isolo-igbehinadun", "polling_units": 75 },
+        { "name": "AFARIGOUN", "slug": "oshodi-isolo-afarigoun", "polling_units": 37 },
+        { "name": "MAFOLUKU", "slug": "oshodi-isolo-mafoluku", "polling_units": 65 },
+        { "name": "SHOGUNLE", "slug": "oshodi-isolo-shogunle", "polling_units": 34 },
+        { "name": "EWU", "slug": "oshodi-isolo-ewu", "polling_units": 53 }
+      ]
+    },
+    {
+      "name": "OTO-AWORI",
+      "slug": "oto-awori",
+      "code": "17C",
+      "senatorial_district": "LAGOS WEST II",
+      "ward_count": 5,
+      "polling_unit_count": 153,
+      "wards": [
+        { "name": "OTO-AWORI", "slug": "oto-awori-oto-awori", "polling_units": 35 },
+        { "name": "IJANIKIN", "slug": "oto-awori-ijanikin", "polling_units": 44 },
+        { "name": "ILOGBO-ELEGBA", "slug": "oto-awori-ilogbo-elegba", "polling_units": 44 },
+        { "name": "ETEGBIN", "slug": "oto-awori-etegbin", "polling_units": 20 },
+        { "name": "ESE OFIN", "slug": "oto-awori-ese-ofin", "polling_units": 10 }
+      ]
+    },
+    {
+      "name": "SOMOLU",
+      "slug": "somolu",
+      "code": null,
+      "senatorial_district": "LAGOS EAST",
+      "ward_count": 8,
+      "polling_unit_count": 229,
+      "wards": [
+        { "name": "ONIPANU", "slug": "somolu-onipanu", "polling_units": 23 },
+        { "name": "BASHAU EAST & WEST", "slug": "somolu-bashau-east-west", "polling_units": 21 },
+        { "name": "IJEBU TEDU", "slug": "somolu-ijebu-tedu", "polling_units": 38 },
+        { "name": "ORILE/SOMOLU/ALADE", "slug": "somolu-orile-somolu-alade", "polling_units": 33 },
+        { "name": "OKESUNA/ALASE", "slug": "somolu-okesuna-alase", "polling_units": 33 },
+        { "name": "BAJULAIYE", "slug": "somolu-bajulaiye", "polling_units": 26 },
+        { "name": "IGBARI/AKOKA", "slug": "somolu-igbari-akoka", "polling_units": 24 },
+        { "name": "IGBOBI/FADEYI", "slug": "somolu-igbobi-fadeyi", "polling_units": 31 }
+      ]
+    },
+    {
+      "name": "SURULERE",
+      "slug": "surulere",
+      "code": null,
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 9,
+      "polling_unit_count": 258,
+      "wards": [
+        { "name": "OBELE ONIWALA", "slug": "surulere-obele-oniwala", "polling_units": 19 },
+        { "name": "AKINHANMI COLE", "slug": "surulere-akinhanmi-cole", "polling_units": 33 },
+        { "name": "MOSAFEJO/OJUELEDGBA", "slug": "surulere-mosafejo-ojueledgba", "polling_units": 37 },
+        { "name": "ARALILE", "slug": "surulere-aralile", "polling_units": 16 },
+        { "name": "GBAJA OBELE ODAN", "slug": "surulere-gbaja-obele-odan", "polling_units": 27 },
+        { "name": "BABATUNDE AYILARA", "slug": "surulere-babatunde-ayilara", "polling_units": 33 },
+        { "name": "SHITTA BANK OLEMOH", "slug": "surulere-shitta-bank-olemoh", "polling_units": 24 },
+        { "name": "ADENIRAN OGUNSANYA", "slug": "surulere-adeniran-ogunsanya", "polling_units": 38 },
+        { "name": "IPONRI ERIC MOOR", "slug": "surulere-iponri-eric-moor", "polling_units": 31 }
+      ]
+    },
+    {
+      "name": "YABA",
+      "slug": "yaba",
+      "code": "15B",
+      "senatorial_district": "LAGOS CENTRAL",
+      "ward_count": 9,
+      "polling_unit_count": 264,
+      "wards": [
+        { "name": "ADEKUNLE/AIYETORO", "slug": "yaba-adekunle-aiyetoro", "polling_units": 21 },
+        { "name": "MAKOKO", "slug": "yaba-makoko", "polling_units": 41 },
+        { "name": "ONIKE-OYADIRAN", "slug": "yaba-onike-oyadiran", "polling_units": 23 },
+        { "name": "ABULE-OJA", "slug": "yaba-abule-oja", "polling_units": 33 },
+        { "name": "ALAGOMEJI", "slug": "yaba-alagomeji", "polling_units": 40 },
+        { "name": "ADERUPOKO/IJEBU QUARTERS", "slug": "yaba-aderupoko-ijebu-quarters", "polling_units": 34 },
+        { "name": "SALAMI/BAIYEWUNMI", "slug": "yaba-salami-baiyewunmi", "polling_units": 25 },
+        { "name": "HARVEY", "slug": "yaba-harvey", "polling_units": 31 },
+        { "name": "ABULE-IJESHA", "slug": "yaba-abule-ijesha", "polling_units": 16 }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,7 @@
     "start": "node --import ./scripts/dns-override.mjs ./node_modules/next/dist/bin/next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "verify:wards": "node --no-warnings --import ./scripts/with-models.mjs scripts/verify-wards.mjs",
     "admin:create": "node --env-file=.env.local scripts/create-admin.mjs",
     "import:people": "node --no-warnings --import ./scripts/with-models.mjs --env-file=.env.local scripts/import-people.mjs"
   },

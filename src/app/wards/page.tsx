@@ -4,28 +4,33 @@ import { PageHeader, HeaderFacts } from "@/components/sections/PageHeader";
 import { Section } from "@/components/sections/Section";
 import { SectionHeader, Card } from "@/components/ui/primitives";
 import { EmptyState } from "@/components/ui/states";
-import { getLgas, getWards } from "@/lib/content";
+import { getLcdas, getLgas, getWards } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 import { groupBy } from "@/lib/utils";
 
 export const metadata: Metadata = buildMetadata({
   title: "Political wards",
   description:
-    "Ward-level delimitation across the 20 Local Government Areas of Lagos State, the base unit of the party structure.",
+    "All 376 wards of Lagos State, across the 20 Local Government Areas and the 37 LCDAs carved out of them - the base unit of the party structure.",
   path: "/wards",
   keywords: ["Lagos wards", "Lagos ward delimitation", "APC Lagos ward structure"],
 });
 
 export default async function WardsPage() {
-  const [wards, lgas] = await Promise.all([getWards(), getLgas()]);
+  const [wards, lgas, lcdas] = await Promise.all([getWards(), getLgas(), getLcdas()]);
   const byLga = groupBy(wards, (ward) => ward.lgaSlug);
+  const pollingUnits = wards.reduce((sum, ward) => sum + (ward.pollingUnits ?? 0), 0);
+  // A ward inside an LCDA is filed under its parent LGA, so the LCDA's name is
+  // shown on the chip - otherwise 226 of the 376 wards look like they belong
+  // directly to a local government they were carved out of.
+  const lcdaName = new Map(lcdas.map((lcda) => [lcda.slug, lcda.name]));
 
   return (
     <>
       <PageHeader
         eyebrow="Political structure"
         title="Political wards"
-        description="The ward is the base unit of the party structure: congresses begin here, and every member is registered in one. Wards are delimited by the Independent National Electoral Commission across the state's 20 Local Government Areas."
+        description="The ward is the base unit of the party structure: congresses begin here, and every member is registered in one. Lagos State is delimited into 376 wards across 57 administrative councils - the 20 Local Government Areas and the 37 Local Council Development Areas carved out of them. Wards are listed below under their local government."
         breadcrumbs={[
           { name: "Home", href: "/" },
           { name: "Local Councils", href: "/councils" },
@@ -34,10 +39,10 @@ export default async function WardsPage() {
       >
         <HeaderFacts
           items={[
-            { label: "Published wards", value: wards.length || "Pending" },
+            { label: "Wards", value: wards.length || "Pending" },
+            { label: "Polling units", value: pollingUnits.toLocaleString("en-NG") },
             { label: "Local Government Areas", value: lgas.length },
-            { label: "LCDAs", value: 37 },
-            { label: "State constituencies", value: 40 },
+            { label: "LCDAs", value: lcdas.length },
           ]}
         />
       </PageHeader>
@@ -46,21 +51,22 @@ export default async function WardsPage() {
         {wards.length === 0 ? (
           <>
             <EmptyState
-              title="The ward register has not been published yet"
+              title="The ward register is not loaded"
               description={
                 <>
-                  Per-LGA ward counts and ward names have deliberately not been
-                  estimated. Load the party&rsquo;s authoritative ward register
-                  into{" "}
+                  The register lives at{" "}
                   <code className="rounded bg-paper-200 px-1.5 py-0.5 font-mono text-[0.75rem] text-ink-800">
-                    src/data/resources.ts
+                    src/data/lagos-wards.json
                   </code>{" "}
-                  — a CSV template is provided at{" "}
+                  and is mapped in{" "}
                   <code className="rounded bg-paper-200 px-1.5 py-0.5 font-mono text-[0.75rem] text-ink-800">
-                    content/wards.template.csv
+                    src/data/wards.ts
+                  </code>
+                  . Run{" "}
+                  <code className="rounded bg-paper-200 px-1.5 py-0.5 font-mono text-[0.75rem] text-ink-800">
+                    npm run verify:wards
                   </code>{" "}
-                  — and this page, every council page and the structure explorer
-                  will fill in automatically.
+                  to check the mapping against the register&rsquo;s own totals.
                 </>
               }
             />
@@ -104,7 +110,11 @@ export default async function WardsPage() {
                       </Link>
                     </h2>
                     <span className="tnum text-sm text-fg-subtle">
-                      {byLga[lga.slug].length} wards
+                      {byLga[lga.slug].length} wards ·{" "}
+                      {byLga[lga.slug]
+                        .reduce((sum, ward) => sum + (ward.pollingUnits ?? 0), 0)
+                        .toLocaleString("en-NG")}{" "}
+                      polling units
                     </span>
                   </div>
                   <Card className="mt-4 p-5">
@@ -117,7 +127,17 @@ export default async function WardsPage() {
                                 {ward.code}
                               </span>
                             ) : null}
-                            {ward.name}
+                            <span className="text-fg">{ward.name}</span>
+                            {ward.lcdaSlug ? (
+                              <span className="text-xs text-fg-subtle">
+                                {lcdaName.get(ward.lcdaSlug) ?? ward.lcdaSlug}
+                              </span>
+                            ) : null}
+                            {ward.pollingUnits ? (
+                              <span className="tnum text-xs text-fg-subtle">
+                                {ward.pollingUnits} PU
+                              </span>
+                            ) : null}
                           </span>
                         </li>
                       ))}

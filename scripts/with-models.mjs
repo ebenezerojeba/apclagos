@@ -22,6 +22,11 @@
  * `shared.ts` itself. Node's ESM resolver requires the extension, so a failed
  * resolution is retried with `.ts` and then `/index.ts`.
  *
+ * **JSON imports.** Node requires `with { type: "json" }` on every JSON import;
+ * webpack and TypeScript do not. The attribute is supplied here rather than
+ * written into `src/`, so application code stays idiomatic for the bundler that
+ * actually builds it.
+ *
  * The alternative to all of this is restating each schema inside every script,
  * which is how a seed script drifts out of step with the collection it writes
  * to: the model gains a required field, the script does not, and the rows it
@@ -44,12 +49,18 @@ const SRC = join(dirname(fileURLToPath(import.meta.url)), "..", "src");
 function withExtensions(specifier, context, nextResolve) {
   for (const candidate of [`${specifier}.ts`, `${specifier}.tsx`, `${specifier}/index.ts`]) {
     try {
-      return nextResolve(candidate, context);
+      return withJsonAttribute(nextResolve(candidate, context));
     } catch {
       // Try the next shape.
     }
   }
   return null;
+}
+
+/** Node demands an explicit attribute for JSON; the bundler does not. */
+function withJsonAttribute(resolved) {
+  if (!resolved?.url?.endsWith(".json")) return resolved;
+  return { ...resolved, importAttributes: { type: "json" } };
 }
 
 registerHooks({
@@ -62,7 +73,7 @@ registerHooks({
     if (specifier.startsWith("@/")) {
       const absolute = pathToFileURL(join(SRC, specifier.slice(2))).href;
       try {
-        return nextResolve(absolute, context);
+        return withJsonAttribute(nextResolve(absolute, context));
       } catch (error) {
         const resolved = withExtensions(absolute, context, nextResolve);
         if (resolved) return resolved;
@@ -71,7 +82,7 @@ registerHooks({
     }
 
     try {
-      return nextResolve(specifier, context);
+      return withJsonAttribute(nextResolve(specifier, context));
     } catch (error) {
       const relative = specifier.startsWith("./") || specifier.startsWith("../");
       const extensionless = !/\.[a-z]+$/i.test(specifier);

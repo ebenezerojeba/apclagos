@@ -290,16 +290,23 @@ export interface Ward extends BaseRecord {
   name: string;
   /** Ward code where the party or INEC publishes one, e.g. "01". */
   code?: string;
+  /** Always the base LGA - for a ward inside an LCDA, that LCDA's parent. */
   lgaSlug: Slug;
   lcdaSlug?: Slug;
+  /** Polling units in the ward, from the LASIEC register. */
+  pollingUnits?: number;
 }
 
 export interface LocalGovernmentArea extends BaseRecord {
   name: string;
   councilType: "LGA";
   headquarters?: string;
-  /** Number of INEC wards. Kept as data so it can be corrected centrally. */
+  /** Number of wards. Kept as data so it can be corrected centrally. */
   wardCount?: number;
+  /** Polling units across the council, from the LASIEC register. */
+  pollingUnitCount?: number;
+  /** LASIEC's field-operations code, where one is published. */
+  lasiecCode?: string;
   /** LCDAs carved out of this LGA. */
   lcdaSlugs: Slug[];
   senatorialDistrictSlug: Slug;
@@ -320,6 +327,10 @@ export interface LocalCouncilDevelopmentArea extends BaseRecord {
   parentLgaSlug: Slug;
   headquarters?: string;
   wardCount?: number;
+  /** Polling units across the council, from the LASIEC register. */
+  pollingUnitCount?: number;
+  /** LASIEC's field-operations code, where one is published. */
+  lasiecCode?: string;
   chairmanSlug?: Slug;
   viceChairmanSlug?: Slug;
   secretarySlug?: Slug;

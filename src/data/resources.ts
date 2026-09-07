@@ -1,4 +1,4 @@
-import type { Achievement, PartyDocument, Ward } from "@/types/content";
+import type { Achievement, PartyDocument } from "@/types/content";
 
 /**
  * ACHIEVEMENTS — ships empty on purpose.
@@ -51,16 +51,20 @@ export const achievements: Achievement[] = [];
 export const partyDocuments: PartyDocument[] = [];
 
 /**
- * WARDS — ships empty on purpose.
+ * WARDS - the LASIEC register, loaded from `src/data/wards.ts`.
  *
- * Lagos State is delimited into INEC wards across its 20 LGAs. The per-LGA
- * breakdown has deliberately NOT been estimated. Load the party's authoritative
- * ward register here (a CSV template is provided at `content/wards.template.csv`)
- * and the ward directory, council pages and structure explorer fill in.
+ * Lagos State is delimited into 376 wards across 57 administrative councils:
+ * the 20 local government areas and the 37 LCDAs carved out of them. The
+ * register is stored verbatim at `src/data/lagos-wards.json` and mapped onto
+ * this application's council model in `src/data/wards.ts`.
  *
- * WORKED EXAMPLE:
+ * It stays in the repository rather than the database for the same reason the
+ * constituencies do: ward delimitation changes by legislation, not by an
+ * editor, and a mistyped ward slug would silently detach a ward from its
+ * council. `scripts/verify-wards.mjs` re-checks the mapping against the
+ * register's own totals.
  *
- *   { id: "ikeja-01", slug: "ikeja-01", status: "published",
- *     name: "Ward A", code: "01", lgaSlug: "ikeja", lcdaSlug: "onigbongbo" }
+ * No per-ward code is published in the register, so `Ward.code` is unset rather
+ * than invented.
  */
-export const wards: Ward[] = [];
+export { wards } from "./wards";

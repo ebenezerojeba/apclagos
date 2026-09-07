@@ -6,6 +6,7 @@ import type {
   StateConstituency,
 } from "@/types/content";
 import { slugify } from "@/lib/slug";
+import { wardStatsFor } from "./wards";
 
 /**
  * The political geography of Lagos State.
@@ -44,20 +45,16 @@ function base<T extends string>(name: T, order: number) {
 const DISTRICT_TABLE: { name: string; lgas: string[]; description: string }[] = [
   {
     name: "Lagos Central",
-    lgas: ["Apapa", "Lagos Island", "Lagos Mainland", "Surulere"],
+    // Eti-Osa sits here, not in Lagos East. Corrected against the LASIEC ward
+    // register, which files Eti-Osa, Eti-Osa East and Iru-Victoria Island under
+    // LAGOS CENTRAL; the previous grouping put all three in the wrong district.
+    lgas: ["Apapa", "Eti-Osa", "Lagos Island", "Lagos Mainland", "Surulere"],
     description:
       "The commercial and administrative core of the state, covering the island business district, the port city of Apapa and the mainland's oldest neighbourhoods.",
   },
   {
     name: "Lagos East",
-    lgas: [
-      "Epe",
-      "Eti-Osa",
-      "Ibeju-Lekki",
-      "Ikorodu",
-      "Kosofe",
-      "Shomolu",
-    ],
+    lgas: ["Epe", "Ibeju-Lekki", "Ikorodu", "Kosofe", "Shomolu"],
     description:
       "The state's fastest-growing corridor, stretching from Kosofe and Shomolu through Ikorodu to the Lekki-Epe development axis.",
   },
@@ -202,11 +199,18 @@ export const stateConstituencies: StateConstituency[] = LGA_NAMES.flatMap(
 /*  Local Council Development Areas (37)                                       */
 /* -------------------------------------------------------------------------- */
 
-/** `[LCDA name, parent LGA name]` */
+/**
+ * `[LCDA name, parent LGA name]`
+ *
+ * Reconciled against the LASIEC ward register, which is the authority here.
+ * That register lists Ifelodun (code 02B, under Ajeromi-Ifelodun) and
+ * Ikoyi-Obalende (08C, under Eti-Osa); it has no entry for Ajeromi or Ibeju,
+ * which this table previously carried and which held no wards. The count is
+ * unchanged at 37 either way.
+ */
 const LCDA_TABLE: [string, string][] = [
   ["Agbado/Oke-Odo", "Alimosho"],
   ["Agboyi-Ketu", "Kosofe"],
-  ["Ajeromi", "Ajeromi-Ifelodun"],
   ["Apapa-Iganmu", "Apapa"],
   ["Ayobo-Ipaja", "Alimosho"],
   ["Badagry West", "Badagry"],
@@ -217,7 +221,7 @@ const LCDA_TABLE: [string, string][] = [
   ["Eredo", "Epe"],
   ["Eti-Osa East", "Eti-Osa"],
   ["Iba", "Ojo"],
-  ["Ibeju", "Ibeju-Lekki"],
+  ["Ifelodun", "Ajeromi-Ifelodun"],
   ["Igando-Ikotun", "Alimosho"],
   ["Igbogbo-Baiyeku", "Ikorodu"],
   ["Ijede", "Ikorodu"],
@@ -225,6 +229,7 @@ const LCDA_TABLE: [string, string][] = [
   ["Ikorodu West", "Ikorodu"],
   ["Ikosi-Ejinrin", "Epe"],
   ["Ikosi-Isheri", "Kosofe"],
+  ["Ikoyi-Obalende", "Eti-Osa"],
   ["Imota", "Ikorodu"],
   ["Iru-Victoria Island", "Eti-Osa"],
   ["Isolo", "Oshodi-Isolo"],
@@ -244,12 +249,18 @@ const LCDA_TABLE: [string, string][] = [
 ];
 
 export const lcdas: LocalCouncilDevelopmentArea[] = LCDA_TABLE.map(
-  ([name, parent], i) => ({
-    ...base(name, i),
-    name,
-    councilType: "LCDA" as const,
-    parentLgaSlug: slugify(parent),
-  }),
+  ([name, parent], i) => {
+    const stats = wardStatsFor(slugify(name));
+    return {
+      ...base(name, i),
+      name,
+      councilType: "LCDA" as const,
+      parentLgaSlug: slugify(parent),
+      wardCount: stats?.wardCount,
+      pollingUnitCount: stats?.pollingUnitCount,
+      lasiecCode: stats?.lasiecCode,
+    };
+  },
 );
 
 export const lgas: LocalGovernmentArea[] = LGA_NAMES.map((name, i) => ({
@@ -267,9 +278,12 @@ export const lgas: LocalGovernmentArea[] = LGA_NAMES.map((name, i) => ({
     slugify(`${name} Constituency I`),
     slugify(`${name} Constituency II`),
   ],
-  // NEEDS-VERIFICATION: per-LGA INEC ward counts are intentionally omitted
-  // rather than estimated. Populate `wardCount` (and src/data/wards.ts) from the
-  // party's own delimitation records.
+  // Ward and polling-unit counts come from the LASIEC register in
+  // src/data/wards.ts. These are the council's OWN wards, not the wards of the
+  // LCDAs carved out of it - the LCDAs carry their own counts.
+  wardCount: wardStatsFor(slugify(name))?.wardCount,
+  pollingUnitCount: wardStatsFor(slugify(name))?.pollingUnitCount,
+  lasiecCode: wardStatsFor(slugify(name))?.lasiecCode,
 }));
 
 /* -------------------------------------------------------------------------- */

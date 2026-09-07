@@ -91,13 +91,16 @@ export const brandLogo: { src: string; alt: string; width: number; height: numbe
 
 /** NEEDS-VERIFICATION: replace with the secretariat's published details. */
 export const siteContact: ContactInfo = {
-  addressLines: ["APC Lagos State Secretariat", " 151 Acme Road, Ogba, Ikeja, Lagos"],
+  addressLines: [
+    "APC Lagos State Secretariat",
+    "151 Acme Road, Ogba, Ikeja, Lagos",
+  ],
   city: "Lagos",
   state: "Lagos State",
   phones: ["+234 000 000 0000"],
   emails: ["info@apclagos.org"],
   openingHours: "Monday to Saturday, 9:00am - 4:00pm (WAT)",
-  mapQuery: "Lagos State Secretariat, Alausa, Ikeja, Lagos",
+  mapQuery: "APC Secretariat, 151 Acme Road, Ogba, Ikeja, Lagos, Nigeria",
 };
 
 /** NEEDS-VERIFICATION: replace with the party's official handles. */

@@ -99,7 +99,7 @@ export const aboutFacts: { label: string; value: string; note?: string }[] = [
   { label: "State constituencies", value: "40" },
   {
     label: "State secretariat",
-    value: "Address to be supplied",
-    note: "Update in src/data/site.ts",
+    value: "151 Acme Road, Ogba, Ikeja, Lagos",
+
   },
 ];
