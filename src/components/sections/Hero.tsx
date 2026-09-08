@@ -134,14 +134,66 @@ export function Hero({ stats }: { stats: StatItem[] }) {
       return;
     }
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setInView(entry.isIntersecting);
-        if (entry.isIntersecting && !reduced) setMountField(true);
-      },
+      ([entry]) => setInView(entry.isIntersecting),
       { threshold: 0.15 },
     );
     observer.observe(el);
     return () => observer.disconnect();
+  }, []);
+
+  /**
+   * Decides whether this device gets the WebGL layer at all.
+   *
+   * The field is ambience: a faint depth wash behind the photograph, worth
+   * having on a desktop and worth nothing on a phone. Three.js is ~860 KB of
+   * JavaScript plus a GPU context, and it was previously mounted as soon as the
+   * hero scrolled into view — which on a first load is immediately, on every
+   * device. On a mid-range phone that lands squarely on top of the largest
+   * contentful paint, for a decoration nobody can see behind the image.
+   *
+   * So it is scoped to hardware that can absorb it, and deferred until the
+   * browser is idle so it can never compete with the hero image for bandwidth
+   * or main-thread time. Every signal below is a reason to skip it:
+   *
+   *   - reduced motion, which the whole hero already honours
+   *   - a coarse pointer or a narrow viewport, i.e. a phone or tablet
+   *   - Save-Data, or a connection the browser reports as 2g/3g
+   *   - fewer than 8 logical cores, or 4 GB of reported memory
+   *
+   * The result is that the phone Lighthouse emulates never downloads Three.js.
+   */
+  useEffect(() => {
+    if (reduced) return;
+    if (typeof window === "undefined") return;
+
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const narrow = window.matchMedia("(max-width: 1023px)").matches;
+    if (coarse || narrow) return;
+
+    const connection = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+        deviceMemory?: number;
+      }
+    ).connection;
+    if (connection?.saveData) return;
+    if (connection?.effectiveType && /(^|-)([23])g$/.test(connection.effectiveType)) return;
+
+    const cores = navigator.hardwareConcurrency ?? 8;
+    const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
+    if (cores < 8 || memory < 4) return;
+
+    // Wait for idle so the download queues behind the hero image, not with it.
+    const idle = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    if (idle.requestIdleCallback) {
+      const handle = idle.requestIdleCallback(() => setMountField(true), { timeout: 3000 });
+      return () => idle.cancelIdleCallback?.(handle);
+    }
+    const timer = window.setTimeout(() => setMountField(true), 2000);
+    return () => window.clearTimeout(timer);
   }, [reduced]);
 
   // Scroll parallax on the whole composition.
