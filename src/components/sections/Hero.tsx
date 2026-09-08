@@ -250,9 +250,25 @@ export function Hero({ stats }: { stats: StatItem[] }) {
       style={
         { "--hero-interval": `${heroSettings.intervalMs}ms` } as React.CSSProperties
       }
-      aria-labelledby="hero-heading"
+      /*
+       * The carousel pattern, spelled out rather than inferred.
+       *
+       * A bare `<section>` only takes the `region` role once it has an
+       * accessible name; until then its role is `generic`, and
+       * `aria-roledescription` is prohibited on a generic role — which is what
+       * an audit flags. Naming it through two mechanisms at once made that
+       * worse rather than better: `aria-labelledby` silently wins and the
+       * `aria-label` beside it is dead weight that suggests the name comes
+       * from somewhere it does not.
+       *
+       * So the role is stated, and the name comes from one place. When there
+       * is only a single frame there is no carousel to describe, and the
+       * section is named by the heading it contains.
+       */
+      role={isCarousel ? "region" : undefined}
       aria-roledescription={isCarousel ? "carousel" : undefined}
       aria-label={isCarousel ? "APC Lagos featured slides" : undefined}
+      aria-labelledby={isCarousel ? undefined : "hero-heading"}
       onKeyDown={onKeyDown}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
@@ -320,7 +336,7 @@ export function Hero({ stats }: { stats: StatItem[] }) {
                     // An upright portrait is blurred back into ambience here;
                     // it is shown whole, sharp, in the card beside the type.
                     sizes={slide.layout === "portrait" ? "50vw" : "100vw"}
-                    quality={slide.layout === "portrait" ? 45 : 82}
+                    quality={slide.layout === "portrait" ? 45 : 72}
                     className={cn(
                       "size-full object-cover [object-position:var(--focus-mobile)] sm:[object-position:var(--focus)]",
                       slide.layout === "portrait" && "scale-110 blur-2xl",

@@ -82,6 +82,16 @@ const nextConfig: NextConfig = {
 
   images: {
     formats: ["image/avif", "image/webp"],
+    /*
+     * Every quality the app actually asks for, declared.
+     *
+     * Next 16 requires this list and warns without it, but the real value is
+     * that it is now impossible to request a quality by accident: anything not
+     * listed here is rejected rather than quietly generating another variant to
+     * cache. 75 is Next's own default, used wherever a component passes no
+     * quality of its own.
+     */
+    qualities: [45, 72, 75, 88],
     deviceSizes: [320, 420, 640, 768, 1024, 1280, 1440, 1920, 2560],
     imageSizes: [64, 96, 128, 192, 256, 384, 512],
     remotePatterns: [

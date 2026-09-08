@@ -159,7 +159,8 @@ export default async function AdminDashboard() {
                   </Link>
                 ) : (
                   <div
-                    aria-disabled="true"
+                    /* No aria-disabled: it is prohibited on a generic role,
+                       and the visible "Not built" badge already says so. */
                     className="flex h-full cursor-not-allowed flex-col rounded-xl border border-dashed border-border bg-paper-100/50 p-5"
                   >
                     {body}
