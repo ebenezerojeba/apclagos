@@ -18,9 +18,10 @@ import {
   fetchLeaders,
   fetchSenators,
   fetchAchievements,
+  fetchGalleryAlbums,
 } from "@/lib/server/repository";
 import { elections } from "@/data/elections";
-import { galleryAlbums, videos } from "@/data/media";
+import { videos } from "@/data/media";
 import { partyDocuments, wards } from "@/data/resources";
 import { byOrderThenName } from "@/lib/utils";
 import type {
@@ -377,15 +378,16 @@ export async function getEventBySlug(slug: Slug): Promise<PartyEvent | undefined
 /* -------------------------------------------------------------------------- */
 
 export async function getGalleryAlbums(): Promise<GalleryAlbum[]> {
-  return published(galleryAlbums).sort((a, b) =>
-    (b.date ?? "").localeCompare(a.date ?? ""),
-  );
+  // Database-backed and managed at /admin/gallery. The repository array this
+  // replaced could only ever be empty, so the gallery showed its empty state
+  // no matter what was uploaded.
+  return fetchGalleryAlbums();
 }
 
 export async function getGalleryAlbumBySlug(
   slug: Slug,
 ): Promise<GalleryAlbum | undefined> {
-  return bySlug(published(galleryAlbums), slug);
+  return bySlug(await fetchGalleryAlbums(), slug);
 }
 
 export async function getVideos(): Promise<Video[]> {

@@ -1,8 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { Achievement, Article, EventModel, Page, Category } from "../models";
-import type { AchievementDoc, ArticleDoc, EventDoc } from "../models";
+import { Achievement, Article, EventModel, GalleryAlbum, Page, Category } from "../models";
+import type { AchievementDoc, ArticleDoc, EventDoc, GalleryAlbumDoc } from "../models";
 import { guard, statusFor } from "../admin/guard";
 import { revalidateFor } from "../admin/revalidate";
 import {
@@ -13,6 +13,7 @@ import {
   fail,
   fromDatabaseError,
   image,
+  imageList,
   num,
   reqStr,
   lines,
@@ -457,4 +458,129 @@ export async function deleteAchievement(form: FormData): Promise<void> {
   if (id) await Achievement.findByIdAndDelete(id).catch(() => null);
   revalidateFor("achievements");
   redirect("/admin/achievements?deleted=1");
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Gallery                                                                    */
+/* -------------------------------------------------------------------------- */
+
+function buildAlbum(form: FormData, role: string) {
+  const photos = imageList(form, "images");
+  return {
+    photos,
+    doc: {
+      slug: slugFrom(form, "slug", "title"),
+      status: statusFor(str(form, "status"), role),
+      order: num(form, "order"),
+      title: reqStr(form, "title"),
+      description: str(form, "description"),
+      category: (str(form, "category") ?? "events") as GalleryAlbumDoc["category"],
+      date: date(form, "date"),
+      location: str(form, "location"),
+      cover: image(form, "cover"),
+      images: photos.images,
+      relatedEventSlug: str(form, "relatedEventSlug"),
+    },
+  };
+}
+
+/**
+ * Refuses a save that would lose a photograph.
+ *
+ * `imageList` counts entries it could not accept instead of discarding them,
+ * so the editor is told which problem to fix and nothing they uploaded
+ * disappears between the form and the database.
+ */
+function photoProblem(photos: ReturnType<typeof imageList>): ActionState | null {
+  if (photos.missingAlt > 0) {
+    return fail(
+      `${photos.missingAlt} photograph${photos.missingAlt === 1 ? " needs" : "s need"} a description ` +
+        "before this album can be saved. Each one is marked in the list.",
+      { images: "Describe every photograph for readers using a screen reader." },
+    );
+  }
+  if (photos.malformed > 0) {
+    return fail(
+      "Some photographs could not be read. Remove them and upload them again.",
+      { images: "One or more uploads were incomplete." },
+    );
+  }
+  return null;
+}
+
+export async function createAlbum(
+  _previous: ActionState,
+  form: FormData,
+): Promise<ActionState> {
+  const auth = await guard("write");
+  if (!auth.ok) return auth.state;
+
+  const { photos, doc } = buildAlbum(form, auth.session.role);
+  const problem = photoProblem(photos);
+  if (problem) return problem;
+  if (!doc.slug) return fail("A URL slug is required.", { slug: "Enter a title, or a slug." });
+
+  let slug: string;
+  try {
+    const created = await GalleryAlbum.create(writable(doc));
+    slug = created.slug;
+  } catch (error) {
+    return fromDatabaseError(error, "create album");
+  }
+
+  revalidateFor("gallery");
+  redirect(`/admin/gallery?saved=${encodeURIComponent(slug)}`);
+}
+
+export async function updateAlbum(
+  _previous: ActionState,
+  form: FormData,
+): Promise<ActionState> {
+  const auth = await guard("write");
+  if (!auth.ok) return auth.state;
+
+  const id = str(form, "id");
+  if (!id) return fail("This album could not be identified. Reload the page and try again.");
+
+  const { photos, doc } = buildAlbum(form, auth.session.role);
+  const problem = photoProblem(photos);
+  if (problem) return problem;
+  if (!doc.slug) return fail("A URL slug is required.", { slug: "Enter a title, or a slug." });
+
+  try {
+    const existing = await GalleryAlbum.findById(id);
+    if (!existing) return fail("That album no longer exists. It may have been deleted.");
+    Object.assign(existing, writable(doc));
+    // `writable` drops empties; an emptied field must be unset explicitly or it
+    // keeps its old value. `images` is always assigned, so removing every
+    // photograph does clear the list.
+    existing.set("images", doc.images);
+    if (doc.cover === null) existing.set("cover", undefined);
+    if (doc.date === null) existing.set("date", undefined);
+    for (const field of ["description", "location", "relatedEventSlug"] as const) {
+      if (doc[field] === undefined) existing.set(field, undefined);
+    }
+    await existing.save();
+  } catch (error) {
+    return fromDatabaseError(error, "update album");
+  }
+
+  revalidateFor("gallery");
+  redirect(`/admin/gallery?saved=${encodeURIComponent(doc.slug)}`);
+}
+
+/**
+ * Deletes the album record. The photographs stay in Cloudinary and in the
+ * media library: they may be reused elsewhere, and destroying an image still
+ * referenced by an article would break a live page.
+ */
+export async function deleteAlbum(form: FormData): Promise<void> {
+  const auth = await guard("delete");
+  if (!auth.ok) {
+    redirect(`/admin/gallery?error=${encodeURIComponent(auth.state.error ?? "Not permitted.")}`);
+  }
+  const id = str(form, "id");
+  if (id) await GalleryAlbum.findByIdAndDelete(id).catch(() => null);
+  revalidateFor("gallery");
+  redirect("/admin/gallery?deleted=1");
 }

@@ -7,6 +7,7 @@ import type { ArticleInitial } from "@/components/admin/ArticleFields";
 import type { EventInitial } from "@/components/admin/EventFields";
 import type { PageInitial } from "@/components/admin/PageFields";
 import type { AchievementInitial } from "@/components/admin/AchievementFields";
+import type { AlbumInitial } from "@/components/admin/AlbumForm";
 import type { CloudinaryImage, ContentBlock } from "../models";
 import {
   senatorialDistricts,
@@ -333,5 +334,34 @@ export function toAchievementInitial(doc: any): AchievementInitial {
     source: doc.source ?? undefined,
     metricLabels: metrics.map((metric) => metric.label),
     metricValues: metrics.map((metric) => metric.value),
+  };
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Gallery                                                                    */
+/* -------------------------------------------------------------------------- */
+
+export function blankAlbum(): AlbumInitial {
+  return { slug: "", status: "draft", title: "", category: "events", cover: null, images: [] };
+}
+
+export function toAlbumInitial(doc: any): AlbumInitial {
+  return {
+    id: String(doc._id),
+    slug: doc.slug ?? "",
+    status: doc.status ?? "draft",
+    order: doc.order ?? undefined,
+    title: doc.title ?? "",
+    description: doc.description ?? undefined,
+    category: doc.category ?? "events",
+    date: toDateInput(doc.date),
+    location: doc.location ?? undefined,
+    relatedEventSlug: doc.relatedEventSlug ?? undefined,
+    cover: toImageValue(doc.cover),
+    images: Array.isArray(doc.images)
+      ? doc.images
+          .map((image: CloudinaryImage) => toImageValue(image))
+          .filter((image: ImageValue | null): image is ImageValue => Boolean(image))
+      : [],
   };
 }

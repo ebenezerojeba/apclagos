@@ -46,7 +46,7 @@ export default async function GalleryPage() {
         {albums.length === 0 ? (
           <AwaitingRecordsState
             what="Photo albums"
-            dataFile="src/data/media.ts"
+            dataFile="the admin, under Gallery"
           />
         ) : (
           <MediaLibrary

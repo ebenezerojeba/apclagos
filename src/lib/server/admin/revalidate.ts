@@ -26,6 +26,7 @@ type Collection =
   | "pages"
   | "categories"
   | "achievements"
+  | "gallery"
   | "settings";
 
 /** Routes that list or summarise each collection. */
@@ -48,6 +49,7 @@ const LIST_ROUTES: Record<Collection, string[]> = {
   pages: ["/", "/about", "/achievements", "/documents"],
   categories: ["/news"],
   achievements: ["/", "/achievements"],
+  gallery: ["/", "/gallery", "/search"],
   settings: ["/", "/contact"],
 };
 
@@ -65,6 +67,7 @@ const DETAIL_ROUTES: Record<Collection, string[]> = {
   pages: [],
   categories: ["/news/[slug]"],
   achievements: ["/lgas/[slug]"],
+  gallery: ["/gallery/[slug]", "/events/[slug]"],
   settings: [],
 };
 

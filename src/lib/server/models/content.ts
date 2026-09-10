@@ -328,3 +328,90 @@ achievementSchema.index({ title: "text", summary: "text" });
 attachPublishHook(achievementSchema);
 
 export const Achievement = defineModel<AchievementDoc>("Achievement", achievementSchema);
+
+/* -------------------------------------------------------------------------- */
+/*  Gallery album                                                              */
+/* -------------------------------------------------------------------------- */
+
+export const GALLERY_CATEGORIES = [
+  "leadership",
+  "campaign",
+  "events",
+  "community",
+  "government",
+  "congress",
+  "other",
+] as const;
+
+/** The most photographs one album may hold. */
+export const GALLERY_MAX_IMAGES = 120;
+
+/**
+ * A set of photographs from one occasion.
+ *
+ * The images live inside the album rather than in a collection of their own.
+ * A photograph on this site is never shown outside the album it belongs to, is
+ * always read with its siblings, and is small - a Cloudinary reference, not
+ * the pixels - so embedding keeps the gallery to one query and one write with
+ * no orphan rows to reconcile. `GALLERY_MAX_IMAGES` keeps the document a sane
+ * size: 120 references is roughly 60 KB against MongoDB's 16 MB ceiling.
+ *
+ * `cover` is optional. When it is unset the first photograph stands in, so an
+ * editor who uploads a set and publishes is never left with a blank card.
+ */
+export interface GalleryAlbumDoc {
+  _id: Types.ObjectId;
+  slug: string;
+  status: PublishStatus;
+  publishedAt?: Date;
+  order?: number;
+  title: string;
+  description?: string;
+  category: (typeof GALLERY_CATEGORIES)[number];
+  date?: Date;
+  location?: string;
+  cover?: CloudinaryImage;
+  images: CloudinaryImage[];
+  relatedEventSlug?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const galleryAlbumSchema = new Schema<any>(
+  {
+    ...publishableFields,
+    title: { type: String, required: [true, "An album title is required."], trim: true, maxlength: 200 },
+    description: { type: String, trim: true, maxlength: 1000 },
+    category: { type: String, enum: [...GALLERY_CATEGORIES], default: "events", index: true },
+    date: { type: Date, index: true },
+    location: { type: String, trim: true, maxlength: 200 },
+    cover: { type: imageSchema },
+    images: {
+      type: [imageSchema],
+      default: [],
+      validate: {
+        validator: (images: unknown[]) => images.length <= GALLERY_MAX_IMAGES,
+        message: `An album can hold at most ${GALLERY_MAX_IMAGES} photographs. Split it into two.`,
+      },
+    },
+    relatedEventSlug: { type: String, trim: true, lowercase: true },
+  },
+  { timestamps: true },
+);
+
+galleryAlbumSchema.index({ slug: 1 }, { unique: true });
+// The gallery's own query: published albums, newest occasion first.
+galleryAlbumSchema.index({ status: 1, date: -1 });
+attachPublishHook(galleryAlbumSchema);
+
+// An album published with no photographs is an empty frame on the public site.
+addPreHook(galleryAlbumSchema, "validate", function () {
+  const doc = this as GalleryAlbumDoc & {
+    invalidate: (path: string, message: string) => void;
+  };
+  if (doc.status === "published" && (!doc.images || doc.images.length === 0)) {
+    doc.invalidate("images", "Add at least one photograph before publishing this album.");
+  }
+});
+
+export const GalleryAlbum = defineModel<GalleryAlbumDoc>("GalleryAlbum", galleryAlbumSchema);

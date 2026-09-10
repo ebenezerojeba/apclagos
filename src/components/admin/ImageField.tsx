@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useId, useRef, useState } from "react";
 import { ImagePlus, Loader2, TriangleAlert, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ACCEPTED_IMAGE_TYPES, uploadImage } from "@/components/admin/upload";
 
 /**
  * Picks a file, uploads it straight to Cloudinary, and puts the resulting
@@ -53,8 +54,6 @@ interface Props {
   onChange?: (value: ImageValue | null) => void;
 }
 
-const MAX_BYTES = 10 * 1024 * 1024;
-const ACCEPTED = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 
 export function ImageField({
   name,
@@ -79,78 +78,22 @@ export function ImageField({
 
   async function upload(file: File) {
     setProblem(null);
-
-    if (!ACCEPTED.includes(file.type)) {
-      setProblem("Choose a JPEG, PNG, WebP or AVIF image.");
-      return;
-    }
-    if (file.size > MAX_BYTES) {
-      setProblem(
-        `That file is ${(file.size / 1024 / 1024).toFixed(1)} MB. The limit is 10 MB — ` +
-          "export it at a smaller size and try again.",
-      );
-      return;
-    }
-
     setBusy(true);
     try {
-      const signatureResponse = await fetch(
-        `/api/admin/upload?folder=${encodeURIComponent(folder)}`,
-      );
-      if (!signatureResponse.ok) {
-        const detail = await signatureResponse.json().catch(() => ({}));
-        setProblem(detail.error ?? "Could not start the upload. Try again.");
+      const result = await uploadImage(file, folder);
+      if (!result.ok) {
+        setProblem(result.error);
         return;
       }
-      const signed = await signatureResponse.json();
-
-      // The signature covers exactly these parameters; adding any other field
-      // invalidates it, which is what stops a signed upload being re-pointed.
-      const payload = new FormData();
-      payload.append("file", file);
-      payload.append("api_key", signed.apiKey);
-      payload.append("timestamp", String(signed.timestamp));
-      payload.append("signature", signed.signature);
-      payload.append("folder", signed.folder);
-      payload.append("use_filename", "true");
-      payload.append("unique_filename", "true");
-      payload.append("overwrite", "false");
-
-      const uploaded = await fetch(signed.uploadUrl, { method: "POST", body: payload });
-      if (!uploaded.ok) {
-        setProblem("Cloudinary rejected the upload. Check the file and try again.");
-        return;
-      }
-      const asset = await uploaded.json();
-
       commit({
-        url: asset.url,
-        secureUrl: asset.secure_url,
-        publicId: asset.public_id,
-        width: asset.width,
-        height: asset.height,
-        format: asset.format,
-        // Seeded from the filename so the field is never silently empty; the
-        // editor is expected to replace it with a real description.
+        ...result.image,
+        // Kept from the previous image so replacing a photograph does not
+        // throw away a description the editor has already written.
         alt: value?.alt ?? "",
         caption: value?.caption,
         credit: value?.credit,
         focal: value?.focal ?? "center",
       });
-
-      // Register it in the media library. A failure here is not fatal — the
-      // image is already in Cloudinary and already attached to this record.
-      fetch("/api/admin/upload", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          publicId: asset.public_id,
-          alt: value?.alt || file.name.replace(/\.[^.]+$/, ""),
-          folder,
-        }),
-      }).catch(() => undefined);
-    } catch {
-      setProblem("The upload failed. Check your connection and try again.");
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -297,7 +240,7 @@ export function ImageField({
       <input
         ref={inputRef}
         type="file"
-        accept={ACCEPTED.join(",")}
+        accept={ACCEPTED_IMAGE_TYPES.join(",")}
         className="sr-only"
         tabIndex={-1}
         onChange={(event) => {

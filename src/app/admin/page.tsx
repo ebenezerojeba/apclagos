@@ -38,6 +38,7 @@ const COLLECTIONS: {
   { href: "/admin/achievements", label: "Achievements", hint: "Projects, programmes and milestones", ready: true },
   { href: "/admin/pages", label: "Pages", hint: "Institutional pages", ready: true },
   { href: "/admin/categories", label: "Categories", hint: "Newsroom taxonomy", ready: true },
+  { href: "/admin/gallery", label: "Gallery", hint: "Photo albums shown in the gallery and on the homepage", ready: true },
   { href: "/admin/media", label: "Media library", hint: "Uploaded images", ready: true },
   { href: "/admin/messages", label: "Messages", hint: "Enquiries from the public contact form", ready: true },
   { href: "/admin/settings", label: "Site settings", hint: "Contact details and social channels", ready: true },

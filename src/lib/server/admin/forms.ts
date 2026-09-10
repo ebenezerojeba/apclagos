@@ -164,6 +164,46 @@ export function image(
   return parsed.data as CloudinaryImage;
 }
 
+/**
+ * Reads a list of images written by `GalleryImagesField`.
+ *
+ * Unlike `blocks()`, an invalid entry is REPORTED rather than dropped. A
+ * paragraph left empty is a half-typed thought, but a photograph missing its
+ * alternative text is a real image the editor uploaded and expects to see - a
+ * save that quietly discarded it would look like data loss. So the action gets
+ * the count and can refuse the save with a message that says what to fix.
+ */
+export function imageList(
+  form: FormData,
+  name: string,
+): { images: CloudinaryImage[]; missingAlt: number; malformed: number } {
+  const raw = form.get(name);
+  if (typeof raw !== "string" || raw.trim() === "") {
+    return { images: [], missingAlt: 0, malformed: 0 };
+  }
+
+  const candidates = safeJson(raw);
+  if (!Array.isArray(candidates)) return { images: [], missingAlt: 0, malformed: 1 };
+
+  const images: CloudinaryImage[] = [];
+  let missingAlt = 0;
+  let malformed = 0;
+
+  for (const candidate of candidates) {
+    const parsed = imageSchema.safeParse(candidate);
+    if (parsed.success) {
+      images.push(parsed.data as CloudinaryImage);
+      continue;
+    }
+    // Distinguish "fix the description" from "this is not an image at all".
+    const altOnly = parsed.error.issues.every((issue) => issue.path[0] === "alt");
+    if (altOnly) missingAlt += 1;
+    else malformed += 1;
+  }
+
+  return { images, missingAlt, malformed };
+}
+
 const blockSchema = z
   .object({
     type: z.enum(["paragraph", "heading", "list", "quote", "image", "video"]),

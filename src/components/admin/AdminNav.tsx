@@ -21,6 +21,7 @@ const SECTIONS = [
   { href: "/admin/achievements", label: "Achievements" },
   { href: "/admin/pages", label: "Pages" },
   { href: "/admin/categories", label: "Categories" },
+  { href: "/admin/gallery", label: "Gallery" },
   { href: "/admin/media", label: "Media" },
   { href: "/admin/messages", label: "Messages" },
   { href: "/admin/settings", label: "Settings" },

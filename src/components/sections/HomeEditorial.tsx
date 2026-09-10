@@ -157,7 +157,7 @@ export async function MediaPreview() {
           variant="compact"
           className="mt-10"
           what="Photographs and video"
-          dataFile="src/data/media.ts"
+          dataFile="the admin, under Gallery"
         />
       )}
     </Section>

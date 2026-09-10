@@ -2,12 +2,13 @@ import "server-only";
 
 import { cache } from "react";
 import { safeRead } from "./db";
-import { Achievement, Article, EventModel, Category, Person } from "./models";
-import type { AchievementDoc, ArticleDoc, EventDoc, PersonDoc } from "./models";
+import { Achievement, Article, EventModel, Category, GalleryAlbum, Person } from "./models";
+import type { AchievementDoc, ArticleDoc, EventDoc, GalleryAlbumDoc, PersonDoc } from "./models";
 import type { CloudinaryImage, ContentBlock } from "./models";
 import { lgas } from "@/data/geography";
 import type {
   Achievement as DomainAchievement,
+  GalleryAlbum as DomainGalleryAlbum,
   ArticleBlock,
   Candidate,
   CouncilOfficial,
@@ -392,4 +393,53 @@ export const fetchAchievements = cache(async (): Promise<DomainAchievement[]> =>
     createdAt: doc.createdAt?.toISOString(),
     updatedAt: doc.updatedAt?.toISOString(),
   }));
+});
+
+/* -------------------------------------------------------------------------- */
+/*  Gallery                                                                    */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Published albums, newest occasion first.
+ *
+ * An album with no cover of its own is given its first photograph, so a card
+ * is never blank. Albums with no photographs are dropped here as well as being
+ * refused at publish time - belt and braces, because a record published before
+ * that rule existed must not render an empty frame either.
+ */
+export const fetchGalleryAlbums = cache(async (): Promise<DomainGalleryAlbum[]> => {
+  const docs = await safeRead(
+    () =>
+      GalleryAlbum.find(PUBLISHED)
+        .sort({ date: -1, order: 1, createdAt: -1 })
+        .lean<GalleryAlbumDoc[]>()
+        .exec(),
+    [],
+    "gallery albums",
+  );
+
+  return docs
+    .map((doc) => {
+      const images = (doc.images ?? [])
+        .map((image) => toImageAsset(image))
+        .filter((image): image is NonNullable<typeof image> => Boolean(image));
+
+      return {
+        id: String(doc._id),
+        slug: doc.slug,
+        status: doc.status,
+        order: doc.order,
+        title: doc.title,
+        description: doc.description,
+        category: doc.category,
+        date: doc.date ? doc.date.toISOString().slice(0, 10) : undefined,
+        location: doc.location,
+        cover: toImageAsset(doc.cover) ?? images[0],
+        images,
+        relatedEventSlug: doc.relatedEventSlug,
+        createdAt: doc.createdAt?.toISOString(),
+        updatedAt: doc.updatedAt?.toISOString(),
+      };
+    })
+    .filter((album) => album.images.length > 0);
 });
