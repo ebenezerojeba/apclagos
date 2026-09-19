@@ -160,7 +160,7 @@ export interface Person extends BaseRecord {
 export type LeadershipBody =
   | "state-executive"
   | "state-working-committee"
-  | "elders-council"
+  | "governance-advisory-council"
   | "government"
   | "national-representation"
   | "party-organ";

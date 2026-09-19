@@ -18,7 +18,7 @@ import type {
 export const leadershipBodyLabels: Record<LeadershipBody, string> = {
   "state-executive": "State Executive",
   "state-working-committee": "State Working Committee",
-  "elders-council": "Elders Council",
+  "governance-advisory-council": "Governance Advisory Council (GAC)",
   government: "In Government",
   "national-representation": "National Representation",
   "party-organ": "Party Organs",

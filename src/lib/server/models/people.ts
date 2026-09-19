@@ -44,7 +44,7 @@ export type PersonKind = (typeof PERSON_KINDS)[number];
 export const LEADERSHIP_BODIES = [
   "state-executive",
   "state-working-committee",
-  "elders-council",
+  "governance-advisory-council",
   "government",
   "national-representation",
   "party-organ",

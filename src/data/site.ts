@@ -220,9 +220,9 @@ export const primaryNav: NavGroup[] = [
             description: "Statutory committee members",
           },
           {
-            label: "Elders Council",
-            href: "/leadership?body=elders-council",
-            description: "Advisory leadership",
+            label: "Governance Advisory Council",
+            href: "/leadership?body=governance-advisory-council",
+            description: "Advisory leadership (GAC)",
           },
         ],
       },

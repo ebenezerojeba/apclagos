@@ -91,7 +91,7 @@ const KINDS: { value: string; label: string }[] = [
 const BODIES = [
   { value: "state-executive", label: "State executive" },
   { value: "state-working-committee", label: "State working committee" },
-  { value: "elders-council", label: "Elders' council" },
+  { value: "governance-advisory-council", label: "Governance Advisory Council (GAC)" },
   { value: "government", label: "Government" },
   { value: "national-representation", label: "National representation" },
   { value: "party-organ", label: "Party organ" },
